@@ -2,7 +2,7 @@
 //  HHWeiboAPIManager.h
 //  TObjective-C
 //
-//  Created by leihaiyin on 2017/11/10.
+//  Created by HeiHuaBaiHua on 2017/11/10.
 //  Copyright © 2017年 HeiHuaBaiHua. All rights reserved.
 //
 
@@ -26,4 +26,7 @@
 
 /** TODO: 某条微博的点赞列表 */
 - (RACSignal *)weiboLikeListSignalWithWeiboID:(NSString *)ID page:(int)page pageSize:(int)pageSize;
+
+/** TODO: 给某条微博点赞/取消赞 */
+- (RACSignal *)switchLikeStatusSignalWithWeiboID:(NSString *)ID;
 @end

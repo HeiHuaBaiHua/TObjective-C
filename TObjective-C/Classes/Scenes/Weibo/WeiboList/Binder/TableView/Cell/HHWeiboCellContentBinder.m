@@ -2,13 +2,13 @@
 //  HHWeiboCellContentBinder.m
 //  TObjective-C
 //
-//  Created by leihaiyin on 2017/11/14.
+//  Created by HeiHuaBaiHua on 2017/11/14.
 //  Copyright © 2017年 HeiHuaBaiHua. All rights reserved.
 //
 
 #import <Masonry/Masonry.h>
-#import <ReactiveCocoa/ReactiveCocoa.h>
-#import <SDWebImage/UIButton+WebCache.h>
+#import "ReactiveCocoa.h"
+#import "UIButton+WebCache.h"
 
 #import "HHFoundation.h"
 #import "CTMediator+Web.h"

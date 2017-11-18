@@ -2,7 +2,7 @@
 //  HHSocketManager.m
 //  TSocket
 //
-//  Created by leihaiyin on 2017/9/11.
+//  Created by HeiHuaBaiHua on 2017/9/11.
 //  Copyright © 2017年 HeiHuaBaiHua. All rights reserved.
 //
 
