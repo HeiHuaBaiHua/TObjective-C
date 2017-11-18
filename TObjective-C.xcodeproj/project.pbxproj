@@ -124,6 +124,7 @@
 		73F32FDB1FBAE26700F55A0D /* HHTargetRoot.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F32FDA1FBAE26700F55A0D /* HHTargetRoot.m */; };
 		73F32FDF1FBAE92700F55A0D /* CTMediator+Root.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F32FDE1FBAE92700F55A0D /* CTMediator+Root.m */; };
 		73F32FE21FBAF1F200F55A0D /* HHTargetWeb.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F32FE11FBAF1F200F55A0D /* HHTargetWeb.m */; };
+		9DBD7D2D1FBFD86E00485C8E /* weibo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9DBD7D2C1FBFD86E00485C8E /* weibo.plist */; };
 		9DFC8CF71FB7F06700F8C115 /* HHNetworkClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DFC8CF01FB7F06700F8C115 /* HHNetworkClient.m */; };
 		9DFC8CF81FB7F06700F8C115 /* HHService.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DFC8CF21FB7F06700F8C115 /* HHService.m */; };
 		9DFC8CF91FB7F06700F8C115 /* HHUploadFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DFC8CF41FB7F06700F8C115 /* HHUploadFile.m */; };
@@ -385,6 +386,7 @@
 		73F32FE11FBAF1F200F55A0D /* HHTargetWeb.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HHTargetWeb.m; sourceTree = "<group>"; };
 		8D43924F58FEF605901F6D70 /* Pods_TObjective_C.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TObjective_C.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		94071C74E13BE5820B869446 /* Pods-TObjective-C.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TObjective-C.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TObjective-C/Pods-TObjective-C.debug.xcconfig"; sourceTree = "<group>"; };
+		9DBD7D2C1FBFD86E00485C8E /* weibo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = weibo.plist; sourceTree = "<group>"; };
 		9DFC8CEF1FB7F06700F8C115 /* HHNetworkClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHNetworkClient.h; sourceTree = "<group>"; };
 		9DFC8CF01FB7F06700F8C115 /* HHNetworkClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHNetworkClient.m; sourceTree = "<group>"; };
 		9DFC8CF11FB7F06700F8C115 /* HHService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHService.h; sourceTree = "<group>"; };
@@ -597,6 +599,7 @@
 		7362C2371FB5379B00C3CD3F /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				9DBD7D2B1FBFD85C00485C8E /* Plist */,
 				7362C2CB1FB5547500C3CD3F /* Image */,
 			);
 			path = Resource;
@@ -1395,6 +1398,14 @@
 			path = Root;
 			sourceTree = "<group>";
 		};
+		9DBD7D2B1FBFD85C00485C8E /* Plist */ = {
+			isa = PBXGroup;
+			children = (
+				9DBD7D2C1FBFD86E00485C8E /* weibo.plist */,
+			);
+			path = Plist;
+			sourceTree = "<group>";
+		};
 		9DFC8CE21FB7EEB100F8C115 /* SceneUtils */ = {
 			isa = PBXGroup;
 			children = (
@@ -1533,6 +1544,7 @@
 				7362C22B1FB5371400C3CD3F /* LaunchScreen.storyboard in Resources */,
 				7362C2E21FB5585800C3CD3F /* Localizable.strings in Resources */,
 				7362C2CE1FB5547600C3CD3F /* Home.xcassets in Resources */,
+				9DBD7D2D1FBFD86E00485C8E /* weibo.plist in Resources */,
 				7362C2281FB5371400C3CD3F /* Assets.xcassets in Resources */,
 				7362C2CF1FB5547600C3CD3F /* TabBar.xcassets in Resources */,
 				737EA1F61FB9931F00D32F64 /* HHWeiboCellInfoView.xib in Resources */,

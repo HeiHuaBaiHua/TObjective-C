@@ -2,7 +2,7 @@
 //  HHSocketRequest.m
 //  HHvce
 //
-//  Created by leihaiyin on 2017/9/28.
+//  Created by HeiHuaBaiHua on 2017/9/28.
 //  Copyright © 2017年 tiger. All rights reserved.
 //
 

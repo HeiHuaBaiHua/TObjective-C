@@ -2,7 +2,7 @@
 //  HHSocket.m
 //  TSocket
 //
-//  Created by leihaiyin on 2017/9/8.
+//  Created by HeiHuaBaiHua on 2017/9/8.
 //  Copyright © 2017年 HeiHuaBaiHua. All rights reserved.
 //
 
