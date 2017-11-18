@@ -1,0 +1,20 @@
+/* 
+  Localizable.strings
+  Test
+
+  Created by leihaiyin on 2017/11/9.
+  Copyright © 2017年 HeiHuaBaiHua. All rights reserved.
+*/
+"Camera Roll" = "Camera Roll";
+"All Photos" = "All Photos";
+"Hidden" = "Hidden";
+"Slo-mo" = "Slo-mo";
+"Screenshots" = "Screenshots";
+"Videos" = "Videos";
+"Panoramas" = "Panoramas";
+"Time-lapse" = "Time-lapse";
+"Recently Added" = "Recently Added";
+"Recently Deleted" = "Recently Deleted";
+"Bursts" = "Bursts";
+"Favorite" = "Favorite";
+"Selfies" = "Selfies";

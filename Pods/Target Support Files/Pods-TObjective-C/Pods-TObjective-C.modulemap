@@ -1,0 +1,6 @@
+framework module Pods_TObjective_C {
+  umbrella header "Pods-TObjective-C-umbrella.h"
+
+  export *
+  module * { export * }
+}

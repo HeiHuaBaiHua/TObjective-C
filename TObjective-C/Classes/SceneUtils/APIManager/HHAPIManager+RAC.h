@@ -1,0 +1,17 @@
+//
+//  HHAPIManager+RAC.h
+//  TObjective-C
+//
+//  Created by leihaiyin on 2017/11/10.
+//  Copyright © 2017年 HeiHuaBaiHua. All rights reserved.
+//
+
+#import "HHAPIManager.h"
+
+#import <ReactiveCocoa/ReactiveCocoa.h>
+@interface HHAPIManager (RAC)
+
+- (RACSignal *)dataSignalWithConfig:(HHDataTaskConfiguration *)config;
+- (RACSignal *)uploadSignalWithConfig:(HHUploadTaskConfiguration *)config;
+
+@end
