@@ -87,45 +87,6 @@ strip_invalid_archs() {
   fi
 }
 
-
-if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_framework "$BUILT_PRODUCTS_DIR/AFNetworking/AFNetworking.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/DACircularProgress/DACircularProgress.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/DateTools/DateTools.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/MBProgressHUD/MBProgressHUD.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/MJRefresh/MJRefresh.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/MSWeakTimer/MSWeakTimer.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/MWPhotoBrowser/MWPhotoBrowser.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/MagicalRecord/MagicalRecord.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/Masonry/Masonry.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/ReactiveCocoa/ReactiveCocoa.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/RealReachability/RealReachability.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/SDCycleScrollView/SDCycleScrollView.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/SDWebImage/SDWebImage.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/SocketRocket/SocketRocket.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/Toast/Toast.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/YYModel/YYModel.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/YYText/YYText.framework"
-fi
-if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_framework "$BUILT_PRODUCTS_DIR/AFNetworking/AFNetworking.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/DACircularProgress/DACircularProgress.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/DateTools/DateTools.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/MBProgressHUD/MBProgressHUD.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/MJRefresh/MJRefresh.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/MSWeakTimer/MSWeakTimer.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/MWPhotoBrowser/MWPhotoBrowser.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/MagicalRecord/MagicalRecord.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/Masonry/Masonry.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/ReactiveCocoa/ReactiveCocoa.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/RealReachability/RealReachability.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/SDCycleScrollView/SDCycleScrollView.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/SDWebImage/SDWebImage.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/SocketRocket/SocketRocket.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/Toast/Toast.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/YYModel/YYModel.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/YYText/YYText.framework"
-fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait
 fi

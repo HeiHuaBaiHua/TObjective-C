@@ -1,7 +1,4 @@
 platform:ios,'8.0'
-use_frameworks!
-
-inhibit_all_warnings!
 
 target 'TObjective-C' do
 
@@ -22,5 +19,5 @@ pod 'RealReachability'
 pod 'YYModel'
 pod 'YYText'
 pod 'Toast'
-
+pod 'pop'
 end

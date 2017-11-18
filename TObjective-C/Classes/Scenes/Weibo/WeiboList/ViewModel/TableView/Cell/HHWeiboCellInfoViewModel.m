@@ -6,7 +6,7 @@
 //  Copyright © 2017年 HeiHuaBaiHua. All rights reserved.
 //
 
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import "ReactiveCocoa.h"
 
 #import "HHFoundation.h"
 #import "HHWeiboCellInfoViewModel.h"
@@ -78,8 +78,8 @@
 - (void)switchLikesStatus {
     
     self.isLiked = !self.isLiked;
-    NSInteger count = self.rawValue.attitudesCount + (self.isLiked ? 1 : -1);
-    self.likesCount = [self formatCount:count];
+    self.rawValue.attitudesCount += (self.isLiked ? 1 : -1);
+    self.likesCount = [self formatCount:self.rawValue.attitudesCount];
 }
 
 @end

@@ -27,6 +27,7 @@ PODS:
     - DACircularProgress (~> 2.3)
     - MBProgressHUD (~> 0.9)
     - SDWebImage (!= 3.7.2, ~> 3.7)
+  - pop (1.0.10)
   - ReactiveCocoa (2.5):
     - ReactiveCocoa/UI (= 2.5)
   - ReactiveCocoa/Core (2.5):
@@ -58,6 +59,7 @@ DEPENDENCIES:
   - MJRefresh
   - MSWeakTimer
   - MWPhotoBrowser (~> 2.1.2)
+  - pop
   - ReactiveCocoa (~> 2.5)
   - RealReachability
   - SDCycleScrollView
@@ -77,6 +79,7 @@ SPEC CHECKSUMS:
   MJRefresh: 9af70f5f9327a2cf87f0fb5929f35fcc2fa638ea
   MSWeakTimer: 9426150f933b80ed3acf3f6d228e4b61f0e303c8
   MWPhotoBrowser: 5836d7aa041dc05a13de380c246826578adc5ea5
+  pop: 82ca6b068ce9278fd350fd9dd09482a0ce9492e6
   ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
   RealReachability: a8c483900986a0f3305733961effbfbb00637a02
   SDCycleScrollView: f72904c77698a7f93a41bcbbc2d78b073bf7326c
@@ -86,6 +89,6 @@ SPEC CHECKSUMS:
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
 
-PODFILE CHECKSUM: 386099de9edd20252e600c92b8f9bcbb63f1f3ba
+PODFILE CHECKSUM: a2876bfb00555dec63237ece455202db5600dfe8
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.2.0

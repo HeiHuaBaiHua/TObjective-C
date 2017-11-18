@@ -7,7 +7,7 @@
 //
 
 #import <MJRefresh/MJRefresh.h>
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import "ReactiveCocoa.h"
 
 #import "HHTableBinder.h"
 #import "UIView+ErrorView.h"

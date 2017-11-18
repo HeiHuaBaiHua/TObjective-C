@@ -14,7 +14,7 @@
 # define WebLog(...) {}
 #endif
 
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import "ReactiveCocoa.h"
 
 #import "HHFoundation.h"
 #import "HHWebViewBinder.h"

@@ -6,7 +6,7 @@
 //  Copyright © 2017年 HeiHuaBaiHua. All rights reserved.
 //
 
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import "ReactiveCocoa.h"
 
 #import "HHWeiboDetailRepostsCell.h"
 

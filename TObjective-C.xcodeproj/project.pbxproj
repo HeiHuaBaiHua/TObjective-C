@@ -130,7 +130,7 @@
 		9DFC8CF91FB7F06700F8C115 /* HHUploadFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DFC8CF41FB7F06700F8C115 /* HHUploadFile.m */; };
 		9DFC8CFA1FB7F06700F8C115 /* HHURLRequestGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DFC8CF61FB7F06700F8C115 /* HHURLRequestGenerator.m */; };
 		9DFC8D021FB7F65100F8C115 /* HHUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DFC8D011FB7F65100F8C115 /* HHUtils.m */; };
-		FE8D5E24AB08B45983903EA8 /* Pods_TObjective_C.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D43924F58FEF605901F6D70 /* Pods_TObjective_C.framework */; };
+		E71E06978BF68FA9C4B21D00 /* libPods-TObjective-C.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E468429D8F3EBDCCDD9AD9A5 /* libPods-TObjective-C.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -384,7 +384,6 @@
 		73F32FDE1FBAE92700F55A0D /* CTMediator+Root.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "CTMediator+Root.m"; sourceTree = "<group>"; };
 		73F32FE01FBAF1F200F55A0D /* HHTargetWeb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHTargetWeb.h; sourceTree = "<group>"; };
 		73F32FE11FBAF1F200F55A0D /* HHTargetWeb.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HHTargetWeb.m; sourceTree = "<group>"; };
-		8D43924F58FEF605901F6D70 /* Pods_TObjective_C.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TObjective_C.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		94071C74E13BE5820B869446 /* Pods-TObjective-C.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TObjective-C.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TObjective-C/Pods-TObjective-C.debug.xcconfig"; sourceTree = "<group>"; };
 		9DBD7D2C1FBFD86E00485C8E /* weibo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = weibo.plist; sourceTree = "<group>"; };
 		9DFC8CEF1FB7F06700F8C115 /* HHNetworkClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHNetworkClient.h; sourceTree = "<group>"; };
@@ -398,6 +397,7 @@
 		9DFC8D001FB7F65100F8C115 /* HHUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHUtils.h; sourceTree = "<group>"; };
 		9DFC8D011FB7F65100F8C115 /* HHUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HHUtils.m; sourceTree = "<group>"; };
 		BE140967349ED1C057B77080 /* Pods-TObjective-C.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TObjective-C.release.xcconfig"; path = "Pods/Target Support Files/Pods-TObjective-C/Pods-TObjective-C.release.xcconfig"; sourceTree = "<group>"; };
+		E468429D8F3EBDCCDD9AD9A5 /* libPods-TObjective-C.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TObjective-C.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -405,7 +405,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FE8D5E24AB08B45983903EA8 /* Pods_TObjective_C.framework in Frameworks */,
+				E71E06978BF68FA9C4B21D00 /* libPods-TObjective-C.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1474,7 +1474,7 @@
 		AB5E00091A73347FFBE8485D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8D43924F58FEF605901F6D70 /* Pods_TObjective_C.framework */,
+				E468429D8F3EBDCCDD9AD9A5 /* libPods-TObjective-C.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1586,7 +1586,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		96B7F53E0C36E5ABD079FA8E /* [CP] Embed Pods Frameworks */ = {
@@ -1879,6 +1879,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
 			name = Debug;
 		};
@@ -1897,6 +1898,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
 			name = Release;
 		};

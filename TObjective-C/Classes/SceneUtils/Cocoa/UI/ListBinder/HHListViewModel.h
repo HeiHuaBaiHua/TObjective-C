@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import "ReactiveCocoa.h"
 
 #import "HHListBinderProtocol.h"
 @interface HHListViewModel : NSObject<HHListViewModelProtocol>

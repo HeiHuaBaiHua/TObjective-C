@@ -8,7 +8,7 @@
 
 #import "HHAPIManager.h"
 
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import "ReactiveCocoa.h"
 @interface HHAPIManager (RAC)
 
 - (RACSignal *)dataSignalWithConfig:(HHDataTaskConfiguration *)config;

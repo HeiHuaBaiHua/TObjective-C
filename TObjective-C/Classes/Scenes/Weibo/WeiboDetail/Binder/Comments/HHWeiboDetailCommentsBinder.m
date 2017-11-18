@@ -7,7 +7,7 @@
 //
 
 #import <MJRefresh/MJRefresh.h>
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import "ReactiveCocoa.h"
 
 #import "HHWeiboDetailCommentsBinder.h"
 
