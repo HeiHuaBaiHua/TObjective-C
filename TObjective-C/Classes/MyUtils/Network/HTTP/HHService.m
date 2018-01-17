@@ -66,11 +66,11 @@
 @implementation HHServiceX
 
 - (NSString *)testEnvironmentBaseUrl {
-    return @"http://127.0.0.1:8888";
+    return @"http://localhost:9876";
 }
 
 - (NSString *)developEnvironmentBaseUrl {
-    return @"https://api.weibo.com/2";
+    return @"http://localhost:9876";
 }
 
 - (NSString *)releaseEnvironmentBaseUrl {

@@ -8,8 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-
-
 #import "NSUserDefaults+Extension.h"
 
 #import "UIView+ErrorView.h"

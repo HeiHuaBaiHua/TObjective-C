@@ -25,11 +25,11 @@ typedef enum : NSUInteger {
 } HHServiceEnvironment;
 
 #define BulidService HHService0
-#define BulidServiceEnvironment HHServiceEnvironmentRelease
+#define BulidServiceEnvironment HHServiceEnvironmentTest
 
 typedef enum : NSUInteger {
-    HHNetworkRequestTypeGet,
-    HHNetworkRequestTypePost
+    HHNetworkRequestTypeGET,
+    HHNetworkRequestTypePOST
 } HHNetworkRequestType;
 
 #define RequestTimeoutInterval 8

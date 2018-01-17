@@ -38,9 +38,9 @@
 
 #pragma mark - Interface
 
-- (NSMutableURLRequest *)generateRequestWithUrlPath:(NSString *)urlPath useHttps:(BOOL)useHttps method:(NSString *)method params:(NSDictionary *)params header:(NSDictionary *)header {
+- (NSMutableURLRequest *)generateRequestWithUrlPath:(NSString *)urlPath method:(NSString *)method params:(NSDictionary *)params header:(NSDictionary *)header {
     
-    NSString *urlString = [self urlStringWithPath:urlPath useHttps:useHttps];
+    NSString *urlString = [self urlStringWithPath:urlPath];
     NSMutableURLRequest *request = [self.requestSerialize requestWithMethod:method URLString:urlString parameters:params error:nil];
     request.timeoutInterval = RequestTimeoutInterval;
     [self setCommonRequestHeaderForRequest:request];
@@ -50,9 +50,9 @@
     return request;
 }
 
-- (NSMutableURLRequest *)generateUploadRequestUrlPath:(NSString *)urlPath useHttps:(BOOL)useHttps params:(NSDictionary *)params contents:(NSArray<HHUploadFile *> *)contents header:(NSDictionary *)header {
+- (NSMutableURLRequest *)generateUploadRequestUrlPath:(NSString *)urlPath params:(NSDictionary *)params contents:(NSArray<HHUploadFile *> *)contents header:(NSDictionary *)header {
     
-    NSString *urlString = [self urlStringWithPath:urlPath useHttps:useHttps];
+    NSString *urlString = [self urlStringWithPath:urlPath];
     NSMutableURLRequest *request = [self.requestSerialize multipartFormRequestWithMethod:@"POST" URLString:urlString parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         
         [contents enumerateObjectsUsingBlock:^(HHUploadFile * _Nonnull file, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -71,23 +71,12 @@
 
 #pragma mark - Utils
 
-- (NSString *)urlStringWithPath:(NSString *)path useHttps:(BOOL)useHttps {
+- (NSString *)urlStringWithPath:(NSString *)path {
     
     if ([path hasPrefix:@"http"]) {
         return path;
-    } else {
-        
-        NSString *baseUrlString = self.service.baseUrl;
-        if (useHttps &&
-            ![baseUrlString hasPrefix:@"https"] &&
-            baseUrlString.length > 4) {
-            
-            NSMutableString *mString = [NSMutableString stringWithString:baseUrlString];
-            [mString insertString:@"s" atIndex:4];
-            baseUrlString = [mString copy];
-        }
-        return [NSString stringWithFormat:@"%@%@", baseUrlString, path];
     }
+    return [NSString stringWithFormat:@"%@%@", self.service.baseUrl, path];
 }
 
 - (void)setCookies {

@@ -57,10 +57,10 @@ static dispatch_semaphore_t lock;
 
 #pragma mark - Interface
 
-- (NSURLSessionDataTask *)dataTaskWithUrlPath:(NSString *)urlPath useHttps:(BOOL)useHttps requestType:(HHNetworkRequestType)requestType params:(NSDictionary *)params header:(NSDictionary *)header completionHandler:(void (^)(NSURLResponse *, id, NSError *))completionHandler {
+- (NSURLSessionDataTask *)dataTaskWithUrlPath:(NSString *)urlPath requestType:(HHNetworkRequestType)requestType params:(NSDictionary *)params header:(NSDictionary *)header completionHandler:(void (^)(NSURLResponse *, id, NSError *))completionHandler {
     
-    NSString *method = (requestType == HHNetworkRequestTypeGet ? @"GET" : @"POST");
-    NSMutableURLRequest *request = [[HHURLRequestGenerator sharedInstance] generateRequestWithUrlPath:urlPath useHttps:useHttps method:method params:params header:header];
+    NSString *method = (requestType == HHNetworkRequestTypeGET ? @"GET" : @"POST");
+    NSMutableURLRequest *request = [[HHURLRequestGenerator sharedInstance] generateRequestWithUrlPath:urlPath method:method params:params header:header];
     NSMutableArray *taskIdentifier = [NSMutableArray arrayWithObject:@-1];
     NSURLSessionDataTask *task = [self.sessionManager dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
         
@@ -74,9 +74,9 @@ static dispatch_semaphore_t lock;
     return task;
 }
 
-- (NSNumber *)dispatchTaskWithUrlPath:(NSString *)urlPath useHttps:(BOOL)useHttps requestType:(HHNetworkRequestType)requestType params:(NSDictionary *)params header:(NSDictionary *)header completionHandler:(void (^)(NSURLResponse *, id, NSError *))completionHandler {
+- (NSNumber *)dispatchTaskWithUrlPath:(NSString *)urlPath requestType:(HHNetworkRequestType)requestType params:(NSDictionary *)params header:(NSDictionary *)header completionHandler:(void (^)(NSURLResponse *, id, NSError *))completionHandler {
     
-    return [self dispatchTask:[self dataTaskWithUrlPath:urlPath useHttps:useHttps requestType:requestType params:params header:header completionHandler:completionHandler]];
+    return [self dispatchTask:[self dataTaskWithUrlPath:urlPath requestType:requestType params:params header:header completionHandler:completionHandler]];
 }
 
 - (NSNumber *)dispatchTask:(NSURLSessionDataTask *)task {
@@ -90,9 +90,9 @@ static dispatch_semaphore_t lock;
     return @(task.taskIdentifier);
 }
 
-- (NSNumber *)uploadDataWithUrlPath:(NSString *)urlPath useHttps:(BOOL)useHttps params:(NSDictionary *)params contents:(NSArray<HHUploadFile *> *)contents header:(NSDictionary *)header progressHandler:(void (^)(NSProgress *))progressHandler completionHandler:(void (^)(NSURLResponse *, id, NSError *))completionHandler {
+- (NSNumber *)uploadDataWithUrlPath:(NSString *)urlPath params:(NSDictionary *)params contents:(NSArray<HHUploadFile *> *)contents header:(NSDictionary *)header progressHandler:(void (^)(NSProgress *))progressHandler completionHandler:(void (^)(NSURLResponse *, id, NSError *))completionHandler {
     
-    NSMutableURLRequest *request = [[HHURLRequestGenerator sharedInstance] generateUploadRequestUrlPath:urlPath useHttps:useHttps params:params contents:contents header:header];
+    NSMutableURLRequest *request = [[HHURLRequestGenerator sharedInstance] generateUploadRequestUrlPath:urlPath params:params contents:contents header:header];
     NSMutableArray *taskIdentifier = [NSMutableArray arrayWithObject:@-1];
     NSURLSessionDataTask *task = [self.sessionManager uploadTaskWithStreamedRequest:request progress:progressHandler completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
         

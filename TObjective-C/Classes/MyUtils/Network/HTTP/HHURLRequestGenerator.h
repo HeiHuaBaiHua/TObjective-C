@@ -14,13 +14,11 @@
 + (instancetype)sharedInstance;
 
 - (NSMutableURLRequest *)generateRequestWithUrlPath:(NSString *)urlPath
-                                           useHttps:(BOOL)useHttps
                                              method:(NSString *)method
                                              params:(NSDictionary *)params
                                              header:(NSDictionary *)header;
 
 - (NSMutableURLRequest *)generateUploadRequestUrlPath:(NSString *)urlPath
-                                             useHttps:(BOOL)useHttps
                                                params:(NSDictionary *)params
                                              contents:(NSArray<HHUploadFile *> *)contents
                                                header:(NSDictionary *)header;

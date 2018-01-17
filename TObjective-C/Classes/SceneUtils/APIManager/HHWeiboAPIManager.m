@@ -33,31 +33,29 @@
 /** TODO: 最新发布的微博列表 */
 - (RACSignal *)publicWeiboListSignalWithPage:(int)page pageSize:(int)pageSize {
     
-//    HHDataTaskConfiguration *config = [HHDataTaskConfiguration new];
-//    config.urlPath = @"/statuses/public_timeline.json";
-//    config.requestParameters = @{@"page": @(page),
-//                                 @"count": @(pageSize),
-//                                 @"access_token": @"..."};
-//
-//    config.deserializePath = @"statuses";
-//    config.deserializeClass = [HHWeibo class];
-//    return [self dataSignalWithConfig:config];
+    HHDataTaskConfiguration *config = [HHDataTaskConfiguration new];
+    config.urlPath = @"/statuses/home_timeline.json";
+    config.requestParameters = @{@"page": @(page),
+                                 @"count": @(pageSize)};
+
+    config.deserializePath = @"statuses";
+    config.deserializeClass = [HHWeibo class];
+    return [self dataSignalWithConfig:config];
     
-    return [self cachedWeiboListSignalWithPage:page];
+//    return [self cachedWeiboListSignalWithPage:page];
 }
 
 /** TODO: 我关注的用户发布的微博列表 */
 - (RACSignal *)followedWeiboListSignalWithPage:(int)page pageSize:(int)pageSize {
     
-//    HHDataTaskConfiguration *config = [HHDataTaskConfiguration new];
-//    config.urlPath = @"/statuses/home_timeline.json";
-//    config.requestParameters = @{@"page": @(page),
-//                                 @"count": @(pageSize),
-//                                 @"access_token": @"..."};
-//
-//    config.deserializePath = @"statuses";
-//    config.deserializeClass = [HHWeibo class];
-//    return [self dataSignalWithConfig:config];
+    HHDataTaskConfiguration *config = [HHDataTaskConfiguration new];
+    config.urlPath = @"/statuses/home_timeline.json";
+    config.requestParameters = @{@"page": @(page),
+                                 @"count": @(pageSize)};
+    
+    config.deserializePath = @"data";
+    config.deserializeClass = [HHWeibo class];
+    return [self dataSignalWithConfig:config];
     
     return [self cachedWeiboListSignalWithPage:page];
 }

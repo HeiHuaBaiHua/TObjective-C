@@ -23,7 +23,6 @@ typedef void(^HHNetworkTaskCompletionHander)(NSError *error, id result);
 @property (copy, nonatomic) NSString *urlPath;
 @property (strong, nonatomic) NSDictionary *requestParameters;
 
-@property (assign, nonatomic) BOOL useHttps;
 @property (strong, nonatomic) NSDictionary *requestHeader;
 @property (assign, nonatomic) HHNetworkRequestType requestType;
 @end
@@ -52,9 +51,7 @@ typedef void(^HHNetworkTaskCompletionHander)(NSError *error, id result);
 @interface HHAPIManager : NSObject
 
 - (void)cancelAllTask;
-- (void)cancelTaskWithtaskIdentifier:(NSNumber *)taskIdentifier;
-+ (void)cancelTaskWithtaskIdentifier:(NSNumber *)taskIdentifier;
-+ (void)cancelTasksWithtaskIdentifiers:(NSArray *)taskIdentifiers;
+- (void)cancelTask:(NSNumber *)taskIdentifier;
 
 - (NSNumber *)dispatchDataTaskWithConfiguration:(HHDataTaskConfiguration *)config completionHandler:(HHNetworkTaskCompletionHander)completionHandler;
 - (NSNumber *)dispatchUploadTaskWithConfiguration:(HHUploadTaskConfiguration *)config progressHandler:(HHNetworkTaskProgressHandler)progressHandler completionHandler:(HHNetworkTaskCompletionHander)completionHandler;

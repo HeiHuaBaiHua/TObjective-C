@@ -13,8 +13,7 @@
 - (RACSignal *)dataSignalWithConfig:(HHDataTaskConfiguration *)config {
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         
-        NSNumber *taskIdentifier = [self dispatchDataTaskWithConfiguration:config completionHandler:^(NSError *error, id result) {
-            
+        __block NSNumber *taskIdentifier = [self dispatchDataTaskWithConfiguration:config completionHandler:^(NSError *error, id result) {
             if (error) {
                 [subscriber sendError:error];
             } else {
@@ -23,7 +22,7 @@
             }
         }];
         return [RACDisposable disposableWithBlock:^{
-            [HHAPIManager cancelTaskWithtaskIdentifier:taskIdentifier];
+            [self cancelTask:taskIdentifier];
         }];
     }].deliverOnMainThread;
 }
@@ -31,7 +30,7 @@
 - (RACSignal *)uploadSignalWithConfig:(HHUploadTaskConfiguration *)config {
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         
-        NSNumber *taskIdentifier = [self dispatchUploadTaskWithConfiguration:config progressHandler:^(CGFloat progress) {
+        __block NSNumber *taskIdentifier = [self dispatchUploadTaskWithConfiguration:config progressHandler:^(CGFloat progress) {
             [subscriber sendNext:RACTuplePack(@(progress), nil)];
         } completionHandler:^(NSError *error, id result) {
             
@@ -43,7 +42,7 @@
             }
         }];
         return [RACDisposable disposableWithBlock:^{
-            [HHAPIManager cancelTaskWithtaskIdentifier:taskIdentifier];
+            [self cancelTask:taskIdentifier];
         }];
     }].deliverOnMainThread;
 }

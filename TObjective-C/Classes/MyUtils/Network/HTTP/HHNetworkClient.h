@@ -16,14 +16,12 @@
 + (instancetype)sharedInstance;
 
 - (NSURLSessionDataTask *)dataTaskWithUrlPath:(NSString *)urlPath
-                                     useHttps:(BOOL)useHttps
                                   requestType:(HHNetworkRequestType)requestType
                                        params:(NSDictionary *)params
                                        header:(NSDictionary *)header
                             completionHandler:(void (^)(NSURLResponse *response,id responseObject,NSError *error))completionHandler;
 
 - (NSNumber *)dispatchTaskWithUrlPath:(NSString *)urlPath
-                             useHttps:(BOOL)useHttps
                           requestType:(HHNetworkRequestType)requestType
                                params:(NSDictionary *)params
                                header:(NSDictionary *)header
@@ -32,7 +30,6 @@
 - (NSNumber *)dispatchTask:(NSURLSessionTask *)task;
 
 - (NSNumber *)uploadDataWithUrlPath:(NSString *)urlPath
-                           useHttps:(BOOL)useHttps
                              params:(NSDictionary *)params
                            contents:(NSArray<HHUploadFile *> *)contents
                              header:(NSDictionary *)header
