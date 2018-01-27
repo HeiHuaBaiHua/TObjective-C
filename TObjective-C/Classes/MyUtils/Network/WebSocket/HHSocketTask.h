@@ -18,8 +18,6 @@ typedef enum : NSUInteger {
     HHSocketTaskStateCompleted = 3
 } HHSocketTaskState;
 
-typedef void(^HHNetworkTaskCompletionHander)(NSError *error,NSDictionary *result);
-
 @interface HHSocketTask : NSObject
 
 + (instancetype)taskWithRequest:(HHSocketRequest *)request completionHandler:(HHNetworkTaskCompletionHander)completionHandler;

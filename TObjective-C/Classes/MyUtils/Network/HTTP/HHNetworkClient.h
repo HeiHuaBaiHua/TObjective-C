@@ -21,20 +21,19 @@
                                        header:(NSDictionary *)header
                             completionHandler:(void (^)(NSURLResponse *response,id responseObject,NSError *error))completionHandler;
 
-- (NSNumber *)dispatchTaskWithUrlPath:(NSString *)urlPath
-                          requestType:(HHNetworkRequestType)requestType
-                               params:(NSDictionary *)params
-                               header:(NSDictionary *)header
-                    completionHandler:(void (^)(NSURLResponse *response,id responseObject,NSError *error))completionHandler;
-
-- (NSNumber *)dispatchTask:(NSURLSessionTask *)task;
-
 - (NSNumber *)uploadDataWithUrlPath:(NSString *)urlPath
                              params:(NSDictionary *)params
                            contents:(NSArray<HHUploadFile *> *)contents
                              header:(NSDictionary *)header
                     progressHandler:(void(^)(NSProgress *))progressHandler
                   completionHandler:(void (^)(NSURLResponse *response,id responseObject,NSError *error))completionHandler;
+
+- (NSNumber *)dispatchTask:(NSURLSessionTask *)task;
+- (NSNumber *)dispatchTaskWithUrlPath:(NSString *)urlPath
+                          requestType:(HHNetworkRequestType)requestType
+                               params:(NSDictionary *)params
+                               header:(NSDictionary *)header
+                    completionHandler:(void (^)(NSURLResponse *response,id responseObject,NSError *error))completionHandler;
 
 - (void)cancelAllTask;
 - (void)cancelTaskWithTaskIdentifier:(NSNumber *)taskIdentifier;

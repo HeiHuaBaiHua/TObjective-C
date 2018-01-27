@@ -20,9 +20,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
     self.window.rootViewController = [CTRouter tabbarViewController];
-//    [self initializeWithLaunchOptions:launchOptions];
+    [self initializeWithLaunchOptions:launchOptions];
+
     return YES;
 }
-
 
 @end

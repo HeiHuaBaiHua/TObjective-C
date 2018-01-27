@@ -68,7 +68,7 @@ static dispatch_semaphore_t lock;
         [self.dispathTable removeObjectForKey:taskIdentifier.firstObject];
         dispatch_semaphore_signal(lock);
         
-        completionHandler ? completionHandler(response, responseObject, error) : nil;
+        !completionHandler ?: completionHandler(response, responseObject, error);
     }];
     taskIdentifier[0] = @(task.taskIdentifier);
     return task;
@@ -100,7 +100,7 @@ static dispatch_semaphore_t lock;
         [self.dispathTable removeObjectForKey:taskIdentifier.firstObject];
         dispatch_semaphore_signal(lock);
         
-        completionHandler ? completionHandler(response, responseObject, error) : nil;
+        !completionHandler ?: completionHandler(response, responseObject, error);
     }];
     taskIdentifier[0] = @(task.taskIdentifier);
     return [self dispatchTask:task];

@@ -16,7 +16,6 @@
 #pragma mark - HHAPIConfiguration
 
 typedef void(^HHNetworkTaskProgressHandler)(CGFloat progress);
-typedef void(^HHNetworkTaskCompletionHander)(NSError *error, id result);
 
 @interface HHRequestConfiguration : NSObject
 
@@ -53,6 +52,7 @@ typedef void(^HHNetworkTaskCompletionHander)(NSError *error, id result);
 - (void)cancelAllTask;
 - (void)cancelTask:(NSNumber *)taskIdentifier;
 
+- (NSURLSessionDataTask *)dataTaskWithConfiguration:(HHDataTaskConfiguration *)config completionHandler:(HHNetworkTaskCompletionHander)completionHandler;
 - (NSNumber *)dispatchDataTaskWithConfiguration:(HHDataTaskConfiguration *)config completionHandler:(HHNetworkTaskCompletionHander)completionHandler;
 - (NSNumber *)dispatchUploadTaskWithConfiguration:(HHUploadTaskConfiguration *)config progressHandler:(HHNetworkTaskProgressHandler)progressHandler completionHandler:(HHNetworkTaskCompletionHander)completionHandler;
 

@@ -21,7 +21,7 @@ typedef enum : NSUInteger {
     HHNetworkTaskErrorNoMoreData = 106
 } HHNetworkTaskError;
 
-static NSError *HHError(NSString *domain, int code) {
+static NSError *HHError(NSString *domain, NSInteger code) {
     return [NSError errorWithDomain:domain code:code userInfo:nil];
 }
 
@@ -30,4 +30,6 @@ static NSString *HHNetworkErrorNotice = @"当前网络差, 请检查网络设置
 static NSString *HHTimeoutErrorNotice = @"请求超时了~";
 static NSString *HHDefaultErrorNotice = @"请求失败了~";
 static NSString *HHNoMoreDataErrorNotice = @"没有更多了~";
+
+typedef void(^HHNetworkTaskCompletionHander)(NSError *error,NSDictionary *result);
 #endif 

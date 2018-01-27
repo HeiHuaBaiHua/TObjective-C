@@ -18,6 +18,7 @@
 #import "CTMediator+Compose.h"
 #import "CTMediator+Profile.h"
 
+#import "HHWeiboTCPAPIManager.h"
 @interface HHTabBarViewController ()
 
 @end
@@ -49,6 +50,12 @@
     
     UINavigationController *chatNavVC = [HHUIBuilder navigationControllerWithRootVC:[CTRouter tempViewControllerWithTitle:@"Chat" onClickHandler:^{
         [self showToastWithText:@"留个坑 明天写"];
+        
+        [[[HHWeiboTCPAPIManager new] publicWeiboListSignalWithPage:0 pageSize:20] subscribeNext:^(id x) {
+            NSLog(@"xxx: %@", x);
+        } error:^(NSError *error) {
+            NSLog(@"xxx: %@", error);
+        }];
     }]];
     
     UINavigationController *composeNavVC = [HHUIBuilder navigationControllerWithRootVC:[CTRouter tempViewControllerWithTitle:@"Compose" onClickHandler:^{

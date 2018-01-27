@@ -74,7 +74,7 @@
 - (NSURLSessionDataTask *)dataTaskWithConfiguration:(HHDataTaskConfiguration *)config completionHandler:(HHNetworkTaskCompletionHander)completionHandler {
     
     return [[HHNetworkClient sharedInstance] dataTaskWithUrlPath:config.urlPath requestType:config.requestType params:config.requestParameters header:config.requestHeader completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
-        completionHandler ? completionHandler([self formatError:error], responseObject) : nil;
+        !completionHandler ?: completionHandler([self formatError:error], responseObject);
     }];
 }
 
@@ -111,12 +111,16 @@
                 if ([result count] == 0) {
                     
                     NSInteger page = [config.requestParameters[@"page"] integerValue];
-                    formatError = HHError(HHNoDataErrorNotice, page == 1 ? HHNetworkTaskErrorNoData : HHNetworkTaskErrorNoMoreData);
+                    if (page == 0) {
+                        formatError = HHError(HHNoDataErrorNotice, HHNetworkTaskErrorNoData);
+                    } else {
+                        formatError = HHError(HHNoMoreDataErrorNotice, HHNetworkTaskErrorNoMoreData);
+                    }
                 }
             }
         }
         
-        completionHandler ? completionHandler(formatError, result) : nil;
+        !completionHandler ?: completionHandler(formatError, result);
     }];
     [self.loadingTaskIdentifies addObject:taskIdentifier];
     return taskIdentifier;
@@ -137,7 +141,7 @@
                 formatError = HHError(responseObject[@"msg"] ?: HHDefaultErrorNotice, code);
             }
         }
-        completionHandler ? completionHandler(formatError, responseObject) : nil;
+        !completionHandler ?: completionHandler(formatError, responseObject);
     }];
     [self.loadingTaskIdentifies addObject:taskIdentifier];
     return taskIdentifier;

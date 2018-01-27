@@ -11,12 +11,13 @@
 #import "AppDelegate+Initialize.h"
 
 #import "HHSocketClient.h"
+#import "HHTCPSocketClient.h"
 @implementation AppDelegate (Initialize)
 
 - (void)initializeWithLaunchOptions:(NSDictionary *)launchOptions {
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self setupDatabase];
+//        [self setupDatabase];
         [self setupSocket];
     });
 }
@@ -28,7 +29,8 @@
 }
 
 - (void)setupSocket {
-    [[HHSocketClient sharedClient] connect];
+//    [[HHSocketClient sharedClient] connect];
+    [[HHTCPSocketClient sharedInstance] connect];
 }
 
 @end
