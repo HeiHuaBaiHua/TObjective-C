@@ -19,8 +19,8 @@
 
 @interface HHService ()<HHService>
 
-@property (assign, nonatomic) HHServiceType type;
-@property (assign, nonatomic) HHServiceEnvironment environment;
+@property (nonatomic, assign) HHServiceType type;
+@property (nonatomic, assign) HHServiceEnvironment environment;
 
 @end
 
@@ -36,6 +36,10 @@
 @implementation HHService
 
 #pragma mark - Interface
+
++ (HHService *)defaultService {
+    return [self serviceWithType:0];
+}
 
 + (HHService *)serviceWithType:(HHServiceType)type {
     
@@ -66,11 +70,11 @@
 @implementation HHServiceX
 
 - (NSString *)testEnvironmentBaseUrl {
-    return @"http://localhost:9876";
+    return @"http://localhost:12345";
 }
 
 - (NSString *)developEnvironmentBaseUrl {
-    return @"http://localhost:9876";
+    return @"http://localhost:12345";
 }
 
 - (NSString *)releaseEnvironmentBaseUrl {

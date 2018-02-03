@@ -7,16 +7,18 @@
 //
 
 #import <MagicalRecord/MagicalRecord.h>
+#import <RealReachability/RealReachability.h>
 
 #import "AppDelegate+Initialize.h"
 
-#import "HHSocketClient.h"
+#import "HHWebSocketClient.h"
 #import "HHTCPSocketClient.h"
 @implementation AppDelegate (Initialize)
 
 - (void)initializeWithLaunchOptions:(NSDictionary *)launchOptions {
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    [self startNetworkMonitor];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 //        [self setupDatabase];
         [self setupSocket];
     });
@@ -29,8 +31,14 @@
 }
 
 - (void)setupSocket {
-//    [[HHSocketClient sharedClient] connect];
+    
+    [[HHWebSocketClient sharedInstance] connect];
     [[HHTCPSocketClient sharedInstance] connect];
+}
+
+- (void)startNetworkMonitor {
+    GLobalRealReachability.hostForPing = @"www.baidu.com";
+    [GLobalRealReachability startNotifier];
 }
 
 @end

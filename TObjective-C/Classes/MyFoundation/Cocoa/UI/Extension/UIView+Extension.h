@@ -22,14 +22,14 @@
 
 @interface UIView (Extension)
 
-@property (assign, nonatomic) CGFloat originX;
-@property (assign, nonatomic) CGFloat originY;
-@property (assign, nonatomic) CGFloat centerX;
-@property (assign, nonatomic) CGFloat centerY;
-@property (assign, nonatomic) CGFloat width;
-@property (assign, nonatomic) CGFloat height;
-@property (assign, nonatomic) CGPoint origin;
-@property (assign, nonatomic) CGSize size;
+@property (nonatomic, assign) CGFloat originX;
+@property (nonatomic, assign) CGFloat originY;
+@property (nonatomic, assign) CGFloat centerX;
+@property (nonatomic, assign) CGFloat centerY;
+@property (nonatomic, assign) CGFloat width;
+@property (nonatomic, assign) CGFloat height;
+@property (nonatomic, assign) CGPoint origin;
+@property (nonatomic, assign) CGSize size;
 
 @property (assign, nonatomic, readonly) CGFloat left;
 @property (assign, nonatomic, readonly) CGFloat right;

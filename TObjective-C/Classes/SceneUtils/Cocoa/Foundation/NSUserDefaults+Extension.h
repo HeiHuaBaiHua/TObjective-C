@@ -14,4 +14,5 @@
 
 @property (nonatomic, copy) NSString *token;
 
+@property (nonatomic, copy) NSString *tcpSessionId;
 @end

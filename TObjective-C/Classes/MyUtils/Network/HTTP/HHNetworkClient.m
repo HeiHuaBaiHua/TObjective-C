@@ -13,8 +13,8 @@
 
 @interface HHNetworkClient ()
 
-@property (strong, nonatomic) AFHTTPSessionManager *sessionManager;
-@property (strong, nonatomic) NSMutableDictionary<NSNumber *, NSURLSessionTask *> *dispathTable;
+@property (nonatomic, strong) AFHTTPSessionManager *sessionManager;
+@property (nonatomic, strong) NSMutableDictionary<NSNumber *, NSURLSessionTask *> *dispathTable;
 
 @end
 
@@ -61,16 +61,17 @@ static dispatch_semaphore_t lock;
     
     NSString *method = (requestType == HHNetworkRequestTypeGET ? @"GET" : @"POST");
     NSMutableURLRequest *request = [[HHURLRequestGenerator sharedInstance] generateRequestWithUrlPath:urlPath method:method params:params header:header];
-    NSMutableArray *taskIdentifier = [NSMutableArray arrayWithObject:@-1];
+    
+    __block NSNumber *taskIdentifier;
     NSURLSessionDataTask *task = [self.sessionManager dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
         
         dispatch_semaphore_wait(lock, DISPATCH_TIME_FOREVER);
-        [self.dispathTable removeObjectForKey:taskIdentifier.firstObject];
+        [self.dispathTable removeObjectForKey:taskIdentifier];
         dispatch_semaphore_signal(lock);
         
         !completionHandler ?: completionHandler(response, responseObject, error);
     }];
-    taskIdentifier[0] = @(task.taskIdentifier);
+    taskIdentifier = @(task.taskIdentifier);
     return task;
 }
 
@@ -80,12 +81,12 @@ static dispatch_semaphore_t lock;
 }
 
 - (NSNumber *)dispatchTask:(NSURLSessionDataTask *)task {
-    
     if (task == nil) { return @-1; }
     
     dispatch_semaphore_wait(lock, DISPATCH_TIME_FOREVER);
     [self.dispathTable setObject:task forKey:@(task.taskIdentifier)];
     dispatch_semaphore_signal(lock);
+    
     [task resume];
     return @(task.taskIdentifier);
 }

@@ -34,30 +34,26 @@
 - (RACSignal *)publicWeiboListSignalWithPage:(int)page pageSize:(int)pageSize {
     
     HHDataTaskConfiguration *config = [HHDataTaskConfiguration new];
-    config.urlPath = @"/statuses/home_timeline.json";
+    config.urlPath = @"/weibo/public.json";
     config.requestParameters = @{@"page": @(page),
                                  @"count": @(pageSize)};
 
-    config.deserializePath = @"statuses";
+    config.deserializePath = @"data";
     config.deserializeClass = [HHWeibo class];
     return [self dataSignalWithConfig:config];
-    
-//    return [self cachedWeiboListSignalWithPage:page];
 }
 
 /** TODO: 我关注的用户发布的微博列表 */
 - (RACSignal *)followedWeiboListSignalWithPage:(int)page pageSize:(int)pageSize {
     
     HHDataTaskConfiguration *config = [HHDataTaskConfiguration new];
-    config.urlPath = @"/statuses/home_timeline.json";
+    config.urlPath = @"/weibo/followed.json";
     config.requestParameters = @{@"page": @(page),
                                  @"count": @(pageSize)};
     
     config.deserializePath = @"data";
     config.deserializeClass = [HHWeibo class];
     return [self dataSignalWithConfig:config];
-    
-    return [self cachedWeiboListSignalWithPage:page];
 }
 
 /** TODO: 某条微博的转发列表 */
@@ -110,7 +106,7 @@
 }
 
 /** TODO: 给某条微博点赞/取消赞 */
-- (RACSignal *)switchLikeStatusSignalWithWeiboID:(NSString *)ID {
+- (RACSignal *)switchLikeStatusSignalWithWeiboID:(NSString *)ID isLike:(BOOL)isLike{
     
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

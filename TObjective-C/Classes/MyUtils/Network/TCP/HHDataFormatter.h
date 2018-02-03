@@ -10,40 +10,34 @@
 
 @interface HHDataFormatter : NSObject
 
-+ (int)msgTypeFromData:(NSData *)data;/**< msgType的NSData转换成int */
-+ (NSData *)msgTypeDataFromInteger:(int)integer;/**< msgType的int转换成NSData */
++ (uint32_t)msgTypeFromData:(NSData *)data;/**< msgType的NSData转换成uint32_t */
++ (NSData *)msgTypeDataFromInteger:(uint32_t)integer;/**< msgType的uint32_t转换成NSData */
 
-+ (int)msgContentLengthFromData:(NSData *)data;/**< msgLength的NSData转换成int */
-+ (NSData *)msgContentLengthDataFromInteger:(int)integer;/**< msgLength的int转换成NSData */
++ (uint32_t)msgVersionFromData:(NSData *)data;/**< msgVersion的NSData转换成uint32_t */
++ (NSData *)msgVersionDataFromInteger:(uint32_t)integer;/**< msgVersion的uint32_t转换成NSData */
 
-+ (int)msgSerialNumberFromData:(NSData *)data;/**< msgSerialNumber的NSData转换成int */
-+ (NSData *)msgSerialNumberDataFromInteger:(int)integer;/**< msgSerialNumber的int转换成NSData */
++ (uint32_t)msgContentLengthFromData:(NSData *)data;/**< msgLength的NSData转换成uint32_t */
++ (NSData *)msgContentLengthDataFromInteger:(uint32_t)integer;/**< msgLength的uint32_t转换成NSData */
 
-+ (int)msgResponseCodeFromData:(NSData *)data;/**< msgResponseCode的NSData转换成int */
-+ (NSData *)msgResponseCodeDataFromInteger:(int)integer;/**< msgResponseCode的int转换成NSData */
++ (uint32_t)msgSerialNumberFromData:(NSData *)data;/**< msgSerialNumber的NSData转换成uint32_t */
++ (NSData *)msgSerialNumberDataFromInteger:(uint32_t)integer;/**< msgSerialNumber的uint32_t转换成NSData */
 
-+ (NSData *)adler32ToDataWithProtoBuffByte:(Byte *)buffByte length:(int)length;/**< adler32验证值转换成NSData */
++ (uint32_t)msgResponseCodeFromData:(NSData *)data;/**< msgResponseCode的NSData转换成int */
++ (NSData *)msgResponseCodeDataFromInteger:(uint32_t)integer;/**< msgResponseCode的int转换成NSData */
+
++ (NSData *)adler32ToDataWithProtoBuffByte:(Byte *)buffByte length:(uint32_t)length;/**< adler32验证值转换成NSData */
 
 @end
 
-@interface HHTCPSocketResponseFormatter : NSObject
+@interface HHTCPSocketResponseParser : NSObject
 
-+ (instancetype)formatterWithResponseData:(NSData *)data;
-
-+ (int)responseTypeFromData:(NSData *)data;
-+ (int)responseCodeFromData:(NSData *)data;
-+ (int)responseTypeTailFromData:(NSData *)data;
-+ (int)responseSerialNumberFromData:(NSData *)data;
-+ (int)responseContentLengthFromData:(NSData *)data;
++ (uint32_t)responseHeaderLength;
++ (uint32_t)responseURLFromData:(NSData *)data;
++ (uint32_t)responseCodeFromData:(NSData *)data;
++ (uint32_t)responseTypeTailFromData:(NSData *)data;
++ (uint32_t)responseSerialNumberFromData:(NSData *)data;
++ (uint32_t)responseContentLengthFromData:(NSData *)data;
 + (NSData *)responseAdlerFromData:(NSData *)data;
 + (NSData *)responseContentFromData:(NSData *)data;
-
-- (int)responseType;
-- (int)responseCode;
-- (int)responseTypeTail;
-- (int)responseSerialNumber;
-- (int)responseContentLength;
-- (NSData *)responseAdler;
-- (NSData *)responseContent;
 
 @end

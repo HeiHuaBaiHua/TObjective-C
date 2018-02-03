@@ -38,7 +38,7 @@
 
 @interface HHAPIManager ()
 
-@property (strong, nonatomic) NSMutableArray<NSNumber *> *loadingTaskIdentifies;
+@property (nonatomic, strong) NSMutableArray<NSNumber *> *loadingTaskIdentifies;
 
 @end
 

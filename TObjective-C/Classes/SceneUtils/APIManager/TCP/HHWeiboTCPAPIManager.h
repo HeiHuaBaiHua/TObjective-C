@@ -17,4 +17,9 @@
 /** TODO: 最新发布的微博列表 */
 - (RACSignal *)publicWeiboListSignalWithPage:(int)page pageSize:(int)pageSize;
 
+/** TODO: 我关注的用户发布的微博列表 */
+- (RACSignal *)followedWeiboListSignalWithPage:(int)page pageSize:(int)pageSize;
+
+/** TODO: 给某条微博点赞/取消赞 */
+- (RACSignal *)switchLikeStatusSignalWithWeiboID:(NSString *)ID isLike:(BOOL)isLike;
 @end

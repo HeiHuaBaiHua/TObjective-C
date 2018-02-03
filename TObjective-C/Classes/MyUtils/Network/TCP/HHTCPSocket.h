@@ -8,13 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-#import "HHTCPSocketConfig.h"
+#import "HHTCPSocketService.h"
 
 @class HHTCPSocket;
 @protocol HHTCPSocketDelegate <NSObject>
 
-- (void)socketCanNotConnectToService:(HHTCPSocket *)sock;
+@optional
 - (void)socket:(HHTCPSocket *)sock didConnectToHost:(NSString *)host port:(uint16_t)port;
+
+- (void)socketCanNotConnectToService:(HHTCPSocket *)sock;
 - (void)socketDidDisconnect:(HHTCPSocket *)sock error:(NSError *)error;
 
 - (void)socket:(HHTCPSocket *)sock didReadData:(NSData *)data;
@@ -23,15 +25,15 @@
 
 @interface HHTCPSocket : NSObject
 
-+ (instancetype)socketWithDelegate:(id<HHTCPSocketDelegate>)delegate;
-+ (instancetype)socketWithDelegate:(id<HHTCPSocketDelegate>)delegate delegateQueue:(dispatch_queue_t)delegateQueue;
+@property (nonatomic, weak) id<HHTCPSocketDelegate> delegate;
+@property (nonatomic, assign) NSUInteger maxRetryTime;
 
-- (BOOL)isConnectd;
+- (instancetype)initWithService:(HHTCPSocketService *)service;
 
 - (void)close;
 - (void)connect;
-- (void)disconnect;
-- (void)connectWithRetryTime:(NSUInteger)retryTime;
+- (void)reconnect;
+- (BOOL)isConnected;
 
 - (void)writeData:(NSData *)data;
 

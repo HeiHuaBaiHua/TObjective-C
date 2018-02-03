@@ -12,6 +12,9 @@
 #import "HHWeiboCellInfoViewModel.h"
 
 #import "HHWeiboAPIManager.h"
+#import "HHWeiboTCPAPIManager.h"
+
+#import "HHAPIManger_JustForDemo.h"
 @interface HHWeiboCellInfoViewModel ()
 
 @property (nonatomic, strong) HHWeibo *rawValue;
@@ -58,8 +61,10 @@
         _likeCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
             @strongify(self);
             
+            id apiManager = [HHAPIManger_JustForDemo weiboAPIManger];
+//            HHWeiboAPIManager *apiManger = [HHWeiboAPIManager new];
             [self switchLikesStatus];
-            return [[[HHWeiboAPIManager new] switchLikeStatusSignalWithWeiboID:@""] doError:^(NSError *error) {
+            return [[apiManager switchLikeStatusSignalWithWeiboID:self.rawValue.ID isLike:self.isLiked] doError:^(NSError *error) {
                 [self switchLikesStatus];
             }];
         }];

@@ -13,7 +13,7 @@
 - (RACSignal *)dataSignalWithConfig:(HHDataTaskConfiguration *)config {
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         
-        __block NSNumber *taskIdentifier = [self dispatchDataTaskWithConfiguration:config completionHandler:^(NSError *error, id result) {
+        NSNumber *taskIdentifier = [self dispatchDataTaskWithConfiguration:config completionHandler:^(NSError *error, id result) {
             if (error) {
                 [subscriber sendError:error];
             } else {
@@ -30,7 +30,7 @@
 - (RACSignal *)uploadSignalWithConfig:(HHUploadTaskConfiguration *)config {
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         
-        __block NSNumber *taskIdentifier = [self dispatchUploadTaskWithConfiguration:config progressHandler:^(CGFloat progress) {
+        NSNumber *taskIdentifier = [self dispatchUploadTaskWithConfiguration:config progressHandler:^(CGFloat progress) {
             [subscriber sendNext:RACTuplePack(@(progress), nil)];
         } completionHandler:^(NSError *error, id result) {
             

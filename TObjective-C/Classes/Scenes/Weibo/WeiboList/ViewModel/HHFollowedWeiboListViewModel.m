@@ -10,14 +10,20 @@
 #import "HHWeiboCellViewModel.h"
 
 #import "HHWeiboAPIManager.h"
-static const int pageSize = 20;
+#import "HHWeiboTCPAPIManager.h"
 
+#import "HHAPIManger_JustForDemo.h"
+
+static const int pageSize = 20;
 @implementation HHFollowedWeiboListViewModel
 
 #pragma mark - Override
 
 - (RACSignal *)fetchDataSignalWithPage:(int)page {
-    return [[[HHWeiboAPIManager new] followedWeiboListSignalWithPage:page pageSize:pageSize] map:^id(NSArray *weibos) {
+    
+    id apiManager = [HHAPIManger_JustForDemo weiboAPIManger];
+//    HHWeiboAPIManager *apiManger = [HHWeiboAPIManager new];
+    return [[apiManager followedWeiboListSignalWithPage:page pageSize:pageSize] map:^id(NSArray *weibos) {
         
         return [weibos.rac_sequence map:^id(HHWeibo *weibo) {
             return [[HHWeiboCellViewModel alloc] initWithObject:weibo];

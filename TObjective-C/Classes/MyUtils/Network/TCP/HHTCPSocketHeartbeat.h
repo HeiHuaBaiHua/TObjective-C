@@ -13,8 +13,7 @@
 + (instancetype)heartbeatWithClient:(id)client timeoutHandler:(void(^)(void))timeoutHandler;
 
 - (void)stop;
-- (void)start;
 - (void)reset;
-- (void)respondToServerWithSerialNum:(int)serialNum;
+- (void)handleServerAckNum:(uint32_t)ackNum;
 
 @end

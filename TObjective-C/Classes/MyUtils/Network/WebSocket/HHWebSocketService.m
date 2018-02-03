@@ -1,14 +1,14 @@
 //
-//  HHSocketService.m
+//  HHWebSocketService.m
 //  TObjective-C
 //
 //  Created by HeiHuaBaiHua on 2017/11/10.
 //  Copyright © 2017年 HeiHuaBaiHua. All rights reserved.
 //
 
-#import "HHSocketService.h"
+#import "HHWebSocketService.h"
 
-@protocol HHSocketService <NSObject>
+@protocol HHWebSocketService <NSObject>
 
 @optional
 - (NSString *)testEnvironmentUrl;
@@ -17,33 +17,37 @@
 
 @end
 
-@interface HHSocketService ()<HHSocketService>
+@interface HHWebSocketService ()<HHWebSocketService>
 
-@property (assign, nonatomic) HHServiceType type;
-@property (assign, nonatomic) HHServiceEnvironment environment;
+@property (nonatomic, assign) HHServiceType type;
+@property (nonatomic, assign) HHServiceEnvironment environment;
 
 @end
 
-@interface HHSocketServiceX : HHSocketService
+@interface HHWebSocketServiceX : HHWebSocketService
 @end
 
-@interface HHSocketServiceY : HHSocketService
+@interface HHWebSocketServiceY : HHWebSocketService
 @end
 
-@interface HHSocketServiceZ : HHSocketService
+@interface HHWebSocketServiceZ : HHWebSocketService
 @end
 
-@implementation HHSocketService
+@implementation HHWebSocketService
 
 #pragma mark - Interface
 
-+ (HHSocketService *)serviceWithType:(HHServiceType)type {
++ (HHWebSocketService *)defaultService {
+    return [self serviceWithType:0];
+}
+
++ (HHWebSocketService *)serviceWithType:(HHServiceType)type {
     
-    HHSocketService *service;
+    HHWebSocketService *service;
     switch (type) {
-        case HHService0: service = [HHSocketServiceX new];  break;
-        case HHService1: service = [HHSocketServiceY new];  break;
-        case HHService2: service = [HHSocketServiceZ new];  break;
+        case HHService0: service = [HHWebSocketServiceX new];  break;
+        case HHService1: service = [HHWebSocketServiceY new];  break;
+        case HHService2: service = [HHWebSocketServiceZ new];  break;
     }
     service.type = type;
     service.environment = BulidServiceEnvironment;
@@ -61,27 +65,27 @@
 
 @end
 
-#pragma mark - HHSocketServiceX
+#pragma mark - HHWebSocketServiceX
 
-@implementation HHSocketServiceX
+@implementation HHWebSocketServiceX
 
 - (NSString *)testEnvironmentUrl {
-    return @"ws://127.0.0.1:8888/ws";
+    return @"ws://localhost:34567/ws";
 }
 
 - (NSString *)developEnvironmentUrl {
-    return @"ws://127.0.0.1:8888/ws";
+    return @"ws://localhost:34567/ws";
 }
 
 - (NSString *)releaseEnvironmentUrl {
-    return @"ws://127.0.0.1:8888/ws";
+    return @"ws://localhost:34567/ws";
 }
 
 @end
 
-#pragma mark - HHSocketServiceY
+#pragma mark - HHWebSocketServiceY
 
-@implementation HHSocketServiceY
+@implementation HHWebSocketServiceY
 
 - (NSString *)testEnvironmentUrl {
     return @"testEnvironmentUrl_Y";
@@ -97,9 +101,9 @@
 
 @end
 
-#pragma mark - HHSocketServiceZ
+#pragma mark - HHWebSocketServiceZ
 
-@implementation HHSocketServiceZ
+@implementation HHWebSocketServiceZ
 
 - (NSString *)testEnvironmentUrl {
     return @"testEnvironmentUrl_Z";

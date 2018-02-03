@@ -11,7 +11,7 @@
 #import "HHWeiboListBinder.h"
 #import "HHWeiboTableBinder.h"
 @interface HHWeiboListBinder ()<HHSegmentViewDelegate, HHSegmentViewDataSource>
-/** 协议还是.h 在runtime的加持下区别极小 都只是接口声明 随意选择 */
+
 @property (nonatomic, strong) UIView<HHWeiboListViewProtocol> *view;
 @property (nonatomic, strong) id<HHWeiboListViewModelProtocol> viewModel;
 

@@ -13,9 +13,9 @@
 
 @interface HHTCPRequestConfiguration : NSObject
 
-@property (assign, nonatomic) HHTCPSocketRequestURL url;
-@property (strong, nonatomic) NSDictionary *requestParameters;
-@property (strong, nonatomic) NSDictionary *requestHeader;
+@property (nonatomic, assign) HHTCPSocketRequestURL url;
+@property (nonatomic, strong) NSDictionary *requestParameters;
+@property (nonatomic, strong) NSDictionary *requestHeader;
 @end
 
 @interface HHTCPTaskConfiguration : HHTCPRequestConfiguration
@@ -27,7 +27,7 @@
 
 @interface HHTCPDataTaskConfiguration : HHTCPTaskConfiguration
 
-@property (assign, nonatomic) NSTimeInterval cacheValidTimeInterval;
+@property (nonatomic, assign) NSTimeInterval cacheValidTimeInterval;
 
 @end
 

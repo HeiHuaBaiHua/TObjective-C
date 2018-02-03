@@ -13,9 +13,8 @@
 #import "HHWeiboListBinder.h"
 #import "HHWeiboListViewModel.h"
 
-/** 实际开发中 view/ViewModel/binder都是通过Builder生成的 这样使用者只用关注viewProtocol/ViewModelProtocol/binderProtocol或.h的接口声明 而不必关注具体实现 */
 @interface HHWeiboListViewController ()
-/** 这个HHWeiboListBinder其实就是HHWeiboListViewController本身 */
+
 @property (nonatomic, strong) HHWeiboListBinder *binder;
 
 @end

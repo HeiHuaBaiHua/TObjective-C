@@ -24,14 +24,13 @@
 
 @interface HHTCPSocketAPIManager ()
 
-@property (strong, nonatomic) NSMutableArray<NSNumber *> *loadingTaskIdentifies;
+@property (nonatomic, strong) NSMutableArray<NSNumber *> *loadingTaskIdentifies;
 
 @end
 
 @implementation HHTCPSocketAPIManager
 - (instancetype)init {
     if (self = [super init]) {
-        
         self.loadingTaskIdentifies = [NSMutableArray array];
     }
     return self;
@@ -59,20 +58,18 @@
 
 - (NSNumber *)dispatchDataTaskWithConfiguration:(HHTCPDataTaskConfiguration *)config completionHandler:(HHNetworkTaskCompletionHander)completionHandler{
     
-    //    [HHTCPSocketRequest requestWithURL:config.url message:config.message header:config.requestHeader];
     HHTCPSocketRequest *request = [HHTCPSocketRequest requestWithURL:config.url parameters:config.requestParameters header:config.requestHeader];
     NSNumber *taskIdentifier = [[HHTCPSocketClient sharedInstance] dispatchDataTaskWithRequest:request completionHandler:^(NSError *error, id result) {
         
-        NSError *formatError = [self formatError:error];
-        if (formatError == nil) {/** 通用错误格式化 */
+        if (error == nil) {
             
             int code = [result[@"code"] intValue];
             if (code != HHNetworkTaskSuccess) {
-                formatError = HHError(result[@"msg"] ?: HHDefaultErrorNotice, code);
+                error = HHError(result[@"msg"] ?: HHDefaultErrorNotice, code);
             }
         }
         
-        if (formatError == nil && config.deserializeClass != nil) {/** 通用json解析 */
+        if (error == nil && config.deserializeClass != nil) {/** 通用json解析 */
             
             NSDictionary *json = result;
             if (config.deserializePath.length > 0) {
@@ -83,7 +80,7 @@
                 if (json.count > 0) {
                     result = [config.deserializeClass yy_modelWithJSON:json];
                 } else {
-                    formatError = HHError(HHNoDataErrorNotice, HHNetworkTaskErrorNoData);
+                    error = HHError(HHNoDataErrorNotice, HHNetworkTaskErrorNoData);
                 }
             } else if ([json isKindOfClass:[NSArray class]]) {
                 
@@ -92,39 +89,18 @@
                     
                     NSInteger page = [config.requestParameters[@"page"] integerValue];
                     if (page == 0) {
-                        formatError = HHError(HHNoDataErrorNotice, HHNetworkTaskErrorNoData);
+                        error = HHError(HHNoDataErrorNotice, HHNetworkTaskErrorNoData);
                     } else {
-                        formatError = HHError(HHNoMoreDataErrorNotice, HHNetworkTaskErrorNoMoreData);
+                        error = HHError(HHNoMoreDataErrorNotice, HHNetworkTaskErrorNoMoreData);
                     }
                 }
             }
         }
         
-        !completionHandler ?: completionHandler(formatError, result);
+        !completionHandler ?: completionHandler(error, result);
     }];
     [self.loadingTaskIdentifies addObject:taskIdentifier];
     return taskIdentifier;
-}
-
-#pragma mark - Utils
-
-- (NSError *)formatError:(NSError *)error {
-    
-    if (error != nil) {
-        switch (error.code) {
-            case NSURLErrorTimedOut: return HHError(HHTimeoutErrorNotice, HHNetworkTaskErrorTimeOut);
-            case NSURLErrorCancelled: return HHError(HHDefaultErrorNotice, HHNetworkTaskErrorCanceled);
-                
-            case NSURLErrorCannotFindHost:
-            case NSURLErrorCannotConnectToHost:
-            case NSURLErrorNotConnectedToInternet: {
-                return HHError(HHNetworkErrorNotice, HHNetworkTaskErrorCannotConnectedToInternet);
-            }
-                
-            default: return HHError(HHDefaultErrorNotice, HHNetworkTaskErrorDefault);
-        }
-    }
-    return error;
 }
 
 @end

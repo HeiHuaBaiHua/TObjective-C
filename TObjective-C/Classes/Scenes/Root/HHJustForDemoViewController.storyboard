@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Just For Demo View Controller-->
+        <scene sceneID="jvM-jN-ese">
+            <objects>
+                <viewController storyboardIdentifier="HHJustForDemoViewController" id="04g-bs-zpl" customClass="HHJustForDemoViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="gNs-OC-Y0J"/>
+                        <viewControllerLayoutGuide type="bottom" id="aC5-ak-ZJg"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="nrz-iX-2zB">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o2e-TH-B1a">
+                                <rect key="frame" x="157.5" y="260" width="60" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="S4J-gr-nCu"/>
+                                    <constraint firstAttribute="width" constant="60" id="r4G-D8-sO0"/>
+                                </constraints>
+                                <state key="normal" title="TCP">
+                                    <color key="titleColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="pushToTargetVC:" destination="04g-bs-zpl" eventType="touchUpInside" id="djS-pv-lNG"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SzJ-Kz-MBz">
+                                <rect key="frame" x="157.5" y="313.5" width="60" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="9FL-iD-SHg"/>
+                                    <constraint firstAttribute="height" constant="40" id="vYa-Xk-tJf"/>
+                                </constraints>
+                                <state key="normal" title="HTTP">
+                                    <color key="titleColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="pushToTargetVC:" destination="04g-bs-zpl" eventType="touchUpInside" id="7t7-pA-lA0"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Upp-sb-oA0">
+                                <rect key="frame" x="127.5" y="380" width="120" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="4sw-fx-LOu"/>
+                                    <constraint firstAttribute="width" constant="120" id="t3r-VU-cXb"/>
+                                </constraints>
+                                <state key="normal" title="WebSocket">
+                                    <color key="titleColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="pushToTargetVC:" destination="04g-bs-zpl" eventType="touchUpInside" id="Vm4-zo-gES"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Upp-sb-oA0" firstAttribute="top" secondItem="SzJ-Kz-MBz" secondAttribute="bottom" constant="26.5" id="2Rx-3W-sJQ"/>
+                            <constraint firstItem="Upp-sb-oA0" firstAttribute="centerX" secondItem="nrz-iX-2zB" secondAttribute="centerX" id="95d-86-kcM"/>
+                            <constraint firstItem="SzJ-Kz-MBz" firstAttribute="centerY" secondItem="nrz-iX-2zB" secondAttribute="centerY" id="GbN-qV-z4e"/>
+                            <constraint firstItem="SzJ-Kz-MBz" firstAttribute="centerX" secondItem="nrz-iX-2zB" secondAttribute="centerX" id="LrK-WE-F8k"/>
+                            <constraint firstItem="o2e-TH-B1a" firstAttribute="centerX" secondItem="nrz-iX-2zB" secondAttribute="centerX" id="PwF-W3-0ta"/>
+                            <constraint firstItem="SzJ-Kz-MBz" firstAttribute="top" secondItem="o2e-TH-B1a" secondAttribute="bottom" constant="23.5" id="bdq-uI-x6F"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2dP-CX-SIQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="296.80000000000001" y="-198.35082458770617"/>
+        </scene>
+    </scenes>
+</document>

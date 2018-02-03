@@ -15,7 +15,6 @@
 + (instancetype)sharedInstance;
 
 - (void)connect;
-- (void)disconncet;
 
 - (NSNumber *)dispatchDataTaskWithRequest:(HHTCPSocketRequest *)request completionHandler:(HHNetworkTaskCompletionHander)completionHandler;
 

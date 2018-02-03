@@ -10,7 +10,7 @@
 
 @interface HHNotifier ()
 
-@property (strong, nonatomic) NSHashTable *observers;
+@property (nonatomic, strong) NSHashTable *observers;
 
 @end
 

@@ -11,36 +11,35 @@
 #import "HHTCPSocketRequest.h"
 @interface HHTCPSocketRequest ()
 
-@property (strong, nonatomic) NSNumber *requestIdentifier;
-@property (strong, nonatomic) NSMutableData *formattedData;
+@property (nonatomic, strong) NSNumber *requestIdentifier;
+@property (nonatomic, strong) NSMutableData *formattedData;
 
 @end
 
-#define TimeoutInterval 8
-#define HHTCPSocketTaskInitialSerialNumber 50
 @implementation HHTCPSocketRequest
 
 - (instancetype)init {
     if (self = [super init]) {
-        
         self.formattedData = [NSMutableData data];
-        self.timeoutInterval = TimeoutInterval;
     }
     return self;
 }
 
-+ (int)currentRequestIdentifier {
++ (uint32_t)currentRequestIdentifier {
     
-    static int currentRequestIdentifier;
+    static uint32_t currentRequestIdentifier;
     static dispatch_semaphore_t lock;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         
-        currentRequestIdentifier = HHTCPSocketTaskInitialSerialNumber;
+        currentRequestIdentifier = TCP_max_notification;
         lock = dispatch_semaphore_create(1);
     });
     
     dispatch_semaphore_wait(lock, DISPATCH_TIME_FOREVER);
+    if (currentRequestIdentifier + 1 == 0xffffffff) {
+        currentRequestIdentifier = TCP_max_notification;
+    }
     currentRequestIdentifier += 1;
     dispatch_semaphore_signal(lock);
     
@@ -49,76 +48,64 @@
 
 #pragma mark - Interface(Public)
 
-+ (instancetype)heartbeatRequestWithAckNum:(int)ackNum {
-    
-    int messageType = HHTCPSocketRequestTypeHearbeat;
-    HHTCPSocketRequest *request = [HHTCPSocketRequest new];
-    request.requestIdentifier = @-1;
-    [request.formattedData appendData:[self.sessionId dataUsingEncoding:NSUTF8StringEncoding]];
-    [request.formattedData appendData:[HHDataFormatter msgTypeDataFromInteger:messageType]];/** 请求URL */
-    [request.formattedData appendData:[HHDataFormatter msgSerialNumberDataFromInteger:ackNum]];/** 请求序列号 */
-    
-    [request.formattedData appendData:[HHDataFormatter msgContentLengthDataFromInteger:0]];
-    return request;
-}
+//+ (instancetype)requestWithURL:(HHTCPSocketRequestURL)url parameters:(PBGeneratedMessage *)parameters header:(NSDictionary *)header {
+//
+//    uint32_t requestIdentifier = [self currentRequestIdentifier];
+//    uint32_t messageContentLength = (uint32_t)parameters.data.length;
+//    NSString *sessionId = header[@"sessionId"] ?: @"xxx";
+//
+//    HHTCPSocketRequest *request = [HHTCPSocketRequest new];
+//    request.requestIdentifier = @(requestIdentifier);
+//    [request.formattedData appendData:[sessionId dataUsingEncoding:NSUTF8StringEncoding]];
+//    [request.formattedData appendData:[HHDataFormatter msgTypeDataFromInteger:url]];/** 请求URL */
+//    [request.formattedData appendData:[HHDataFormatter msgVersionDataFromInteger:1]];/** 版本号 */
+//    [request.formattedData appendData:[HHDataFormatter msgSerialNumberDataFromInteger:requestIdentifier]];/** 请求序列号 */
+//    [request.formattedData appendData:[HHDataFormatter msgContentLengthDataFromInteger:messageContentLength]];/** 请求体长度 */
+//
+//    [request.formattedData appendData:parameters.data];/** 请求体 */
+//
+//    [request.formattedData appendData:[HHDataFormatter adler32ToDataWithProtoBuffByte:(Byte *)parameters.data.bytes length:messageContentLength]];/** 数据校验 */
+//    return request;
+//}
 
-+ (instancetype)requestWithURL:(HHTCPSocketRequestURL)url message:(PBGeneratedMessage *)message header:(NSDictionary *)header {
-    
-    int requestIdentifier = [self currentRequestIdentifier];
-    int messageLength = (int)message.data.length;
-    
-    HHTCPSocketRequest *request = [HHTCPSocketRequest new];
-    request.requestIdentifier = @(requestIdentifier);
-    [request.formattedData appendData:[self.sessionId dataUsingEncoding:NSUTF8StringEncoding]];
-    [request.formattedData appendData:[HHDataFormatter msgTypeDataFromInteger:url]];/** 请求URL */
-    [request.formattedData appendData:[HHDataFormatter msgSerialNumberDataFromInteger:requestIdentifier]];/** 请求序列号 */
-    [request.formattedData appendData:[HHDataFormatter msgContentLengthDataFromInteger:messageLength]];/** 请求体长度 */
-    
-    [request.formattedData appendData:message.data];/** 请求体 */
-    
-    [request.formattedData appendData:[HHDataFormatter adler32ToDataWithProtoBuffByte:(Byte *)message.data.bytes length:messageLength]];/** 数据校验 */
-    return request;
-}
-
-/** demo用简化版 json代替protobuf 无sessionId 无校验 */
+/** demo用简化版 json代替protobuf 无版本号 无sessionId 无校验 */
 + (instancetype)requestWithURL:(HHTCPSocketRequestURL)url parameters:(NSDictionary *)parameters header:(NSDictionary *)header {
     
-    int requestIdentifier = [self currentRequestIdentifier];
-    NSData *data = [parameters yy_modelToJSONData];
-    int contentLength = (int)data.length;
+    if (url == TCP_heatbeat) { return [self heartbeatRequestWithParameters:parameters]; }
+    
+    NSData *content = [parameters yy_modelToJSONData];
+    uint32_t requestIdentifier = [self currentRequestIdentifier];
     
     HHTCPSocketRequest *request = [HHTCPSocketRequest new];
     request.requestIdentifier = @(requestIdentifier);
     [request.formattedData appendData:[HHDataFormatter msgTypeDataFromInteger:url]];
     [request.formattedData appendData:[HHDataFormatter msgSerialNumberDataFromInteger:requestIdentifier]];
-    [request.formattedData appendData:[HHDataFormatter msgContentLengthDataFromInteger:contentLength]];
+    [request.formattedData appendData:[HHDataFormatter msgContentLengthDataFromInteger:(uint32_t)content.length]];
     
-    [request.formattedData appendData:data];
-    
-//    [request printData];
+    [request.formattedData appendData:content];
     return request;
 }
 
-- (void)printData {
++ (instancetype)heartbeatRequestWithParameters:(NSDictionary *)parameters {
+    uint32_t ackNum = (uint32_t)[parameters[@"ackNum"] integerValue];
     
-    NSData *data = [self.formattedData copy];
-    for (int i = 0 ; i < data.length; i++) {
-        printf("%d ", ((char *)data.bytes)[i]);
-    }
-    printf("\n");
+    HHTCPSocketRequest *request = [HHTCPSocketRequest new];
+    request.requestIdentifier = @(TCP_heatbeat);
+    [request.formattedData appendData:[HHDataFormatter msgTypeDataFromInteger:TCP_heatbeat]];
+    [request.formattedData appendData:[HHDataFormatter msgSerialNumberDataFromInteger:ackNum]];
+    [request.formattedData appendData:[HHDataFormatter msgContentLengthDataFromInteger:0]];
+    
+    return request;
 }
-
-#pragma mark - Interface(Friend)
 
 - (NSData *)requestData {
-    return self.formattedData;
+    return [self.formattedData copy];
 }
 
-#pragma mark - Utils
+#pragma mark - Getter
 
-+ (NSString *)sessionId {
-    NSString *sessionId = [[NSUserDefaults standardUserDefaults] objectForKey:kSocketSessionId];
-    return sessionId.length > 0 ? sessionId : @"xxx";
+- (NSUInteger)timeoutInterval {
+    return _timeoutInterval > 0 ? _timeoutInterval : 6;
 }
 
 @end

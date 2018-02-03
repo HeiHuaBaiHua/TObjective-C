@@ -25,13 +25,14 @@
 
 @interface HHTCPSocketTask ()
 
-@property (weak, nonatomic) id client;
-@property (strong, nonatomic) NSTimer *timer;
+@property (nonatomic, weak) id client;
+@property (nonatomic, strong) NSTimer *timer;
 
-@property (assign, nonatomic) HHTCPSocketTaskState state;
-@property (strong, nonatomic) HHTCPSocketRequest *request;
-@property (copy, nonatomic) HHNetworkTaskCompletionHander completionHandler;
+@property (nonatomic, assign) HHTCPSocketTaskState state;
+@property (nonatomic, strong) HHTCPSocketRequest *request;
+@property (nonatomic, copy) HHNetworkTaskCompletionHander completionHandler;
 
+@property (nonatomic, strong) HHTCPSocketTask *keeper;
 @end
 
 @implementation HHTCPSocketTask
@@ -43,62 +44,26 @@
     HHTCPSocketTask *task = [HHTCPSocketTask new];
     task.state = HHTCPSocketTaskStateSuspended;
     task.request = request;
-    if (completionHandler != nil) {
-        task.completionHandler = ^(NSError *error, id result) {
-            
-            completionHandler(error, result);
-            task.state = task.state >= HHTCPSocketTaskStateCanceled ? task.state : HHTCPSocketTaskStateCompleted;
-        };
-    }
+    task.completionHandler = completionHandler;
+    task.keeper = task;
     return task;
 }
 
-+ (NSError *)taskErrorWithResponeCode:(NSUInteger)code {
-    
-#define HHTaskErrorCase(responeCode, errorDomain) case responeCode: return HHError(errorDomain, code)
-    switch (code) {
-            
-            HHTaskErrorCase(HHNetworkTaskErrorDefault, HHDefaultErrorNotice);
-            HHTaskErrorCase(HHTCPSocketTaskErrorInvalidMsgLength, @"消息长度不合法");
-            HHTaskErrorCase(HHTCPSocketTaskErrorLostPacket, @"后台Adler验证消息失败(丢包)");
-            HHTaskErrorCase(HHTCPSocketTaskErrorInvalidMsgFormat, @"消息格式不合法");
-            HHTaskErrorCase(HHTCPSocketTaskErrorUndefinedMsgType, @"消息类型未找到");
-            HHTaskErrorCase(HHTCPSocketTaskErrorEncodeProtobuf, @"protobuf解析失败");
-            HHTaskErrorCase(HHTCPSocketTaskErrorDatabaseException, @"数据库操作异常");
-            HHTaskErrorCase(HHTCPSocketTaskErrorUnkonwn, @"未知错误");
-            HHTaskErrorCase(HHTCPSocketTaskErrorNoPermission, @"无权限");
-            HHTaskErrorCase(HHNetworkTaskErrorCannotConnectedToInternet, HHNetworkErrorNotice);
-            HHTaskErrorCase(HHTCPSocketTaskErrorLostConnection, @"长连接断开连接");
-            HHTaskErrorCase(HHNetworkTaskErrorTimeOut, HHTimeoutErrorNotice);
-            HHTaskErrorCase(HHNetworkTaskErrorCanceled, @"任务已取消");
-            HHTaskErrorCase(HHTCPSocketTaskErrorNoMatchAdler, @"前端Adler32验证失败");
-            HHTaskErrorCase(HHTCPSocketTaskErrorNoProtobuf, @"protobufBody为空");
-            HHTaskErrorCase(HHNetworkTaskErrorNoData, HHNoDataErrorNotice);
-            HHTaskErrorCase(HHNetworkTaskErrorNoMoreData, HHNoMoreDataErrorNotice);
-            
-        default: return nil;
-    }
-}
-
 - (void)cancel {
+    if (![self canResponse]) { return; }
     
-    if (self.state <= HHTCPSocketTaskStateRunning) {
-        
-        [self completeWithResult:nil error:[self taskErrorWithResponeCode:HHNetworkTaskErrorCanceled]];
-        self.state = HHTCPSocketTaskStateCanceled;
-    }
+    self.state = HHTCPSocketTaskStateCanceled;
+    [self completeWithResult:nil error:[self taskErrorWithResponeCode:HHNetworkTaskErrorCanceled]];
 }
 
 - (void)resume {
-
-    if (self.state == HHTCPSocketTaskStateSuspended) {
-     
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:self.request.timeoutInterval target:self selector:@selector(requestTimeout) userInfo:nil repeats:NO];
-        [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
-        
-        self.state = HHTCPSocketTaskStateRunning;
-        [self.client resumeTask:self];
-    }
+    if (self.state != HHTCPSocketTaskStateSuspended) { return; }
+    
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:self.request.timeoutInterval target:self selector:@selector(requestTimeout) userInfo:nil repeats:NO];
+    [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+    
+    self.state = HHTCPSocketTaskStateRunning;
+    [self.client resumeTask:self];
 }
 
 - (NSNumber *)taskIdentifier {
@@ -107,83 +72,99 @@
 
 #pragma mark - Interface(Friend)
 
-- (NSData *)taskData {
-    return self.request.requestData;
-}
-
 //- (void)completeWithResponseData:(NSData *)responseData error:(NSError *)error {
+//    if (![self canResponse]) { return; }
 //
-//    if (self.state <= HHTCPSocketTaskStateRunning) {
+//    NSData *responseContent;
+//    if (responseData == nil) {
+//        error = [self taskErrorWithResponeCode:HHTCPSocketResponseCodeUnkonwn];
+//    } else {
 //
-//        NSData *responseContent;
-//        if (responseData == nil) {
-//            error = [self taskErrorWithResponeCode:HHTCPSocketTaskErrorUnkonwn];
-//        } else {
+//        uint32_t responseCode = [HHTCPSocketResponseParser responseCodeFromData:responseData];
+//        uint32_t responseContentLength = [HHTCPSocketResponseParser responseContentLengthFromData:responseData];
+//        NSData *responseAdler = [HHTCPSocketResponseParser responseAdlerFromData:responseData];
 //
-//            int responseCode = [HHTCPSocketResponseFormatter responseCodeFromData:responseData];
-//            int responseContentLength = [HHTCPSocketResponseFormatter responseContentLengthFromData:responseData];
-//            NSData *responseAdler = [HHTCPSocketResponseFormatter responseAdlerFromData:responseData];
+//        responseContent = [HHTCPSocketResponseParser responseContentFromData:responseData];
+//        NSData *adler = [HHDataFormatter adler32ToDataWithProtoBuffByte:(Byte *)responseContent.bytes length:responseContentLength];
 //
-//            responseContent = [HHTCPSocketResponseFormatter responseContentFromData:responseData];
-//            NSData *adler = [HHDataFormatter adler32ToDataWithProtoBuffByte:(Byte *)responseContent.bytes length:responseContentLength];
-//
-//            error = [self taskErrorWithResponeCode:([responseAdler isEqual:adler] ? responseCode : HHTCPSocketTaskErrorNoMatchAdler)];
-//        }
-//        [self completeWithResult:responseContent error:error];
-//        error ? NSLog(@"socket请求失败: %ld %@",error.code, error.domain) : nil;
+//        error = [self taskErrorWithResponeCode:([responseAdler isEqual:adler] ? responseCode : HHTCPSocketResponseCodeNoMatchAdler)];
 //    }
+//    [self completeWithResult:responseContent error:error];
+//    error ? NSLog(@"socket请求失败: %ld %@",error.code, error.domain) : nil;
 //}
 
 - (void)completeWithResponseData:(NSData *)responseData error:(NSError *)error {
+    if (![self canResponse]) { return; }
     
-    if (self.state <= HHTCPSocketTaskStateRunning) {
+    NSDictionary *result;
+    if (responseData == nil) {
+        error = [self taskErrorWithResponeCode:HHTCPSocketResponseCodeUnkonwn];
+    } else {
         
-        NSDictionary *result;
-        if (responseData == nil) {
-            error = [self taskErrorWithResponeCode:HHTCPSocketTaskErrorUnkonwn];
-        } else {
-            
-            int responseCode = [HHTCPSocketResponseFormatter responseCodeFromData:responseData];
-            NSData *responseContent = [HHTCPSocketResponseFormatter responseContentFromData:responseData];
-            error = [self taskErrorWithResponeCode:(responseCode)];
-            result = [NSJSONSerialization JSONObjectWithData:responseContent options:0 error:nil];
-        }
-        [self completeWithResult:result error:error];
+        uint32_t responseCode = [HHTCPSocketResponseParser responseCodeFromData:responseData];
+        NSData *responseContent = [HHTCPSocketResponseParser responseContentFromData:responseData];
+        error = [self taskErrorWithResponeCode:responseCode];
+        result = [NSJSONSerialization JSONObjectWithData:responseContent options:0 error:nil];
     }
-}
-
-- (void)printData:(NSData *)data {
-    
-    for (int i = 0 ; i < data.length; i++) {
-        printf("%d ", ((char *)data.bytes)[i]);
-    }
-    printf("\n");
+    [self completeWithResult:result error:error];
 }
 
 #pragma mark - Action
 
 - (void)requestTimeout {
+    if (![self canResponse]) { return; }
     
-    if (self.state <= HHTCPSocketTaskStateRunning) {
-        NSLog(@"requestTimeout");
-        self.state = HHTCPSocketTaskStateCanceled;
-        [self completeWithResult:nil error:[self taskErrorWithResponeCode:HHNetworkTaskErrorTimeOut]];
-    }
+    self.state = HHTCPSocketTaskStateCompleted;
+    [self completeWithResult:nil error:[self taskErrorWithResponeCode:HHNetworkTaskErrorTimeOut]];
 }
 
 #pragma mark - Utils
 
 - (void)completeWithResult:(id)result error:(NSError *)error {
     
+    self.state = (self.state >= HHTCPSocketTaskStateCanceled ? self.state : HHTCPSocketTaskStateCompleted);
     [self.timer invalidate];
-    dispatch_async(dispatch_get_global_queue(2, 0), ^{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
         !self.completionHandler ?: self.completionHandler(error, result);
         self.completionHandler = nil;
+        self.keeper = nil;
     });
 }
 
-- (NSError *)taskErrorWithResponeCode:(int)code {
+- (NSError *)taskErrorWithResponeCode:(uint32_t)code {
     return [HHTCPSocketTask taskErrorWithResponeCode:code];
+}
+
+- (BOOL)canResponse {
+    return self.state <= HHTCPSocketTaskStateRunning;
+}
+
++ (NSError *)taskErrorWithResponeCode:(NSUInteger)code {
+    
+#define HHTaskErrorCase(responeCode, errorDomain) case responeCode: return HHError(errorDomain, code)
+    switch (code) {
+            
+            HHTaskErrorCase(HHNetworkTaskErrorDefault, HHDefaultErrorNotice);
+            HHTaskErrorCase(HHTCPSocketResponseCodeInvalidMsgLength, @"消息长度不合法");
+            HHTaskErrorCase(HHTCPSocketResponseCodeLostPacket, @"后台Adler验证消息失败");
+            HHTaskErrorCase(HHTCPSocketResponseCodeInvalidMsgFormat, @"消息格式不合法");
+            HHTaskErrorCase(HHTCPSocketResponseCodeUndefinedMsgType, @"消息类型未找到");
+            HHTaskErrorCase(HHTCPSocketResponseCodeEncodeProtobuf, @"protobuf解析失败");
+            HHTaskErrorCase(HHTCPSocketResponseCodeDatabaseException, @"数据库操作异常");
+            HHTaskErrorCase(HHTCPSocketResponseCodeUnkonwn, @"未知错误");
+            HHTaskErrorCase(HHTCPSocketResponseCodeNoPermission, @"无权限");
+            HHTaskErrorCase(HHNetworkTaskErrorCannotConnectedToInternet, HHNetworkErrorNotice);
+            HHTaskErrorCase(HHTCPSocketResponseCodeLostConnection, @"Socket已断开");
+            HHTaskErrorCase(HHNetworkTaskErrorTimeOut, HHTimeoutErrorNotice);
+            HHTaskErrorCase(HHNetworkTaskErrorCanceled, @"任务已取消");
+            HHTaskErrorCase(HHTCPSocketResponseCodeNoMatchAdler, @"前端Adler32验证失败");
+            HHTaskErrorCase(HHTCPSocketResponseCodeNoProtobuf, @"protobufBody为空");
+            HHTaskErrorCase(HHNetworkTaskErrorNoData, HHNoDataErrorNotice);
+            HHTaskErrorCase(HHNetworkTaskErrorNoMoreData, HHNoMoreDataErrorNotice);
+            
+        default: return nil;
+    }
 }
 
 @end

@@ -14,6 +14,21 @@
 #import "HHTCPSocketRequest.h"
 
 typedef enum : NSUInteger {
+    HHTCPSocketResponseCodeSuccess = 200,
+    HHTCPSocketResponseCodeLostConnection = 300,
+    HHTCPSocketResponseCodeInvalidMsgLength = 301,
+    HHTCPSocketResponseCodeLostPacket = 302,
+    HHTCPSocketResponseCodeInvalidMsgFormat = 303,
+    HHTCPSocketResponseCodeUndefinedMsgType = 401,
+    HHTCPSocketResponseCodeEncodeProtobuf = 402,
+    HHTCPSocketResponseCodeDatabaseException = 403,
+    HHTCPSocketResponseCodeUnkonwn = 404,
+    HHTCPSocketResponseCodeNoPermission = 405,
+    HHTCPSocketResponseCodeNoMatchAdler = 455,
+    HHTCPSocketResponseCodeNoProtobuf = 456
+} HHTCPSocketResponseCode;
+
+typedef enum : NSUInteger {
     HHTCPSocketTaskStateSuspended = 0,
     HHTCPSocketTaskStateRunning = 1,
     HHTCPSocketTaskStateCanceled = 2,
@@ -22,12 +37,10 @@ typedef enum : NSUInteger {
 
 @interface HHTCPSocketTask : NSObject
 
-+ (NSError *)taskErrorWithResponeCode:(NSUInteger)code;
-+ (instancetype)taskWithRequest:(HHTCPSocketRequest *)request completionHandler:(HHNetworkTaskCompletionHander)completionHandler;
-
 - (void)cancel;
 - (void)resume;
 
+- (HHTCPSocketRequest *)request;
 - (HHTCPSocketTaskState)state;
 - (NSNumber *)taskIdentifier;
 

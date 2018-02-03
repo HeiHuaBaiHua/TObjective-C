@@ -11,8 +11,8 @@
 #import "HHNetworkConfig.h"
 @interface HHService : NSObject
 
++ (HHService *)defaultService;
 + (HHService *)serviceWithType:(HHServiceType)type;
 
 - (NSString *)baseUrl;
-- (HHServiceEnvironment)environment;
 @end

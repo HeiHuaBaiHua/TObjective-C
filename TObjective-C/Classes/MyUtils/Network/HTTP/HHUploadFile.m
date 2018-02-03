@@ -12,11 +12,11 @@
 
 @interface HHUploadFile()
 
-@property (copy, nonatomic) NSString *uploadKey;
-@property (copy, nonatomic) NSString *fileName;
-@property (copy, nonatomic) NSString *fileType;
-@property (copy, nonatomic) NSString *md5String;
-@property (strong, nonatomic) NSData *fileData;
+@property (nonatomic, copy) NSString *uploadKey;
+@property (nonatomic, copy) NSString *fileName;
+@property (nonatomic, copy) NSString *fileType;
+@property (nonatomic, copy) NSString *md5String;
+@property (nonatomic, strong) NSData *fileData;
 
 @end
 

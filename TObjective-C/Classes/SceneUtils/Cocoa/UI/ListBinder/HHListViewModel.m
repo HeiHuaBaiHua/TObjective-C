@@ -25,9 +25,9 @@
         _refreshCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
             @strongify(self);
             
-            return [[self fetchDataSignalWithPage:1] doNext:^(id x) {
+            return [[self fetchDataSignalWithPage:0] doNext:^(id x) {
                 
-                self.page = 2;
+                self.page = 1;
                 [self.allData removeAllObjects];
                 [self.allData addObjectsFromArray:x];
             }];

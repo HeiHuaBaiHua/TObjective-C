@@ -1,5 +1,5 @@
 //
-//  HHSocketService.h
+//  HHWebSocketService.h
 //  TObjective-C
 //
 //  Created by HeiHuaBaiHua on 2017/11/10.
@@ -9,11 +9,11 @@
 #import <Foundation/Foundation.h>
 
 #import "HHNetworkConfig.h"
-@interface HHSocketService : NSObject
+@interface HHWebSocketService : NSObject
 
-+ (HHSocketService *)serviceWithType:(HHServiceType)type;
++ (HHWebSocketService *)defaultService;
++ (HHWebSocketService *)serviceWithType:(HHServiceType)type;
 
 - (NSString *)url;
-- (HHServiceEnvironment)environment;
 
 @end

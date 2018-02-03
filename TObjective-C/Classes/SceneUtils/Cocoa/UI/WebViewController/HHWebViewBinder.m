@@ -88,11 +88,6 @@
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation{
     WebLog(@"---------网页加载完成----------");
-    if (webView.title.length == 0) {/** 大内存网页存在单次加载白屏的问题 */
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [webView reload];
-        });
-    }
     [self.webView hideHUD];
 }
 
@@ -107,10 +102,6 @@
 
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error{
     WebLog(@"---------网页加载失败---------- %@", error);
-}
-
-- (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView {
-    [webView reload];/** 大内存网页存在单次加载白屏的问题 */
 }
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {

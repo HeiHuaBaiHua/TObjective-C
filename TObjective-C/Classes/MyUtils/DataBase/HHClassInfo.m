@@ -12,13 +12,13 @@
 
 @interface HHPropertyInfo ()
 
-@property (copy, nonatomic) NSString *name;
+@property (nonatomic, copy) NSString *name;
 
-@property (assign, nonatomic) SEL getter;
-@property (assign, nonatomic) SEL setter;
-@property (assign, nonatomic) Class cls;
-@property (assign, nonatomic) HHPropertyType type;
-@property (assign, nonatomic) objc_property_t property;
+@property (nonatomic, assign) SEL getter;
+@property (nonatomic, assign) SEL setter;
+@property (nonatomic, assign) Class cls;
+@property (nonatomic, assign) HHPropertyType type;
+@property (nonatomic, assign) objc_property_t property;
 
 @end
 
@@ -81,7 +81,7 @@ NS_INLINE HHPropertyType getPropertyType(const char *type) {
 
 @interface HHClassInfo ()
 
-@property (strong, nonatomic) NSArray *properties;
+@property (nonatomic, strong) NSArray *properties;
 @property (nonatomic) Class cls;
 
 @end

@@ -19,11 +19,11 @@ typedef void(^HHNetworkTaskProgressHandler)(CGFloat progress);
 
 @interface HHRequestConfiguration : NSObject
 
-@property (copy, nonatomic) NSString *urlPath;
-@property (strong, nonatomic) NSDictionary *requestParameters;
+@property (nonatomic, copy) NSString *urlPath;
+@property (nonatomic, strong) NSDictionary *requestParameters;
 
-@property (strong, nonatomic) NSDictionary *requestHeader;
-@property (assign, nonatomic) HHNetworkRequestType requestType;
+@property (nonatomic, strong) NSDictionary *requestHeader;
+@property (nonatomic, assign) HHNetworkRequestType requestType;
 @end
 
 @interface HHTaskConfiguration : HHRequestConfiguration
@@ -35,13 +35,13 @@ typedef void(^HHNetworkTaskProgressHandler)(CGFloat progress);
 
 @interface HHDataTaskConfiguration : HHTaskConfiguration
 
-@property (assign, nonatomic) NSTimeInterval cacheValidTimeInterval;
+@property (nonatomic, assign) NSTimeInterval cacheValidTimeInterval;
 
 @end
 
 @interface HHUploadTaskConfiguration : HHTaskConfiguration
 
-@property (strong, nonatomic) NSArray<HHUploadFile *> * uploadContents;
+@property (nonatomic, strong) NSArray<HHUploadFile *> * uploadContents;
 
 @end
 

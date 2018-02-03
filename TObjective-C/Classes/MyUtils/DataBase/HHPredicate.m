@@ -10,8 +10,8 @@
 
 @interface HHPredicate()
 
-@property (strong, nonatomic) NSDictionary *equalKeys;
-@property (strong, nonatomic) NSDictionary *containKeys;
+@property (nonatomic, strong) NSDictionary *equalKeys;
+@property (nonatomic, strong) NSDictionary *containKeys;
 
 @end
 

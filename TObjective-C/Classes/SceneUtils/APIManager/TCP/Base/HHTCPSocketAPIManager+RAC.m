@@ -13,7 +13,7 @@
 - (RACSignal *)dataSignalWithConfig:(HHTCPDataTaskConfiguration *)config {
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         
-        __block NSNumber *taskIdentifier = [self dispatchDataTaskWithConfiguration:config completionHandler:^(NSError *error, id result) {
+        NSNumber *taskIdentifier = [self dispatchDataTaskWithConfiguration:config completionHandler:^(NSError *error, id result) {
             if (error) {
                 [subscriber sendError:error];
             } else {

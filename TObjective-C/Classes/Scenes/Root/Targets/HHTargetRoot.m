@@ -8,8 +8,9 @@
 
 #import "HHTargetRoot.h"
 
-#import "TempViewController.h"
 #import "HHTabBarViewController.h"
+
+#import "HHJustForDemoViewController.h"
 @implementation HHTargetRoot
 
 - (UITabBarController *)tabbarViewController {
@@ -18,8 +19,9 @@
 
 - (UIViewController *)tempViewController:(NSDictionary *)params {
     
-    id handler = params[@"onClickHandler"];
-    return [[TempViewController alloc] initWithTitle:params[@"title"] onClickHandler:handler];
+    UIViewController *vc = [HHJustForDemoViewController instanceWithOnClickHandler:params[@"onClickHandler"]];
+    vc.title = params[@"title"];
+    return vc;
 }
 
 @end

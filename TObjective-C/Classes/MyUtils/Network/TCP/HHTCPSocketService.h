@@ -30,6 +30,4 @@
 - (int16_t)port;
 - (NSString *)host;
 
-- (HHServiceType)type;
-
 @end

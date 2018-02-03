@@ -10,8 +10,8 @@
 
 @interface HHTCPSocketService ()
 
-@property (assign, nonatomic) HHServiceType type;
-@property (assign, nonatomic) HHServiceEnvironment environment;
+@property (nonatomic, assign) HHServiceType type;
+@property (nonatomic, assign) HHServiceEnvironment environment;
 
 @end
 
@@ -72,15 +72,15 @@
 @implementation HHTCPSocketServiceX
 
 - (int16_t)testEnvironmentPort {
-    return 9877;
+    return 23456;
 }
 
 - (int16_t)developEnvironmentPort {
-    return 9877;
+    return 23456;
 }
 
 - (int16_t)releaseEnvironmentPort {
-    return 9877;
+    return 23456;
 }
 
 - (NSString *)testEnvironmentHost {

@@ -79,12 +79,21 @@ a += b; \
 #import <CommonCrypto/CommonDigest.h>
 
 #import "HHDataFormatter.h"
-#import "HHTCPSocketConfig.h"
+
+#define SessionIdLength (0)/** SessionId的长度 */
+#define MsgTypeLength (4)/** 消息类型的长度 */
+#define MsgVersionLength (4)/** 协议版本号的长度 */
+#define MsgSerialNumberLength (4)/** 消息序号的长度 */
+#define MsgResponseCodeLength (4)/** 消息响应状态码的长度 */
+#define MsgContentLength (4)/** 消息有效载荷的长度 */
+#define Adler32Length (32)/** Adler32的长度 */
+#define MsgResponseHeaderLength (MsgTypeLength + MsgSerialNumberLength + MsgResponseCodeLength + MsgContentLength)/** 消息响应的头部长度 */
+
 @implementation HHDataFormatter
 
-+ (NSData *)dataFromInteger4:(int)integer {
++ (NSData *)dataFromInteger4:(uint32_t)integer {
     
-    int time = integer;
+    uint32_t time = integer;
     char *p_time = (char *)&time;
     static char str_time[4] = {0};
     for(int i = 4 - 1; i >= 0; i--) {
@@ -109,39 +118,47 @@ a += b; \
     return integer;
 }
 
-+ (NSData *)msgTypeDataFromInteger:(int)integer {
++ (NSData *)msgTypeDataFromInteger:(uint32_t)integer {
     return [self dataFromInteger4:integer];
 }
 
-+ (int)msgTypeFromData:(NSData *)data {
++ (uint32_t)msgTypeFromData:(NSData *)data {
     return [self integer4FromData:data];
 }
 
-+ (NSData *)msgContentLengthDataFromInteger:(int)integer {
++ (uint32_t)msgVersionFromData:(NSData *)data {
+    return [self integer4FromData:data];
+}
+
++ (NSData *)msgVersionDataFromInteger:(uint32_t)integer {
     return [self dataFromInteger4:integer];
 }
 
-+ (int)msgContentLengthFromData:(NSData *)data {
-    return [self integer4FromData:data];
-}
-
-+ (int)msgSerialNumberFromData:(NSData *)data {
-    return [self integer4FromData:data];
-}
-
-+ (NSData *)msgSerialNumberDataFromInteger:(int)integer {
++ (NSData *)msgContentLengthDataFromInteger:(uint32_t)integer {
     return [self dataFromInteger4:integer];
 }
 
-+ (int)msgResponseCodeFromData:(NSData *)data {
++ (uint32_t)msgContentLengthFromData:(NSData *)data {
     return [self integer4FromData:data];
 }
 
-+ (NSData *)msgResponseCodeDataFromInteger:(int)integer {
++ (uint32_t)msgSerialNumberFromData:(NSData *)data {
+    return [self integer4FromData:data];
+}
+
++ (NSData *)msgSerialNumberDataFromInteger:(uint32_t)integer {
     return [self dataFromInteger4:integer];
 }
 
-+ (NSData *)adler32ToDataWithProtoBuffByte:(Byte *)buffByte length:(int)length {
++ (uint32_t)msgResponseCodeFromData:(NSData *)data {
+    return [self integer4FromData:data];
+}
+
++ (NSData *)msgResponseCodeDataFromInteger:(uint32_t)integer {
+    return [self dataFromInteger4:integer];
+}
+
++ (NSData *)adler32ToDataWithProtoBuffByte:(Byte *)buffByte length:(uint32_t)length {
 
     //Adler32编码，需要低位移位运算
     uint64_t checkValue = av_adler32_update(1, buffByte, length);
@@ -214,40 +231,38 @@ unsigned long av_adler32_update (unsigned long adler, const uint8_t * buf, unsig
 
 @end
 
-@interface HHTCPSocketResponseFormatter ()
+@interface HHTCPSocketResponseParser ()
 
-@property (strong, nonatomic) NSData *responseData;
+@property (nonatomic, strong) NSData *responseData;
 
 @end
 
-@implementation HHTCPSocketResponseFormatter
 
-+ (instancetype)formatterWithResponseData:(NSData *)data {
-    
-    HHTCPSocketResponseFormatter *formatter = [HHTCPSocketResponseFormatter new];
-    formatter.responseData = data;
-    return formatter;
+@implementation HHTCPSocketResponseParser
+
++ (uint32_t)responseHeaderLength {
+    return MsgResponseHeaderLength;
 }
 
-+ (int)responseTypeFromData:(NSData *)data {
++ (uint32_t)responseURLFromData:(NSData *)data {
     return [HHDataFormatter msgTypeFromData:[data subdataWithRange:NSMakeRange(0, MsgTypeLength)]];
 }
 
-+ (int)responseCodeFromData:(NSData *)data {
++ (uint32_t)responseCodeFromData:(NSData *)data {
     return [HHDataFormatter msgResponseCodeFromData:[data subdataWithRange:NSMakeRange(MsgTypeLength + MsgSerialNumberLength, MsgResponseCodeLength)]];
 }
 
-+ (int)responseTypeTailFromData:(NSData *)data {
++ (uint32_t)responseTypeTailFromData:(NSData *)data {
     
     int msgResponseLength = [self responseContentLengthFromData:data] + MsgResponseHeaderLength;
     return [HHDataFormatter msgTypeFromData:[data subdataWithRange:NSMakeRange(msgResponseLength - MsgTypeLength, MsgTypeLength)]];
 }
 
-+ (int)responseSerialNumberFromData:(NSData *)data {
++ (uint32_t)responseSerialNumberFromData:(NSData *)data {
     return [HHDataFormatter msgSerialNumberFromData:[data subdataWithRange:NSMakeRange(MsgTypeLength, MsgSerialNumberLength)]];
 }
 
-+ (int)responseContentLengthFromData:(NSData *)data {
++ (uint32_t)responseContentLengthFromData:(NSData *)data {
     return [HHDataFormatter msgContentLengthFromData:[data subdataWithRange:NSMakeRange(MsgResponseHeaderLength - MsgContentLength, MsgContentLength)]];
 }
 
@@ -257,34 +272,6 @@ unsigned long av_adler32_update (unsigned long adler, const uint8_t * buf, unsig
 
 + (NSData *)responseContentFromData:(NSData *)data {
     return [data subdataWithRange:NSMakeRange(MsgResponseHeaderLength, [self responseContentLengthFromData:data])];
-}
-
-- (int)responseType {
-    return [HHTCPSocketResponseFormatter responseTypeFromData:self.responseData];
-}
-
-- (int)responseCode {
-    return [HHTCPSocketResponseFormatter responseCodeFromData:self.responseData];
-}
-
-- (int)responseTypeTail {
-    return [HHTCPSocketResponseFormatter responseTypeTailFromData:self.responseData];
-}
-
-- (int)responseSerialNumber {
-    return [HHTCPSocketResponseFormatter responseSerialNumberFromData:self.responseData];
-}
-
-- (int)responseContentLength {
-    return [HHTCPSocketResponseFormatter responseContentLengthFromData:self.responseData];
-}
-
-- (NSData *)responseAdler {
-    return [HHTCPSocketResponseFormatter responseAdlerFromData:self.responseData];
-}
-
-- (NSData *)responseContent {
-    return [HHTCPSocketResponseFormatter responseContentFromData:self.responseData];
 }
 
 @end

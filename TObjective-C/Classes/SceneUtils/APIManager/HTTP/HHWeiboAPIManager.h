@@ -28,5 +28,5 @@
 - (RACSignal *)weiboLikeListSignalWithWeiboID:(NSString *)ID page:(int)page pageSize:(int)pageSize;
 
 /** TODO: 给某条微博点赞/取消赞 */
-- (RACSignal *)switchLikeStatusSignalWithWeiboID:(NSString *)ID;
+- (RACSignal *)switchLikeStatusSignalWithWeiboID:(NSString *)ID isLike:(BOOL)isLike;
 @end

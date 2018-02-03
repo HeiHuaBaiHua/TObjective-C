@@ -18,7 +18,7 @@
 
 @interface HHTCPSocketTask ()
 
-- (NSData *)taskData;
++ (instancetype)taskWithRequest:(HHTCPSocketRequest *)request completionHandler:(HHNetworkTaskCompletionHander)completionHandler;
 
 - (void)setClient:(id)client;
 - (void)completeWithResponseData:(NSData *)responseData error:(NSError *)error;
@@ -27,13 +27,20 @@
 
 @interface HHTCPSocketClient()<HHTCPSocketDelegate>
 
-@property (strong, nonatomic) HHTCPSocket *socket;
-@property (strong, nonatomic) NSMutableData *readData;
-@property (strong, nonatomic) NSMutableDictionary<NSNumber *, HHTCPSocketTask *> *dispathTable;
+@property (nonatomic, strong) HHTCPSocket *socket;
+@property (nonatomic, strong) NSMutableData *buffer;
+@property (nonatomic, strong) NSMutableDictionary<NSNumber *, HHTCPSocketTask *> *dispatchTable;
 
-@property (strong, nonatomic) HHTCPSocketHeartbeat *heatbeat;
+@property (nonatomic, assign) BOOL isReading;
+@property (nonatomic, strong) HHTCPSocketHeartbeat *heatbeat;
 
 @end
+
+#if 0
+# define SocketLog(...) NSLog(__VA_ARGS__)
+#else
+# define SocketLog(...) {}
+#endif
 
 @implementation HHTCPSocketClient
 
@@ -44,7 +51,8 @@ static dispatch_semaphore_t lock;
     dispatch_once(&onceToken, ^{
         
         lock = dispatch_semaphore_create(1);
-        sharedInstance = [[super allocWithZone:NULL] init];
+        sharedInstance = [super allocWithZone:NULL];
+        [sharedInstance configuration];
     });
     return sharedInstance;
 }
@@ -53,58 +61,55 @@ static dispatch_semaphore_t lock;
     return [self sharedInstance];
 }
 
-- (instancetype)init {
-    if (self = [super init]) {
-        
-        self.socket = [HHTCPSocket socketWithDelegate:self];
-        self.readData = [NSMutableData data];
-        self.dispathTable = [NSMutableDictionary dictionary];
-//        self.heatbeat = [HHTCPSocketHeartbeat heartbeatWithClient:self timeoutHandler:^{
-//            [self reconnect];
-//        }];
-    }
-    return self;
+- (void)configuration {
+    
+    self.socket = [HHTCPSocket new];
+    self.socket.delegate = self;
+    self.buffer = [NSMutableData data];
+    self.dispatchTable = [NSMutableDictionary dictionary];
+    self.heatbeat = [HHTCPSocketHeartbeat heartbeatWithClient:self timeoutHandler:^{
+        //            [self reconnect];
+        SocketLog(@"heartbeat timeout");
+    }];
 }
 
 #pragma mark - Interface(Public)
 
 - (void)connect {
-    if (self.socket.isConnectd) { return; }
+    if (self.socket.isConnected) { return; }
     
-    [self.socket connectWithRetryTime:5];
-}
-
-- (void)disconncet {
-    [self.socket disconnect];
+    [self.socket connect];
 }
 
 - (NSNumber *)dispatchDataTaskWithRequest:(HHTCPSocketRequest *)request completionHandler:(HHNetworkTaskCompletionHander)completionHandler {
+//    if (request.url < minRequestUrl || request.url > maxRequestUrl) { return @-1; }
+    
     HHTCPSocketTask *task = [self dataTaskWithRequest:request completionHandler:completionHandler];
     return [self dispatchTask:task];
 }
 
 - (void)cancelAllTasks {
     
-    for (HHTCPSocketTask *task in self.dispathTable.allValues) {
+    for (HHTCPSocketTask *task in self.dispatchTable.allValues) {
         [task cancel];
     }
     dispatch_semaphore_wait(lock, DISPATCH_TIME_FOREVER);
-    [self.dispathTable removeAllObjects];
+    [self.dispatchTable removeAllObjects];
     dispatch_semaphore_signal(lock);
 }
 
 - (void)cancelTaskWithTaskIdentifier:(NSNumber *)taskIdentifier {
+    if (!taskIdentifier) { return; }
     
-    HHTCPSocketTask *task = [self.dispathTable objectForKey:taskIdentifier];
-    if (task) { [task cancel]; }
+    [self.dispatchTable[taskIdentifier] cancel];
 }
 
 #pragma mark - Interface(Friend)
 
 - (void)resumeTask:(HHTCPSocketTask *)task {
  
-    if (self.socket.isConnectd) {
-        [self.socket writeData:task.taskData];
+    if (self.socket.isConnected) {
+        [self.socket writeData:task.request.requestData];
     } else {
      
         NSError *error;
@@ -113,8 +118,6 @@ static dispatch_semaphore_t lock;
         } else {
             error = HHError(HHNetworkErrorNotice, HHNetworkTaskErrorCannotConnectedToInternet);
         }
-        
-        [self reconnect];
         [task completeWithResponseData:nil error:error];
     }
 }
@@ -122,13 +125,11 @@ static dispatch_semaphore_t lock;
 #pragma mark - HHTCPSocketDelegate
 
 - (void)socket:(HHTCPSocket *)sock didConnectToHost:(NSString *)host port:(uint16_t)port {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"didConnectToHost" object:nil];
+    [self.heatbeat reset];
 }
 
 - (void)socketDidDisconnect:(HHTCPSocket *)sock error:(NSError *)error {
-    
     [self.heatbeat stop];
-    [self reconnect];
 }
 
 - (void)socketCanNotConnectToService:(HHTCPSocket *)sock {
@@ -136,37 +137,84 @@ static dispatch_semaphore_t lock;
 }
 
 - (void)socket:(HHTCPSocket *)sock didReadData:(NSData *)data {
-    
+    [self.buffer appendData:data];
     [self.heatbeat reset];
-    if (data.length >= HHMaxResponseLength) { return; }
     
-    [self.readData appendData:data];
+    [self readBuffer];
+}
+
+#pragma mark - Parse
+
+- (void)readBuffer {
+    if (self.isReading) { return; }
+    
+    self.isReading = YES;
     NSData *responseData = [self getParsedResponseData];
-    if (responseData) {
+    [self dispatchResponse:responseData];
+    self.isReading = NO;
+    
+    if (responseData.length == 0) { return; }
+    [self readBuffer];
+}
+
+- (NSData *)getParsedResponseData {
+    
+    NSData *totalReceivedData = self.buffer;
+    uint32_t responseHeaderLength = [HHTCPSocketResponseParser responseHeaderLength];
+    if (totalReceivedData.length < responseHeaderLength) { return nil; }
+    
+    NSData *responseData;
+    uint32_t responseContentLength = [HHTCPSocketResponseParser responseContentLengthFromData:totalReceivedData];;
+    uint32_t responseLength = responseHeaderLength + responseContentLength;
+    if (totalReceivedData.length < responseLength) { return nil; }
+    
+    SocketLog(@"before: %u_%lu", responseLength, self.readData.length);
+    responseData = [totalReceivedData subdataWithRange:NSMakeRange(0, responseLength)];
+    self.buffer = [[totalReceivedData subdataWithRange:NSMakeRange(responseLength, totalReceivedData.length - responseLength)] mutableCopy];
+    SocketLog(@"after: %u_%lu", responseLength, self.readData.length);
+    SocketLog(@"---------");
+    return responseData;
+}
+
+- (void)dispatchResponse:(NSData *)responseData {
+    if (responseData.length == 0) { return; }
+    
+    uint32_t url = [HHTCPSocketResponseParser responseURLFromData:responseData];
+    if (url > TCP_max_notification) {/** 请求响应 */
         
-        NSNumber *taskIdentifier = @([HHTCPSocketResponseFormatter responseSerialNumberFromData:responseData]);
-        HHTCPSocketTask *task = self.dispathTable[taskIdentifier];
+        NSNumber *taskIdentifier = @([HHTCPSocketResponseParser responseSerialNumberFromData:responseData]);
+        HHTCPSocketTask *task = self.dispatchTable[taskIdentifier];
         if (task) {
             dispatch_async(dispatch_get_global_queue(2, 0), ^{
                 [task completeWithResponseData:responseData error:nil];
             });
-        } else {
-            
-            //            switch ([taskIdentifier integerValue]) {
-            //                case HHTCPSocketTaskPush: {
-            //
-            //                }   break;
-            //
-            //                case HHTCPSocketTaskHearbeat: {
-            //
-            //                    NSLog(@"心跳%d",[taskIdentifier intValue]);
-            //                    [self.heatbeat respondToServerWithSerialNum:[taskIdentifier intValue]];
-            //                }
-            //                default: break;
-            //            }
-            //            NSLog(@"心跳%d",[taskIdentifier intValue]);
-            [self.heatbeat respondToServerWithSerialNum:[taskIdentifier intValue]];
         }
+    } else if (url == TCP_heatbeat) {/** 心跳 */
+        uint32_t ackNum = [HHTCPSocketResponseParser responseSerialNumberFromData:responseData];
+        [self.heatbeat handleServerAckNum:ackNum];
+    } else {/** 推送 */
+        [self dispatchRemoteNotification:url responseData:responseData];
+    }
+}
+
+- (void)dispatchRemoteNotification:(HHTCPSocketRequestURL)notification responseData:(NSData *)responseData {
+    
+    NSData *responseContent = [HHTCPSocketResponseParser responseContentFromData:responseData];
+    NSDictionary *userInfo = [NSJSONSerialization JSONObjectWithData:responseContent options:0 error:nil];
+    switch (notification) {
+        case TCP_notification_xxx: {
+            NSLog(@"received notification_xxx: %@", userInfo);
+        }   break;
+
+        case TCP_notification_yyy: {
+            NSLog(@"received notification_yyy: %@", userInfo);
+        }   break;
+
+        case TCP_notification_zzz: {
+            NSLog(@"received notification_zzz: %@", userInfo);
+        }   break;
+
+        default:break;
     }
 }
 
@@ -174,27 +222,26 @@ static dispatch_semaphore_t lock;
 
 - (HHTCPSocketTask *)dataTaskWithRequest:(HHTCPSocketRequest *)request completionHandler:(HHNetworkTaskCompletionHander)completionHandler {
     
-    NSMutableArray *taskIdentifier = [NSMutableArray arrayWithObject:@-1];
+    __block NSNumber *taskIdentifier;
     HHTCPSocketTask *task = [HHTCPSocketTask taskWithRequest:request completionHandler:^(NSError *error, id result) {
         
         dispatch_semaphore_wait(lock, DISPATCH_TIME_FOREVER);
-        [self.dispathTable removeObjectForKey:taskIdentifier.firstObject];
+        [self.dispatchTable removeObjectForKey:taskIdentifier];
         dispatch_semaphore_signal(lock);
         
         !completionHandler ?: completionHandler(error, result);
     }];
     task.client = self;
-    taskIdentifier[0] = task.taskIdentifier;
+    taskIdentifier = task.taskIdentifier;
     
     dispatch_semaphore_wait(lock, DISPATCH_TIME_FOREVER);
-    [self.dispathTable setObject:task forKey:taskIdentifier.firstObject];
+    [self.dispatchTable setObject:task forKey:taskIdentifier];
     dispatch_semaphore_signal(lock);
     
     return task;
 }
 
 - (NSNumber *)dispatchTask:(HHTCPSocketTask *)task {
-    
     if (task == nil) { return @-1; }
     
     [task resume];
@@ -203,40 +250,15 @@ static dispatch_semaphore_t lock;
 
 - (void)reconnect {
     
-    for (HHTCPSocketTask *task in self.dispathTable.allValues) {
-        [task completeWithResponseData:nil error:HHError(@"长连接已断开", HHTCPSocketTaskErrorLostConnection)];
+    for (HHTCPSocketTask *task in self.dispatchTable.allValues) {
+        [task completeWithResponseData:nil error:HHError(@"长连接已断开", HHTCPSocketResponseCodeLostConnection)];
     }
     dispatch_semaphore_wait(lock, DISPATCH_TIME_FOREVER);
-    self.readData = [NSMutableData data];
-    [self.dispathTable removeAllObjects];
+    self.buffer = [NSMutableData data];
+    [self.dispatchTable removeAllObjects];
     dispatch_semaphore_signal(lock);
     
-    [self.socket connectWithRetryTime:8];
-}
-
-- (NSData *)getParsedResponseData {
-    
-    NSData *responseData;
-    NSData *totalReceivedData = self.readData;
-    if (totalReceivedData.length >= HHMaxResponseLength * 2) {
-        [self reconnect];//socket解析错误, 断开重连
-    } else if (totalReceivedData.length >= MsgResponseHeaderLength) {
-        
-        HHTCPSocketResponseFormatter *formatter = [HHTCPSocketResponseFormatter formatterWithResponseData:totalReceivedData];
-        int msgContentLength = formatter.responseContentLength;
-        int msgResponseLength = msgContentLength + MsgResponseHeaderLength;
-        if (msgResponseLength == totalReceivedData.length) {
-            
-            responseData = totalReceivedData;
-            self.readData = [NSMutableData data];
-        } else if (msgContentLength < totalReceivedData.length) {
-            
-            responseData = [totalReceivedData subdataWithRange:NSMakeRange(0, msgResponseLength)];
-            self.readData = [[totalReceivedData subdataWithRange:NSMakeRange(msgResponseLength, totalReceivedData.length - msgResponseLength)] mutableCopy];
-        }
-    }
-    
-    return responseData;
+    [self.socket reconnect];
 }
 
 - (BOOL)isNetworkReachable {
