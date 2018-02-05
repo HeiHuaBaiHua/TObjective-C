@@ -18,6 +18,8 @@
 #import "HHWebSocketMessageParser.h"
 @interface HHWebSocketTask()
 
++ (instancetype)taskWithRequest:(HHWebSocketRequest *)request completionHandler:(HHNetworkTaskCompletionHander)completionHandler;
+
 - (HHWebSocketRequest *)request;
 - (void)setClient:(id)client;
 - (void)completeWithResponseData:(id)responseData error:(NSError *)error;
@@ -188,9 +190,30 @@ static dispatch_semaphore_t lock;
         HHWebSocketTask *task = self.dispatchTable[serNum];
         [task completeWithResponseData:responseData error:nil];
     }  else {/** 推送 */
-        if ([self.observer respondsToSelector:@selector(didReceiveSocketNotification:)]) {
-            [self.observer didReceiveSocketNotification:messageDict];
-        }
+//        if ([self.observer respondsToSelector:@selector(didReceiveSocketNotification:)]) {
+//            [self.observer didReceiveSocketNotification:messageDict];
+//        }
+        [self dispatchRemoteNotification:url message:messageDict];
+    }
+}
+
+- (void)dispatchRemoteNotification:(HHWebSocketRequestURL)notification message:(NSDictionary *)message {
+    
+    NSDictionary *userInfo = [HHWebSocketMessageParser responseDataFromMessage:message];
+    switch (notification) {
+        case WEBSOCKET_notification_xxx: {
+            NSLog(@"received webSocket notification_xxx: %@", userInfo);
+        }   break;
+            
+        case WEBSOCKET_notification_yyy: {
+            NSLog(@"received webSocket notification_yyy: %@", userInfo);
+        }   break;
+            
+        case WEBSOCKET_notification_zzz: {
+            NSLog(@"received webSocket notification_zzz: %@", userInfo);
+        }   break;
+            
+        default:break;
     }
 }
 

@@ -40,7 +40,6 @@ typedef enum : NSUInteger {
 - (void)cancel;
 - (void)resume;
 
-- (HHTCPSocketRequest *)request;
 - (HHTCPSocketTaskState)state;
 - (NSNumber *)taskIdentifier;
 

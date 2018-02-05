@@ -20,6 +20,7 @@
 
 + (instancetype)taskWithRequest:(HHTCPSocketRequest *)request completionHandler:(HHNetworkTaskCompletionHander)completionHandler;
 
+- (HHTCPSocketRequest *)request;
 - (void)setClient:(id)client;
 - (void)completeWithResponseData:(NSData *)responseData error:(NSError *)error;
 

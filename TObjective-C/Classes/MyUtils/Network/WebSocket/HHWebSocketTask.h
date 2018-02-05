@@ -20,8 +20,6 @@ typedef enum : NSUInteger {
 
 @interface HHWebSocketTask : NSObject
 
-+ (instancetype)taskWithRequest:(HHWebSocketRequest *)request completionHandler:(HHNetworkTaskCompletionHander)completionHandler;
-
 - (void)cancel;
 - (void)resume;
 
