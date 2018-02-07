@@ -27,6 +27,7 @@ static const CGFloat titleHeight = 35;
 static const NSUInteger initialTag = 101;
 
 @implementation HHSegmentBinder
+@synthesize selectedIndex = _selectedIndex;
 
 - (void)setDataSource:(id<HHSegmentViewDataSource>)dataSource {
     _dataSource = dataSource;
@@ -46,6 +47,7 @@ static const NSUInteger initialTag = 101;
 }
 
 - (void)setSelectedIndex:(NSUInteger)index {
+    _selectedIndex = index;
     if (index >= self.contentView.subviews.count) { return; }
     
     [self didSelectedTitle:[self.titleView viewWithTag:index + initialTag]];

@@ -6,9 +6,11 @@
 //  Copyright © 2017年 HeiHuaBaiHua. All rights reserved.
 //
 
-#import "HHWeiboDetailCell.h"
+#import "HHWeiboDetailBuilder.h"
 
-#import "HHWeiboDetailCellInfoBinder.h"
+#import "HHWeiboDetailCell.h"
+#import "HHWeiboCellInfoViewModelProtocol.h"
+
 @interface HHWeiboCell()
 
 @property (nonatomic, strong) HHWeiboCellInfoBinder *infoBinder;
@@ -24,7 +26,29 @@
 - (void)configuration {
     [super configuration];
     
-    self.infoBinder = [HHWeiboDetailCellInfoBinder new];
+    /** 微博详情头部没有点赞/评论/转发按钮 */
+    self.infoBinder = [HHWeiboDetailBuilder weiboDetailInfoBinder];
+}
+
+@end
+
+#pragma mark - HHWeiboDetailCellInfoBinder
+
+@interface HHWeiboCellInfoBinder ()
+- (void)bind:(id)viewModel;
+@end
+
+@implementation HHWeiboDetailCellInfoBinder
+
+#pragma mark - Override
+
+- (void)bind:(id<HHWeiboCellInfoViewModelProtocol>)viewModel {
+    [super bind:viewModel];
+    
+    UIView<HHWeiboCellInfoViewProtocol> *view = (UIView<HHWeiboCellInfoViewProtocol> *)self.view;
+    view.likeButton.hidden = view.repostButton.hidden = view.commentButton.hidden = YES;
+    
+    viewModel.contentHeight -= 33;
 }
 
 @end

@@ -6,12 +6,9 @@
 //  Copyright © 2017年 HeiHuaBaiHua. All rights reserved.
 //
 
-#import <MJRefresh/MJRefresh.h>
-#import "ReactiveCocoa.h"
+#import "HHFoundation.h"
 
 #import "HHWeiboDetailCommentsBinder.h"
-
-#import "HHFoundation.h"
 #import "HHWeiboDetailCommentsCell.h"
 @interface HHWeiboDetailCommentsBinder ()
 

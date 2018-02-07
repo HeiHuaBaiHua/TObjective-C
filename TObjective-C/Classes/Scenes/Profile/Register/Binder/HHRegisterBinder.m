@@ -21,16 +21,14 @@
 
 @implementation HHRegisterBinder
 
-- (instancetype)initWithView:(HHRegisterView *)view viewModel:(id)viewModel {
+- (instancetype)initWithView:(HHRegisterView *)view {
     if (self = [super init]) {
         self.view = view;
-        
-        [self bindViewModel:viewModel];
     }
     return self;
 }
 
-- (void)bindViewModel:(id<HHRegisterViewModelProtocol>)viewModel {
+- (void)bind:(id<HHRegisterViewModelProtocol>)viewModel {
     self.viewModel = viewModel;
     
     [self bind];

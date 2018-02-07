@@ -38,22 +38,34 @@ typedef id<HHListCellViewModelProtocol> HHListCellViewModel;
 
 #pragma mark - ListBinder
 
-@protocol HHListBinderProtocol <HHBinderProtocol>
+@protocol _HHListBinderProtocol <NSObject>
 
 - (Class)cellClass;
+
+@optional
 - (NSInteger)indexInPath:(NSIndexPath *)path;
+
+@end
+
+@protocol HHListBinderProtocol <HHBinderProtocol>
+
 - (id<HHListViewModelProtocol>)viewModel;
 
+@optional
 - (void)becomeFirstListBinder;
+
 @end
 
 
 
-@protocol HHTableBinderProtocol <HHListBinderProtocol, UITableViewDelegate, UITableViewDataSource>
+@protocol HHTableBinderProtocol <_HHListBinderProtocol, HHListBinderProtocol, UITableViewDelegate, UITableViewDataSource>
+
+- (UITableView *)tableView;
+
 @end
 
 
 
 
-@protocol HHCollectionBinderProtocol <HHListBinderProtocol, UICollectionViewDelegate, UICollectionViewDataSource>
+@protocol HHCollectionBinderProtocol <_HHListBinderProtocol, HHListBinderProtocol, UICollectionViewDelegate, UICollectionViewDataSource>
 @end

@@ -26,10 +26,9 @@
 
 - (void)loadView{}
 
-- (instancetype)initWithView:(UITableView *)view viewModel:(id<HHListViewModelProtocol>)viewModel {
+- (instancetype)initWithView:(UITableView *)view {
     if (self = [super init]) {
         self.view = view;
-        [self bindViewModel:viewModel];
     }
     return self;
 }
@@ -48,9 +47,14 @@
     }
 }
 
+- (UITableView *)tableView {
+    return self.view;
+}
+
 #pragma mark - Bind
 
-- (void)bindViewModel:(id<HHListViewModelProtocol>)viewModel {
+- (void)bind:(id<HHListViewModelProtocol>)viewModel {
+    if (viewModel == nil) { return; }
     self.viewModel = viewModel;
     
     self.view.delegate = self;

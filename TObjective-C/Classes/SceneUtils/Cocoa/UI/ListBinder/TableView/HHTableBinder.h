@@ -11,6 +11,10 @@
 #import "HHListBinderProtocol.h"
 @interface HHTableBinder : UIViewController<HHTableBinderProtocol>
 
-- (UITableView *)view;
+- (void)refreshData;
+
+- (void)bindErrorView;
+- (void)bindTableHeader;
+- (void)bindTableFooter;
 
 @end

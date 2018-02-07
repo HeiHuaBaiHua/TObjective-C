@@ -7,7 +7,13 @@
 //
 
 #import "HHWeiboCell.h"
+#import "HHWeiboCellInfoBinder.h"
 
 @interface HHWeiboDetailCell : HHWeiboCell
+
+@end
+
+
+@interface HHWeiboDetailCellInfoBinder : HHWeiboCellInfoBinder
 
 @end

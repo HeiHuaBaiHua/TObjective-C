@@ -37,7 +37,7 @@
     }
 }
 
-- (void)bindViewModel:(id<HHWebViewModelProtocol>)viewModel {
+- (void)bind:(id<HHWebViewModelProtocol>)viewModel {
     self.viewModel = viewModel;
     
     ((UIButton *)self.backItem.customView).rac_command = [self backCommand];

@@ -28,6 +28,7 @@
 		734BB1B32025C3F70077D6F6 /* HHWebSocketAPIManager+RAC.m in Sources */ = {isa = PBXBuildFile; fileRef = 734BB1B22025C3F70077D6F6 /* HHWebSocketAPIManager+RAC.m */; };
 		734BB1B62025C4500077D6F6 /* HHWeiboWebSocketAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 734BB1B52025C4500077D6F6 /* HHWeiboWebSocketAPIManager.m */; };
 		734BB1B92025C4680077D6F6 /* HHUserWebSocketAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 734BB1B82025C4680077D6F6 /* HHUserWebSocketAPIManager.m */; };
+		73614692202867B70012A0D4 /* HHWeiboListBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 73614691202867B70012A0D4 /* HHWeiboListBuilder.m */; };
 		7362C2201FB5371400C3CD3F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7362C21F1FB5371400C3CD3F /* AppDelegate.m */; };
 		7362C2231FB5371400C3CD3F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7362C2221FB5371400C3CD3F /* ViewController.m */; };
 		7362C2261FB5371400C3CD3F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7362C2241FB5371400C3CD3F /* Main.storyboard */; };
@@ -76,10 +77,10 @@
 		7362C3431FB5B3A200C3CD3F /* HHPredicate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7362C33D1FB5B3A200C3CD3F /* HHPredicate.m */; };
 		7362C3441FB5B3A200C3CD3F /* NSObject+CoreDataExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7362C33F1FB5B3A200C3CD3F /* NSObject+CoreDataExtension.m */; };
 		7362C3451FB5B3A200C3CD3F /* HHClassInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 7362C3401FB5B3A200C3CD3F /* HHClassInfo.m */; };
+		736FAFD92029A14500E81507 /* HHWeiboDetailBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 736FAFD82029A14500E81507 /* HHWeiboDetailBuilder.m */; };
 		7370AB082021738C00682B5A /* HHUserTCPAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7370AB072021738C00682B5A /* HHUserTCPAPIManager.m */; };
 		737263001FBE7F8E007D02A9 /* HHWeiboDetailTableBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 737262FF1FBE7F8E007D02A9 /* HHWeiboDetailTableBinder.m */; };
 		737263041FBE821F007D02A9 /* HHWeiboDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 737263031FBE821F007D02A9 /* HHWeiboDetailCell.m */; };
-		7372630D1FBE8BC8007D02A9 /* HHWeiboDetailCellInfoBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7372630C1FBE8BC7007D02A9 /* HHWeiboDetailCellInfoBinder.m */; };
 		737263101FBE9077007D02A9 /* HHWeiboComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 7372630F1FBE9077007D02A9 /* HHWeiboComment.m */; };
 		7372631A1FBEBBE2007D02A9 /* AppDelegate+Initialize.m in Sources */ = {isa = PBXBuildFile; fileRef = 737263191FBEBBE2007D02A9 /* AppDelegate+Initialize.m */; };
 		7372632D1FBEC651007D02A9 /* HHProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7372631D1FBEC651007D02A9 /* HHProfileViewController.m */; };
@@ -98,7 +99,6 @@
 		7372636D1FBED857007D02A9 /* HHTargetProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 7372636C1FBED857007D02A9 /* HHTargetProfile.m */; };
 		737EA19E1FB932AC00D32F64 /* HHTargetWeibo.m in Sources */ = {isa = PBXBuildFile; fileRef = 737EA19D1FB932AC00D32F64 /* HHTargetWeibo.m */; };
 		737EA1B11FB932D900D32F64 /* HHWeiboListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 737EA1A11FB932D900D32F64 /* HHWeiboListViewController.m */; };
-		737EA1B21FB932D900D32F64 /* HHWeiboListBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 737EA1A41FB932D900D32F64 /* HHWeiboListBinder.m */; };
 		737EA1B41FB932D900D32F64 /* HHWeiboListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 737EA1AB1FB932D900D32F64 /* HHWeiboListView.m */; };
 		737EA1B51FB932D900D32F64 /* HHWeiboListViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 737EA1AF1FB932D900D32F64 /* HHWeiboListViewModel.m */; };
 		737EA1BE1FB9367600D32F64 /* HHListViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 737EA1BD1FB9367600D32F64 /* HHListViewModel.m */; };
@@ -116,7 +116,6 @@
 		737EA1F61FB9931F00D32F64 /* HHWeiboCellInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 737EA1F51FB9931F00D32F64 /* HHWeiboCellInfoView.xib */; };
 		737EA1F91FB9940300D32F64 /* HHWeiboCellContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 737EA1F81FB9940300D32F64 /* HHWeiboCellContentView.m */; };
 		737EA1FD1FB9AA0700D32F64 /* HHWeiboCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 737EA1FC1FB9AA0700D32F64 /* HHWeiboCell.m */; };
-		73B9F00A1FBD416900F460E0 /* HHWeiboDetailBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9F0091FBD416900F460E0 /* HHWeiboDetailBinder.m */; };
 		73B9F00E1FBD76FC00F460E0 /* HHWeiboDetailCommentsBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9F00D1FBD76FC00F460E0 /* HHWeiboDetailCommentsBinder.m */; };
 		73B9F0111FBD770A00F460E0 /* HHWeiboDetailLikesBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9F0101FBD770A00F460E0 /* HHWeiboDetailLikesBinder.m */; };
 		73B9F0141FBD771800F460E0 /* HHWeiboDetailRepostsBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9F0131FBD771800F460E0 /* HHWeiboDetailRepostsBinder.m */; };
@@ -194,6 +193,8 @@
 		734BB1B52025C4500077D6F6 /* HHWeiboWebSocketAPIManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HHWeiboWebSocketAPIManager.m; sourceTree = "<group>"; };
 		734BB1B72025C4680077D6F6 /* HHUserWebSocketAPIManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHUserWebSocketAPIManager.h; sourceTree = "<group>"; };
 		734BB1B82025C4680077D6F6 /* HHUserWebSocketAPIManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HHUserWebSocketAPIManager.m; sourceTree = "<group>"; };
+		73614690202867B70012A0D4 /* HHWeiboListBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHWeiboListBuilder.h; sourceTree = "<group>"; };
+		73614691202867B70012A0D4 /* HHWeiboListBuilder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HHWeiboListBuilder.m; sourceTree = "<group>"; };
 		7362C21B1FB5371400C3CD3F /* TObjective-C.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TObjective-C.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7362C21E1FB5371400C3CD3F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7362C21F1FB5371400C3CD3F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -292,14 +293,15 @@
 		7362C3401FB5B3A200C3CD3F /* HHClassInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHClassInfo.m; sourceTree = "<group>"; };
 		7362C3411FB5B3A200C3CD3F /* HHClassInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHClassInfo.h; sourceTree = "<group>"; };
 		7362C3421FB5B3A200C3CD3F /* HHPredicate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHPredicate.h; sourceTree = "<group>"; };
+		736FAFD52029982500E81507 /* HHWeiboCellViewProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHWeiboCellViewProtocol.h; sourceTree = "<group>"; };
+		736FAFD72029A14500E81507 /* HHWeiboDetailBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHWeiboDetailBuilder.h; sourceTree = "<group>"; };
+		736FAFD82029A14500E81507 /* HHWeiboDetailBuilder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HHWeiboDetailBuilder.m; sourceTree = "<group>"; };
 		7370AB062021738C00682B5A /* HHUserTCPAPIManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHUserTCPAPIManager.h; sourceTree = "<group>"; };
 		7370AB072021738C00682B5A /* HHUserTCPAPIManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HHUserTCPAPIManager.m; sourceTree = "<group>"; };
 		737262FE1FBE7F8E007D02A9 /* HHWeiboDetailTableBinder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHWeiboDetailTableBinder.h; sourceTree = "<group>"; };
 		737262FF1FBE7F8E007D02A9 /* HHWeiboDetailTableBinder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HHWeiboDetailTableBinder.m; sourceTree = "<group>"; };
 		737263021FBE821F007D02A9 /* HHWeiboDetailCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHWeiboDetailCell.h; sourceTree = "<group>"; };
 		737263031FBE821F007D02A9 /* HHWeiboDetailCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HHWeiboDetailCell.m; sourceTree = "<group>"; };
-		7372630B1FBE8BC7007D02A9 /* HHWeiboDetailCellInfoBinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHWeiboDetailCellInfoBinder.h; sourceTree = "<group>"; };
-		7372630C1FBE8BC7007D02A9 /* HHWeiboDetailCellInfoBinder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHWeiboDetailCellInfoBinder.m; sourceTree = "<group>"; };
 		7372630E1FBE9077007D02A9 /* HHWeiboComment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHWeiboComment.h; sourceTree = "<group>"; };
 		7372630F1FBE9077007D02A9 /* HHWeiboComment.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HHWeiboComment.m; sourceTree = "<group>"; };
 		737263181FBEBBE2007D02A9 /* AppDelegate+Initialize.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+Initialize.h"; sourceTree = "<group>"; };
@@ -339,8 +341,6 @@
 		737EA19D1FB932AC00D32F64 /* HHTargetWeibo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HHTargetWeibo.m; sourceTree = "<group>"; };
 		737EA1A01FB932D900D32F64 /* HHWeiboListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHWeiboListViewController.h; sourceTree = "<group>"; };
 		737EA1A11FB932D900D32F64 /* HHWeiboListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHWeiboListViewController.m; sourceTree = "<group>"; };
-		737EA1A31FB932D900D32F64 /* HHWeiboListBinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHWeiboListBinder.h; sourceTree = "<group>"; };
-		737EA1A41FB932D900D32F64 /* HHWeiboListBinder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHWeiboListBinder.m; sourceTree = "<group>"; };
 		737EA1AA1FB932D900D32F64 /* HHWeiboListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHWeiboListView.h; sourceTree = "<group>"; };
 		737EA1AB1FB932D900D32F64 /* HHWeiboListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHWeiboListView.m; sourceTree = "<group>"; };
 		737EA1AE1FB932D900D32F64 /* HHWeiboListViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHWeiboListViewModel.h; sourceTree = "<group>"; };
@@ -376,8 +376,6 @@
 		737EA1F81FB9940300D32F64 /* HHWeiboCellContentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HHWeiboCellContentView.m; sourceTree = "<group>"; };
 		737EA1FB1FB9AA0700D32F64 /* HHWeiboCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHWeiboCell.h; sourceTree = "<group>"; };
 		737EA1FC1FB9AA0700D32F64 /* HHWeiboCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HHWeiboCell.m; sourceTree = "<group>"; };
-		73B9F0081FBD416900F460E0 /* HHWeiboDetailBinder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHWeiboDetailBinder.h; sourceTree = "<group>"; };
-		73B9F0091FBD416900F460E0 /* HHWeiboDetailBinder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HHWeiboDetailBinder.m; sourceTree = "<group>"; };
 		73B9F00B1FBD447500F460E0 /* HHWeiboDetailViewProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHWeiboDetailViewProtocol.h; sourceTree = "<group>"; };
 		73B9F00C1FBD76FC00F460E0 /* HHWeiboDetailCommentsBinder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHWeiboDetailCommentsBinder.h; sourceTree = "<group>"; };
 		73B9F00D1FBD76FC00F460E0 /* HHWeiboDetailCommentsBinder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HHWeiboDetailCommentsBinder.m; sourceTree = "<group>"; };
@@ -477,6 +475,7 @@
 		73266C231FBBDBBF0086B0F1 /* WeiboDetail */ = {
 			isa = PBXGroup;
 			children = (
+				736FAFD62029A0F500E81507 /* Builder */,
 				73266C241FBBDD9E0086B0F1 /* ViewController */,
 				73266C281FBBDDD20086B0F1 /* Binder */,
 				73266C291FBBDDD80086B0F1 /* View */,
@@ -497,8 +496,6 @@
 		73266C281FBBDDD20086B0F1 /* Binder */ = {
 			isa = PBXGroup;
 			children = (
-				73B9F0081FBD416900F460E0 /* HHWeiboDetailBinder.h */,
-				73B9F0091FBD416900F460E0 /* HHWeiboDetailBinder.m */,
 				737263011FBE81F8007D02A9 /* TableView */,
 				73266C3C1FBBDF870086B0F1 /* Comments */,
 				73266C3B1FBBDF870086B0F1 /* Likes */,
@@ -687,6 +684,15 @@
 				734BB1B22025C3F70077D6F6 /* HHWebSocketAPIManager+RAC.m */,
 			);
 			path = Base;
+			sourceTree = "<group>";
+		};
+		7361468F202867920012A0D4 /* Builder */ = {
+			isa = PBXGroup;
+			children = (
+				73614690202867B70012A0D4 /* HHWeiboListBuilder.h */,
+				73614691202867B70012A0D4 /* HHWeiboListBuilder.m */,
+			);
+			path = Builder;
 			sourceTree = "<group>";
 		};
 		7362C2121FB5371400C3CD3F = {
@@ -913,6 +919,7 @@
 		7362C2531FB5396A00C3CD3F /* WeiboList */ = {
 			isa = PBXGroup;
 			children = (
+				7361468F202867920012A0D4 /* Builder */,
 				737EA19F1FB932D900D32F64 /* ViewController */,
 				737EA1A21FB932D900D32F64 /* Binder */,
 				737EA1A91FB932D900D32F64 /* View */,
@@ -1210,15 +1217,22 @@
 			path = HHNotifer;
 			sourceTree = "<group>";
 		};
+		736FAFD62029A0F500E81507 /* Builder */ = {
+			isa = PBXGroup;
+			children = (
+				736FAFD72029A14500E81507 /* HHWeiboDetailBuilder.h */,
+				736FAFD82029A14500E81507 /* HHWeiboDetailBuilder.m */,
+			);
+			path = Builder;
+			sourceTree = "<group>";
+		};
 		737263011FBE81F8007D02A9 /* TableView */ = {
 			isa = PBXGroup;
 			children = (
-				737263021FBE821F007D02A9 /* HHWeiboDetailCell.h */,
-				737263031FBE821F007D02A9 /* HHWeiboDetailCell.m */,
-				7372630B1FBE8BC7007D02A9 /* HHWeiboDetailCellInfoBinder.h */,
-				7372630C1FBE8BC7007D02A9 /* HHWeiboDetailCellInfoBinder.m */,
 				737262FE1FBE7F8E007D02A9 /* HHWeiboDetailTableBinder.h */,
 				737262FF1FBE7F8E007D02A9 /* HHWeiboDetailTableBinder.m */,
+				737263021FBE821F007D02A9 /* HHWeiboDetailCell.h */,
+				737263031FBE821F007D02A9 /* HHWeiboDetailCell.m */,
 			);
 			path = TableView;
 			sourceTree = "<group>";
@@ -1352,9 +1366,9 @@
 		737EA1A21FB932D900D32F64 /* Binder */ = {
 			isa = PBXGroup;
 			children = (
-				737EA1A31FB932D900D32F64 /* HHWeiboListBinder.h */,
-				737EA1A41FB932D900D32F64 /* HHWeiboListBinder.m */,
-				737EA1FA1FB99A1700D32F64 /* TableView */,
+				73F32FB91FBA96E900F55A0D /* HHWeiboTableBinder.h */,
+				73F32FBA1FBA96E900F55A0D /* HHWeiboTableBinder.m */,
+				73F32FB81FBA96BD00F55A0D /* Cell */,
 			);
 			path = Binder;
 			sourceTree = "<group>";
@@ -1484,21 +1498,12 @@
 		737EA1F11FB992DD00D32F64 /* TableView */ = {
 			isa = PBXGroup;
 			children = (
+				736FAFD52029982500E81507 /* HHWeiboCellViewProtocol.h */,
 				737EA1F21FB9930500D32F64 /* HHWeiboCellInfoView.h */,
 				737EA1F31FB9930500D32F64 /* HHWeiboCellInfoView.m */,
 				737EA1F51FB9931F00D32F64 /* HHWeiboCellInfoView.xib */,
 				737EA1F71FB9940300D32F64 /* HHWeiboCellContentView.h */,
 				737EA1F81FB9940300D32F64 /* HHWeiboCellContentView.m */,
-			);
-			path = TableView;
-			sourceTree = "<group>";
-		};
-		737EA1FA1FB99A1700D32F64 /* TableView */ = {
-			isa = PBXGroup;
-			children = (
-				73F32FB91FBA96E900F55A0D /* HHWeiboTableBinder.h */,
-				73F32FBA1FBA96E900F55A0D /* HHWeiboTableBinder.m */,
-				73F32FB81FBA96BD00F55A0D /* Cell */,
 			);
 			path = TableView;
 			sourceTree = "<group>";
@@ -1782,6 +1787,7 @@
 				737263001FBE7F8E007D02A9 /* HHWeiboDetailTableBinder.m in Sources */,
 				7362C2891FB53AF500C3CD3F /* HHWebViewController.m in Sources */,
 				734AC7D1200EEEDA0084439A /* HHTCPSocketRequest.m in Sources */,
+				73614692202867B70012A0D4 /* HHWeiboListBuilder.m in Sources */,
 				737263101FBE9077007D02A9 /* HHWeiboComment.m in Sources */,
 				7362C2C81FB5524300C3CD3F /* NSUserDefaults+Extension.m in Sources */,
 				7362C2871FB53AF500C3CD3F /* HHWebViewBinder.m in Sources */,
@@ -1819,7 +1825,6 @@
 				73F32FB31FBA88B800F55A0D /* HHWeiboCellContentBinder.m in Sources */,
 				9DFC8CF71FB7F06700F8C115 /* HHNetworkClient.m in Sources */,
 				73B9F0171FBD774500F460E0 /* HHWeiboDetailCommentsCell.m in Sources */,
-				7372630D1FBE8BC8007D02A9 /* HHWeiboDetailCellInfoBinder.m in Sources */,
 				73F32FC81FBAE13C00F55A0D /* CTMediator+Chat.m in Sources */,
 				7362C26F1FB53A5200C3CD3F /* NSObject+LogWhenDealloc.m in Sources */,
 				737EA1FD1FB9AA0700D32F64 /* HHWeiboCell.m in Sources */,
@@ -1832,7 +1837,6 @@
 				7362C2781FB53A9300C3CD3F /* UIFont+Extension.m in Sources */,
 				7372635D1FBEC6EC007D02A9 /* HHRegisterViewModel.m in Sources */,
 				7362C2A41FB53BAC00C3CD3F /* UIView+ErrorView.m in Sources */,
-				73B9F00A1FBD416900F460E0 /* HHWeiboDetailBinder.m in Sources */,
 				7362C33C1FB5AE1600C3CD3F /* HHWebSocketService.m in Sources */,
 				7362C2FD1FB5825400C3CD3F /* HHAPIManager.m in Sources */,
 				7362C3061FB5977600C3CD3F /* HHWeiboAPIManager.m in Sources */,
@@ -1850,7 +1854,6 @@
 				737EA1EF1FB98ABA00D32F64 /* HHWeiboCellContentViewModel.m in Sources */,
 				732B9143202448AC005B5676 /* HHAPIManger_JustForDemo.m in Sources */,
 				734BB1B02025C2BC0077D6F6 /* HHWebSocketAPIManager.m in Sources */,
-				737EA1B21FB932D900D32F64 /* HHWeiboListBinder.m in Sources */,
 				737EA1CF1FB94EE500D32F64 /* HHBinder.m in Sources */,
 				73B9F00E1FBD76FC00F460E0 /* HHWeiboDetailCommentsBinder.m in Sources */,
 				73F32FBB1FBA96E900F55A0D /* HHWeiboTableBinder.m in Sources */,
@@ -1860,6 +1863,7 @@
 				7362C3341FB5ABA000C3CD3F /* HHWebSocket.m in Sources */,
 				73B9F01A1FBD775000F460E0 /* HHWeiboDetailLikesCell.m in Sources */,
 				7362C3331FB5ABA000C3CD3F /* HHWebSocketRequest.m in Sources */,
+				736FAFD92029A14500E81507 /* HHWeiboDetailBuilder.m in Sources */,
 				7362C2911FB53B1600C3CD3F /* HHSegmentBinder.m in Sources */,
 				73F32FDF1FBAE92700F55A0D /* CTMediator+Root.m in Sources */,
 				7362C3391FB5ACF200C3CD3F /* HHNotifier.m in Sources */,
@@ -2041,7 +2045,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
 		};
@@ -2060,7 +2064,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Release;
 		};

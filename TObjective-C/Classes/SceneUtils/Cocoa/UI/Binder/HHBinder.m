@@ -21,16 +21,15 @@
 
 - (void)loadView{}
 
-- (instancetype)initWithView:(UIView *)view viewModel:(HHViewModel)viewModel {
+- (instancetype)initWithView:(UIView *)view {
     if (self = [super init]) {
-        
         self.view = view;
-        [self bindViewModel:viewModel];
     }
     return self;
 }
 
-- (void)bindViewModel:(HHViewModel)viewModel {
+- (void)bind:(HHViewModel)viewModel {
+    if (viewModel == nil) { return; }
     self.viewModel = viewModel;
     
     [self bindErrorView];

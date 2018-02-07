@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <ProtocolBuffers/GeneratedMessage.h>
 
 #import "HHDataFormatter.h"
-#import "GeneratedMessage.h"
 
 /** URL类型肯定都是后台定义的 直接copy过来即可 命名用后台的 方便调试时比对 */
 typedef enum : NSUInteger {

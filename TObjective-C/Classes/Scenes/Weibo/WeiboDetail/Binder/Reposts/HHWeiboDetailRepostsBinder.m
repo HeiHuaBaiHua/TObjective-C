@@ -6,9 +6,9 @@
 //  Copyright © 2017年 HeiHuaBaiHua. All rights reserved.
 //
 
-#import "HHWeiboDetailRepostsBinder.h"
-
 #import "HHFoundation.h"
+
+#import "HHWeiboDetailRepostsBinder.h"
 #import "HHWeiboDetailRepostsCell.h"
 @interface HHWeiboDetailRepostsBinder ()
 

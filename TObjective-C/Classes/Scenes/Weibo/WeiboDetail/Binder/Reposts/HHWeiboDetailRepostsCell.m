@@ -32,7 +32,7 @@
     return self;
 }
 
-- (void)bindViewModel:(id)viewModel {
+- (void)bind:(id)viewModel {
     self.viewModel = viewModel;
 }
 

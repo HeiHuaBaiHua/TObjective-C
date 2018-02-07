@@ -28,7 +28,8 @@
 //    self.binder = [HHProfileBuilder <#function#>];
 //    self.view = self.binder.view;
     
-    self.binder = [[HHRegisterBinder alloc] initWithView:[HHRegisterView IBInstance] viewModel:[HHRegisterViewModel new]];
+    self.binder = [[HHRegisterBinder alloc] initWithView:[HHRegisterView IBInstance]];
+    HH_Bind(self.binder, [HHRegisterViewModel new]);
     self.view = self.binder.view;
 }
 

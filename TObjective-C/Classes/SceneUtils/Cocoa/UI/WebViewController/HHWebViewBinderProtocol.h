@@ -14,6 +14,6 @@
 - (WKWebView *)webView;
 - (UIBarButtonItem *)backItem;
 
-- (void)bindViewModel:(id<HHWebViewModelProtocol>)viewModel;
+- (void)bind:(id<HHWebViewModelProtocol>)viewModel;
 
 @end

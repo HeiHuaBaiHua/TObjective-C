@@ -6,9 +6,9 @@
 //  Copyright © 2017年 HeiHuaBaiHua. All rights reserved.
 //
 
-#import "HHWeiboDetailLikesBinder.h"
-
 #import "HHFoundation.h"
+
+#import "HHWeiboDetailLikesBinder.h"
 #import "HHWeiboDetailLikesCell.h"
 @interface HHWeiboDetailLikesBinder ()
 

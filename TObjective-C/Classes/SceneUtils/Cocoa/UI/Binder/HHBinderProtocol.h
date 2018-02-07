@@ -23,7 +23,8 @@ typedef id<HHViewModelProtocol> HHViewModel;
 
 @protocol HHBinderProtocol <NSObject>
 
-- (id)initWithView:(UIView *)view viewModel:(id)viewModel;
+- (id)initWithView:(UIView *)view;
+- (void)bind:(id)viewModel;
 
 @optional
 - (UIView *)view;
@@ -37,7 +38,7 @@ typedef id<HHViewModelProtocol> HHViewModel;
 #define HH_Bind(aBinder, aViewModel) do {\
 id binder = (aBinder);\
 id bindedVM = (aViewModel);\
-SEL sel = NSSelectorFromString(@"bindViewModel:");\
+SEL sel = NSSelectorFromString(@"bind:");\
 if ([binder respondsToSelector:sel]) {\
     _Pragma("clang diagnostic push")\
     _Pragma("clang diagnostic ignored \"-Warc-performSelector-leaks\"")\

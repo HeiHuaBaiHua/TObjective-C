@@ -11,17 +11,15 @@
 #import "HHFoundation.h"
 
 #import "HHWeiboCell.h"
-#import "HHWeiboCellInfoBinder.h"
-#import "HHWeiboCellContentBinder.h"
-
+#import "HHWeiboListBuilder.h"
 #import "HHWeiboCellViewModelProtocol.h"
 @interface HHWeiboCell ()
 
 @property (nonatomic, strong) id<HHWeiboCellViewModelProtocol> viewModel;
 
-@property (nonatomic, strong) HHWeiboCellInfoBinder *infoBinder;
-@property (nonatomic, strong) HHWeiboCellContentBinder *contentBinder;
-@property (nonatomic, strong) HHWeiboCellContentBinder *retweetedWeiboBinder;
+@property (nonatomic, strong) id<HHBinderProtocol> infoBinder;
+@property (nonatomic, strong) id<HHBinderProtocol> contentBinder;
+@property (nonatomic, strong) id<HHBinderProtocol> retweetedWeiboBinder;
 
 @end
 
@@ -38,7 +36,7 @@
     return self;
 }
 
-- (void)bindViewModel:(id<HHWeiboCellViewModelProtocol>)viewModel {
+- (void)bind:(id<HHWeiboCellViewModelProtocol>)viewModel {
     self.viewModel = viewModel;
     
     /** 头像+三个按钮 */
@@ -70,9 +68,9 @@
     self.backgroundColor = [UIColor whiteColor];
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    self.infoBinder = [HHWeiboCellInfoBinder new];
-    self.contentBinder = [HHWeiboCellContentBinder new];
-    self.retweetedWeiboBinder = [HHWeiboCellContentBinder new];
+    self.infoBinder = [HHWeiboListBuilder weiboInfoBinder];
+    self.contentBinder = [HHWeiboListBuilder weiboContentBinder];
+    self.retweetedWeiboBinder = [HHWeiboListBuilder weiboContentBinder];
 }
 
 - (void)layoutUI {

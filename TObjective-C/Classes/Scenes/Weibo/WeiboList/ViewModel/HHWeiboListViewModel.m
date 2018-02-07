@@ -15,7 +15,7 @@
 @interface HHWeiboListViewModel ()
 
 @property (nonatomic, strong) NSArray *titles;
-/** 协议还是.h 在runtime的加持下区别极小 都只是接口声明 随意选择 */
+
 @property (nonatomic, strong) id<HHListViewModelProtocol> publicWeiboListViewModel;
 @property (nonatomic, strong) id<HHListViewModelProtocol> followedWeiboListViewModel;
 

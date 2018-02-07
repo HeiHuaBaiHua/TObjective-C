@@ -6,27 +6,38 @@
 //  Copyright © 2017年 HeiHuaBaiHua. All rights reserved.
 //
 
-#import "ReactiveCocoa.h"
-#import "UIButton+WebCache.h"
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <SDWebImage/UIButton+WebCache.h>
 
 #import "HHFoundation.h"
 
-#import "HHWeiboCellInfoView.h"
 #import "HHWeiboCellInfoBinder.h"
 #import "HHWeiboCellInfoViewModelProtocol.h"
 
 @interface HHWeiboCellInfoBinder ()
 
+@property (nonatomic, strong) UIView<HHWeiboCellInfoViewProtocol> *view;
 @property (nonatomic, strong) id<HHWeiboCellInfoViewModelProtocol> viewModel;
 
 @end
 
 @implementation HHWeiboCellInfoBinder
 
-- (void)loadView {
-    self.view = [HHWeiboCellInfoView IBInstance];
+- (instancetype)initWithView:(UIView<HHWeiboCellInfoViewProtocol> *)view {
+    if (self = [super init]) {
+        self.view = view;
+        [self bind];
+    }
+    return self;
+}
+
+- (void)bind:(id<HHWeiboCellInfoViewModelProtocol>)viewModel {
+    self.viewModel = viewModel;
+}
+
+- (void)bind {
+    UIView<HHWeiboCellInfoViewProtocol> *view = self.view;
     
-    HHWeiboCellInfoView *view = (HHWeiboCellInfoView *)self.view;
     RAC(view.nameLabel, text) = RACObserve(self, viewModel.name);
     RAC(view.sendDateLabel, text) = RACObserve(self, viewModel.createDate);
     RAC(view.likeButton, title) = RACObserve(self, viewModel.likesCount);
@@ -40,10 +51,6 @@
     }];
     
     [view.likeButton addTarget:self action:@selector(onClickLikeButton:) forControlEvents:UIControlEventTouchUpInside];
-}
-
-- (void)bindViewModel:(id<HHWeiboCellInfoViewModelProtocol>)viewModel {
-    self.viewModel = viewModel;
 }
 
 #pragma mark - Action

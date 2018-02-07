@@ -22,7 +22,7 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     
-    UITableView *listView = self.view;
+    UITableView *listView = self.tableView;
     if (!listView.isFirstScrollResponder ||
         listView.contentOffset.y <= 0) {
         listView.contentOffset = CGPointZero;
@@ -33,9 +33,8 @@
 #pragma mark - Override
 
 - (void)refreshData {
-    
     if (self.viewModel.allData.count == 0) {
-        [self.view showHUD];
+        [self.tableView showHUD];
     }
     [self.viewModel.refreshCommand execute:nil];
 }
@@ -46,15 +45,15 @@
     [[self.viewModel.refreshCommand.executionSignals switchToLatest] subscribeNext:^(id x) {
         @strongify(self);
         
-        self.view.errorView.hidden = YES;
-        [self.view hideHUD];
-        [self.view.mj_footer resetNoMoreData];
-        [self.view reloadData];
+        self.tableView.errorView.hidden = YES;
+        [self.tableView hideHUD];
+        [self.tableView.mj_footer resetNoMoreData];
+        [self.tableView reloadData];
     }];
     
     [self.viewModel.refreshCommand.errors subscribeNext:^(NSError *error) {
         @strongify(self);
-        [self.view hideHUD];
+        [self.tableView hideHUD];
     }];
 }
 

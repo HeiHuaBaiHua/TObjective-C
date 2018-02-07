@@ -13,12 +13,12 @@
 #import "HHFoundation.h"
 #import "CTMediator+Web.h"
 
-#import "HHWeiboCellContentView.h"
 #import "HHWeiboCellContentBinder.h"
 #import "HHWeiboCellContentViewModelProtocol.h"
 
 @interface HHWeiboCellContentBinder ()<MWPhotoBrowserDelegate>
 
+@property (nonatomic, strong) UIView<HHWeiboCellContentViewProtocol> *view;
 @property (nonatomic, strong) id<HHWeiboCellContentViewModelProtocol> viewModel;
 
 @property (nonatomic, strong) RACCommand *imageButtonCommand;
@@ -26,20 +26,23 @@
 
 @implementation HHWeiboCellContentBinder
 
-- (void)loadView {
-    self.view = [HHWeiboCellContentView new];
-    
-    HHWeiboCellContentView *view = (HHWeiboCellContentView *)self.view;
-    RAC(view.textLabel, attributedText) = RACObserve(self, viewModel.text);
-    for (UIButton *imageButton in view.imageButtons) {
-        imageButton.rac_command = self.imageButtonCommand;
+- (instancetype)initWithView:(UIView<HHWeiboCellContentViewProtocol> *)view {
+    if (self = [super init]) {
+        self.view = view;
+        
+        RAC(view.textLabel, attributedText) = RACObserve(self, viewModel.text);
+        for (UIButton *imageButton in view.imageButtons) {
+            imageButton.rac_command = self.imageButtonCommand;
+        }
     }
+    return self;
 }
 
-- (void)bindViewModel:(id<HHWeiboCellContentViewModelProtocol>)viewModel {
+- (void)bind:(id<HHWeiboCellContentViewModelProtocol>)viewModel {
     self.viewModel = viewModel;
     
-    [((HHWeiboCellContentView *)self.view).imageButtons enumerateObjectsUsingBlock:^(UIButton * _Nonnull imageButton, NSUInteger idx, BOOL * _Nonnull stop) {
+    UIView<HHWeiboCellContentViewProtocol> *view = self.view;
+    [view.imageButtons enumerateObjectsUsingBlock:^(UIButton * _Nonnull imageButton, NSUInteger idx, BOOL * _Nonnull stop) {
         
         imageButton.hidden = (idx >= viewModel.imageUrls.count);
         if (!imageButton.isHidden) {

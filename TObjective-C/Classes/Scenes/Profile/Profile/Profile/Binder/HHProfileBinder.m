@@ -24,8 +24,7 @@
     return self;
 }
 
-- (void)bindViewModel:(id<HHProfileViewModelProtocol>)viewModel {
-    
+- (void)bind:(id<HHProfileViewModelProtocol>)viewModel {
     self.viewModel = viewModel;
     
     [self bind];

@@ -26,7 +26,7 @@
     }
     
     return [[[HHWeiboAPIManager new] weiboCommentListSignalWithWeiboID:@"" page:page pageSize:0] map:^id(NSArray *comments) {
-        
+    
         return [comments.rac_sequence map:^id(HHWeiboComment *value) {
             return [[HHWeiboDetailCommentsCellViewModel alloc] initWithObject:value];
         }].array;

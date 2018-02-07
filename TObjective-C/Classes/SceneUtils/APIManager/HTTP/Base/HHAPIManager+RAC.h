@@ -6,9 +6,10 @@
 //  Copyright © 2017年 HeiHuaBaiHua. All rights reserved.
 //
 
+#import <ReactiveCocoa/ReactiveCocoa.h>
+
 #import "HHAPIManager.h"
 
-#import "ReactiveCocoa.h"
 @interface HHAPIManager (RAC)
 
 - (RACSignal *)dataSignalWithConfig:(HHDataTaskConfiguration *)config;

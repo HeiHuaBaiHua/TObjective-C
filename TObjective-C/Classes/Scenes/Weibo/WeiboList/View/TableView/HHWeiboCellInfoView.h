@@ -8,20 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HHWeiboCellInfoView : UIView
+#import "HHWeiboCellViewProtocol.h"
 
-@property (weak, nonatomic) IBOutlet UIButton *avatarButton;
-@property (weak, nonatomic) IBOutlet UIImageView *vipImageView;
-
-@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *hotImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *levelImageView;
-
-@property (weak, nonatomic) IBOutlet UILabel *sendDateLabel;
-
-@property (weak, nonatomic) IBOutlet UIButton *likeButton;
-@property (weak, nonatomic) IBOutlet UIButton *repostButton;
-@property (weak, nonatomic) IBOutlet UIButton *commentButton;
+@interface HHWeiboCellInfoView : UIView<HHWeiboCellInfoViewProtocol>
 
 @end
 

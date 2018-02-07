@@ -8,9 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HHWeiboCellContentView : UIView
-
-- (UILabel *)textLabel;
-- (NSArray<UIButton *> *)imageButtons;
+#import "HHWeiboCellViewProtocol.h"
+@interface HHWeiboCellContentView : UIView<HHWeiboCellContentViewProtocol>
 
 @end

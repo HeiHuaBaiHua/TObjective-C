@@ -15,7 +15,7 @@
 + (id<HHWebViewBinderProtocol>)webViewWithURL:(NSString *)url {
     HHWebViewBinder *binder = [HHWebViewBinder new];
     HHWebViewModel *viewModel = [[HHWebViewModel alloc] initWithURL:url];
-    [binder bindViewModel:viewModel];
+    [binder bind:viewModel];
     return binder;
 }
 
@@ -26,7 +26,7 @@
 + (id<HHWebViewBinderProtocol>)webViewWithViewModel:(id<HHWebViewModelProtocol>)viewModel {
     
     HHWebViewBinder *binder = [HHWebViewBinder new];
-    [binder bindViewModel:viewModel];
+    [binder bind:viewModel];
     return binder;
 }
 
