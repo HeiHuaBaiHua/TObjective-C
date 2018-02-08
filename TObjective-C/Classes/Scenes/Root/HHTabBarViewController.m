@@ -62,7 +62,7 @@
     }]];
     
     UINavigationController *profileNavVC = [HHUIBuilder navigationControllerWithRootVC:[CTRouter tempViewControllerWithTitle:@"Profile" onClickHandler:^{
-        [CTRouter pushToProfileVC];
+        [CTRouter pushToRegisterVC];
     }]];
     self.viewControllers = @[weiboNavVC, chatNavVC, composeNavVC, musicNavVC, profileNavVC];
     

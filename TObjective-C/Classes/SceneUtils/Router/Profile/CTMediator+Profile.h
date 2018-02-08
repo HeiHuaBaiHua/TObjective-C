@@ -10,6 +10,6 @@
 
 @interface CTMediator (Profile)
 
-- (void)pushToProfileVC;
+- (void)pushToRegisterVC;
 
 @end

@@ -10,6 +10,8 @@
 		73266C271FBBDDBD0086B0F1 /* HHWeiboDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73266C261FBBDDBD0086B0F1 /* HHWeiboDetailViewController.m */; };
 		73266C301FBBDF1A0086B0F1 /* HHWeiboDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73266C2F1FBBDF1A0086B0F1 /* HHWeiboDetailView.m */; };
 		73266C331FBBDF290086B0F1 /* HHWeiboDetailViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73266C321FBBDF290086B0F1 /* HHWeiboDetailViewModel.m */; };
+		7326F65D202BEC2600A2ACA7 /* HHProfileBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7326F65C202BEC2600A2ACA7 /* HHProfileBuilder.m */; };
+		7326F660202BEC9D00A2ACA7 /* HHRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7326F65F202BEC9D00A2ACA7 /* HHRegisterViewController.m */; };
 		732B9143202448AC005B5676 /* HHAPIManger_JustForDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 732B9142202448AC005B5676 /* HHAPIManger_JustForDemo.m */; };
 		732B914720244CBD005B5676 /* HHJustForDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 732B914520244CBD005B5676 /* HHJustForDemoViewController.m */; };
 		732B914A20244CD5005B5676 /* HHJustForDemoViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 732B914920244CD5005B5676 /* HHJustForDemoViewController.storyboard */; };
@@ -158,6 +160,10 @@
 		73266C311FBBDF290086B0F1 /* HHWeiboDetailViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHWeiboDetailViewModel.h; sourceTree = "<group>"; };
 		73266C321FBBDF290086B0F1 /* HHWeiboDetailViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HHWeiboDetailViewModel.m; sourceTree = "<group>"; };
 		73266C421FBC27C60086B0F1 /* HHWeiboDetailViewModelProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHWeiboDetailViewModelProtocol.h; sourceTree = "<group>"; };
+		7326F65B202BEC2600A2ACA7 /* HHProfileBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHProfileBuilder.h; sourceTree = "<group>"; };
+		7326F65C202BEC2600A2ACA7 /* HHProfileBuilder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HHProfileBuilder.m; sourceTree = "<group>"; };
+		7326F65E202BEC9D00A2ACA7 /* HHRegisterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHRegisterViewController.h; sourceTree = "<group>"; };
+		7326F65F202BEC9D00A2ACA7 /* HHRegisterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HHRegisterViewController.m; sourceTree = "<group>"; };
 		732B9141202448AC005B5676 /* HHAPIManger_JustForDemo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHAPIManger_JustForDemo.h; sourceTree = "<group>"; };
 		732B9142202448AC005B5676 /* HHAPIManger_JustForDemo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HHAPIManger_JustForDemo.m; sourceTree = "<group>"; };
 		732B914420244CBD005B5676 /* HHJustForDemoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHJustForDemoViewController.h; sourceTree = "<group>"; };
@@ -596,6 +602,24 @@
 			path = Comments;
 			sourceTree = "<group>";
 		};
+		7326F659202BEC0100A2ACA7 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				7326F65E202BEC9D00A2ACA7 /* HHRegisterViewController.h */,
+				7326F65F202BEC9D00A2ACA7 /* HHRegisterViewController.m */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		7326F65A202BEC1200A2ACA7 /* Builder */ = {
+			isa = PBXGroup;
+			children = (
+				7326F65B202BEC2600A2ACA7 /* HHProfileBuilder.h */,
+				7326F65C202BEC2600A2ACA7 /* HHProfileBuilder.m */,
+			);
+			path = Builder;
+			sourceTree = "<group>";
+		};
 		7337EA43201C505F00D08E2D /* HTTP */ = {
 			isa = PBXGroup;
 			children = (
@@ -964,6 +988,7 @@
 			isa = PBXGroup;
 			children = (
 				7362C2601FB5396A00C3CD3F /* Targets */,
+				7326F65A202BEC1200A2ACA7 /* Builder */,
 				7362C2591FB5396A00C3CD3F /* Profile */,
 				737263321FBEC6BD007D02A9 /* Login */,
 				7372634A1FBEC6D4007D02A9 /* Register */,
@@ -1318,6 +1343,7 @@
 		7372634A1FBEC6D4007D02A9 /* Register */ = {
 			isa = PBXGroup;
 			children = (
+				7326F659202BEC0100A2ACA7 /* ViewController */,
 				7372634E1FBEC6EC007D02A9 /* Binder */,
 				737263521FBEC6EC007D02A9 /* View */,
 				737263561FBEC6EC007D02A9 /* ViewModel */,
@@ -1806,6 +1832,7 @@
 				737EA1DC1FB9813400D32F64 /* HHWeiboCellViewModel.m in Sources */,
 				7362C2881FB53AF500C3CD3F /* HHWebViewBuilder.m in Sources */,
 				737263471FBEC6BD007D02A9 /* HHLoginView.m in Sources */,
+				7326F660202BEC9D00A2ACA7 /* HHRegisterViewController.m in Sources */,
 				7362C22E1FB5371400C3CD3F /* main.m in Sources */,
 				73F32FE21FBAF1F200F55A0D /* HHTargetWeb.m in Sources */,
 				737EA1EC1FB98AA700D32F64 /* HHWeiboCellInfoViewModel.m in Sources */,
@@ -1846,6 +1873,7 @@
 				7362C28A1FB53AF500C3CD3F /* HHWebViewModel.m in Sources */,
 				73B9F0141FBD771800F460E0 /* HHWeiboDetailRepostsBinder.m in Sources */,
 				737263451FBEC6BD007D02A9 /* HHLoginBinder.m in Sources */,
+				7326F65D202BEC2600A2ACA7 /* HHProfileBuilder.m in Sources */,
 				737263491FBEC6BD007D02A9 /* HHLoginViewModel.m in Sources */,
 				73B9F02F1FBD787D00F460E0 /* HHWeiboDetailRepostsCellViewModel.m in Sources */,
 				734AC7CE200EEEDA0084439A /* HHDataFormatter.m in Sources */,

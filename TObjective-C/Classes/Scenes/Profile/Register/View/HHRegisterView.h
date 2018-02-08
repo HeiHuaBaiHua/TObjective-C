@@ -8,16 +8,22 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HHRegisterView : UIView
+@protocol HHRegisterViewProtocol <NSObject>
 
-@property (weak, nonatomic) IBOutlet UITextField *accountTF;
-@property (weak, nonatomic) IBOutlet UITextField *passwordTF;
-@property (weak, nonatomic) IBOutlet UITextField *ensurePasswordTF;
-@property (weak, nonatomic) IBOutlet UITextField *verifyCodeTF;
-@property (weak, nonatomic) IBOutlet UIButton *verifyCodeButton;
+- (UITextField *)accountTF;
+- (UITextField *)passwordTF;
+- (UITextField *)ensurePasswordTF;
+- (UITextField *)verifyCodeTF;
+- (UIButton *)verifyCodeButton;
 
-@property (weak, nonatomic) IBOutlet UILabel *errorLabel;
-@property (weak, nonatomic) IBOutlet UIButton *submitButton;
+- (UILabel *)errorLabel;
+- (UIButton *)submitButton;
+
+@end
+
+@interface HHRegisterView : UIView<HHRegisterViewProtocol>
+
+
 
 @end
         

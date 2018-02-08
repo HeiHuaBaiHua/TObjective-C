@@ -10,6 +10,19 @@
 
 #import "HHRegisterView.h"
 
+@interface HHRegisterView ()
+
+@property (weak, nonatomic) IBOutlet UITextField *accountTF;
+@property (weak, nonatomic) IBOutlet UITextField *passwordTF;
+@property (weak, nonatomic) IBOutlet UITextField *ensurePasswordTF;
+@property (weak, nonatomic) IBOutlet UITextField *verifyCodeTF;
+@property (weak, nonatomic) IBOutlet UIButton *verifyCodeButton;
+
+@property (weak, nonatomic) IBOutlet UILabel *errorLabel;
+@property (weak, nonatomic) IBOutlet UIButton *submitButton;
+
+@end
+
 @implementation HHRegisterView
 
 - (void)awakeFromNib {

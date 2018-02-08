@@ -8,20 +8,19 @@
 
 #import "HHFoundation.h"
 
-#import "HHRegisterView.h"
+#import "HHProfileBuilder.h"
 #import "HHRegisterBinder.h"
-#import "HHRegisterViewModelProtocol.h"
 
 @interface HHRegisterBinder ()
 
-@property (nonatomic, strong) HHRegisterView *view;
+@property (nonatomic, strong) UIView<HHRegisterViewProtocol> *view;
 @property (nonatomic, strong) id<HHRegisterViewModelProtocol> viewModel;
 
 @end
 
 @implementation HHRegisterBinder
 
-- (instancetype)initWithView:(HHRegisterView *)view {
+- (instancetype)initWithView:(UIView<HHRegisterViewProtocol> *)view {
     if (self = [super init]) {
         self.view = view;
     }

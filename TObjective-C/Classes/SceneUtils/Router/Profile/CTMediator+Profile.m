@@ -12,11 +12,11 @@ static NSString *const TargetWeibo = @"HHTargetProfile";
 
 @implementation CTMediator (Profile)
 
-- (void)pushToProfileVC {
+- (void)pushToRegisterVC {
     
-    UIViewController *profileVC = [self performTarget:TargetWeibo action:@"profileVC" params:nil shouldCacheTarget:NO];
-    profileVC.hidesBottomBarWhenPushed = YES;
-    [self.currentNavVC pushViewController:profileVC animated:YES];
+    UIViewController *registerVC = [self performTarget:TargetWeibo action:@"registerVC" params:nil shouldCacheTarget:NO];
+    registerVC.hidesBottomBarWhenPushed = YES;
+    [self.currentNavVC pushViewController:registerVC animated:YES];
 }
 
 @end

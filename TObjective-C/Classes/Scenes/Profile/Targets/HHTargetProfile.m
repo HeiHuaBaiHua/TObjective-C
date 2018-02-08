@@ -8,11 +8,11 @@
 
 #import "HHTargetProfile.h"
 
-#import "HHProfileViewController.h"
+#import "HHRegisterViewController.h"
 @implementation HHTargetProfile
 
-- (UIViewController *)profileVC {
-    return [HHProfileViewController new];
+- (UIViewController *)registerVC {
+    return [HHRegisterViewController new];
 }
 
 @end

@@ -10,6 +10,6 @@
 
 @interface HHTargetProfile : NSObject
 
-- (UIViewController *)profileVC;
+- (UIViewController *)registerVC;
 
 @end
