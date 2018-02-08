@@ -1,0 +1,9 @@
+TObjectiveCServer我用golang写的测试服务器
+mac下双击TObjectiveCServer执行将会执行以下事件:
+
+1.  读取同目录下的Weibo文件作为数据源
+2. 在本机12345端口开启一个简单的HTTP服务器
+3. 在本机23456端口开启一个简单的TCP服务器
+4. 在本机34567端口开启一个简单的WebSocket服务器
+
+服务器的数据来源都是Weibo文件, 另外TCP和WebSocket服务器每隔70或90秒会向客户端发送一条推送.
