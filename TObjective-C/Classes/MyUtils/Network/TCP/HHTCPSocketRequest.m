@@ -82,7 +82,7 @@
     [request.formattedData appendData:[HHDataFormatter msgSerialNumberDataFromInteger:requestIdentifier]];
     [request.formattedData appendData:[HHDataFormatter msgContentLengthDataFromInteger:(uint32_t)content.length]];
     
-    [request.formattedData appendData:content];
+    if (content != nil) { [request.formattedData appendData:content]; }
     return request;
 }
 
