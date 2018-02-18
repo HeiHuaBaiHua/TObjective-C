@@ -143,6 +143,8 @@
 		73F32FDB1FBAE26700F55A0D /* HHTargetRoot.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F32FDA1FBAE26700F55A0D /* HHTargetRoot.m */; };
 		73F32FDF1FBAE92700F55A0D /* CTMediator+Root.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F32FDE1FBAE92700F55A0D /* CTMediator+Root.m */; };
 		73F32FE21FBAF1F200F55A0D /* HHTargetWeb.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F32FE11FBAF1F200F55A0D /* HHTargetWeb.m */; };
+		9D0C520D20395EDF00B2DB6D /* HHTCPSocketResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0C520C20395EDE00B2DB6D /* HHTCPSocketResponse.m */; };
+		9D0C52102039641600B2DB6D /* HHWebSocketResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0C520F2039641600B2DB6D /* HHWebSocketResponse.m */; };
 		9DBD7D2D1FBFD86E00485C8E /* weibo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9DBD7D2C1FBFD86E00485C8E /* weibo.plist */; };
 		9DFC8CF71FB7F06700F8C115 /* HHNetworkClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DFC8CF01FB7F06700F8C115 /* HHNetworkClient.m */; };
 		9DFC8CF81FB7F06700F8C115 /* HHService.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DFC8CF21FB7F06700F8C115 /* HHService.m */; };
@@ -442,6 +444,10 @@
 		73F32FE01FBAF1F200F55A0D /* HHTargetWeb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHTargetWeb.h; sourceTree = "<group>"; };
 		73F32FE11FBAF1F200F55A0D /* HHTargetWeb.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HHTargetWeb.m; sourceTree = "<group>"; };
 		94071C74E13BE5820B869446 /* Pods-TObjective-C.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TObjective-C.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TObjective-C/Pods-TObjective-C.debug.xcconfig"; sourceTree = "<group>"; };
+		9D0C520B20395EDE00B2DB6D /* HHTCPSocketResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHTCPSocketResponse.h; sourceTree = "<group>"; };
+		9D0C520C20395EDE00B2DB6D /* HHTCPSocketResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHTCPSocketResponse.m; sourceTree = "<group>"; };
+		9D0C520E2039641600B2DB6D /* HHWebSocketResponse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHWebSocketResponse.h; sourceTree = "<group>"; };
+		9D0C520F2039641600B2DB6D /* HHWebSocketResponse.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HHWebSocketResponse.m; sourceTree = "<group>"; };
 		9DBD7D2C1FBFD86E00485C8E /* weibo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = weibo.plist; sourceTree = "<group>"; };
 		9DFC8CEF1FB7F06700F8C115 /* HHNetworkClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHNetworkClient.h; sourceTree = "<group>"; };
 		9DFC8CF01FB7F06700F8C115 /* HHNetworkClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHNetworkClient.m; sourceTree = "<group>"; };
@@ -677,6 +683,8 @@
 				734AC7C0200EEED70084439A /* HHTCPSocketService.m */,
 				734AC7C6200EEED90084439A /* HHTCPSocketRequest.h */,
 				734AC7C9200EEED90084439A /* HHTCPSocketRequest.m */,
+				9D0C520B20395EDE00B2DB6D /* HHTCPSocketResponse.h */,
+				9D0C520C20395EDE00B2DB6D /* HHTCPSocketResponse.m */,
 				734AC7C7200EEED90084439A /* HHTCPSocketTask.h */,
 				734AC7C4200EEED80084439A /* HHTCPSocketTask.m */,
 				734AC7C8200EEED90084439A /* HHTCPSocketClient.h */,
@@ -1213,6 +1221,8 @@
 				7362C33B1FB5AE1600C3CD3F /* HHWebSocketService.m */,
 				7362C3301FB5ABA000C3CD3F /* HHWebSocketRequest.h */,
 				7362C32A1FB5ABA000C3CD3F /* HHWebSocketRequest.m */,
+				9D0C520E2039641600B2DB6D /* HHWebSocketResponse.h */,
+				9D0C520F2039641600B2DB6D /* HHWebSocketResponse.m */,
 				7362C3311FB5ABA000C3CD3F /* HHWebSocketTask.h */,
 				7362C3291FB5ABA000C3CD3F /* HHWebSocketTask.m */,
 				7362C32B1FB5ABA000C3CD3F /* HHWebSocketClient.h */,
@@ -1823,6 +1833,7 @@
 				7362C2C21FB5492800C3CD3F /* UIView+Extension.m in Sources */,
 				7362C2A21FB53BAC00C3CD3F /* HHErrorBinder.m in Sources */,
 				7372635C1FBEC6EC007D02A9 /* HHRegisterView.m in Sources */,
+				9D0C52102039641600B2DB6D /* HHWebSocketResponse.m in Sources */,
 				7362C2921FB53B1600C3CD3F /* HHSegmentView.m in Sources */,
 				73F32FCE1FBAE15400F55A0D /* CTMediator+Music.m in Sources */,
 				7372636A1FBED37B007D02A9 /* HHUserAPIManager.m in Sources */,
@@ -1862,6 +1873,7 @@
 				734BB1B62025C4500077D6F6 /* HHWeiboWebSocketAPIManager.m in Sources */,
 				7337EA50201C571500D08E2D /* HHWeiboTCPAPIManager.m in Sources */,
 				7362C2781FB53A9300C3CD3F /* UIFont+Extension.m in Sources */,
+				9D0C520D20395EDF00B2DB6D /* HHTCPSocketResponse.m in Sources */,
 				7372635D1FBEC6EC007D02A9 /* HHRegisterViewModel.m in Sources */,
 				7362C2A41FB53BAC00C3CD3F /* UIView+ErrorView.m in Sources */,
 				7362C33C1FB5AE1600C3CD3F /* HHWebSocketService.m in Sources */,

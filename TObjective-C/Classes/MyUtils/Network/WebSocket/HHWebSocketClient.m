@@ -22,7 +22,7 @@
 
 - (HHWebSocketRequest *)request;
 - (void)setClient:(id)client;
-- (void)completeWithResponseData:(id)responseData error:(NSError *)error;
+- (void)completeWithResponse:(HHWebSocketResponse *)response error:(NSError *)error;
 
 @end
 
@@ -102,7 +102,7 @@ static dispatch_semaphore_t lock;
         } else {
             error = HHError(HHNetworkErrorNotice, HHNetworkTaskErrorCannotConnectedToInternet);
         }
-        [task completeWithResponseData:nil error:error];
+        [task completeWithResponse:nil error:error];
     }
 }
 
@@ -126,7 +126,7 @@ static dispatch_semaphore_t lock;
     if (self.socket.isConnected) { return; }
     
     for (HHWebSocketTask *task in self.dispatchTable.allValues) {
-        [task completeWithResponseData:nil error:HHError(@"长连接已断开", HHNetworkTaskErrorCannotConnectedToInternet)];
+        [task completeWithResponse:nil error:HHError(@"长连接已断开", HHNetworkTaskErrorCannotConnectedToInternet)];
     }
     dispatch_semaphore_wait(lock, DISPATCH_TIME_FOREVER);
     [self.dispatchTable removeAllObjects];
@@ -174,43 +174,58 @@ static dispatch_semaphore_t lock;
     return task.taskIdentifier;
 }
 
+//- (void)handleMessage:(id)message {
+//    if (message == nil) { return; }
+//    if ([message isKindOfClass:[NSString class]]) {
+//        message = [(NSString *)message dataUsingEncoding:NSUTF8StringEncoding];
+//    }
+//    NSDictionary *messageDict = [NSJSONSerialization JSONObjectWithData:message options:0 error:NULL];
+//    if (messageDict == nil) { return; }
+//
+//    HHWebSocketRequestURL url = [HHWebSocketMessageParser responseURLFromMessage:messageDict];
+//    if (url > WEBSOCKET_max_notification) {/** 请求响应 */
+//
+//        NSNumber *serNum = [HHWebSocketMessageParser responseSerialNumberFromMessage:messageDict];
+//        NSDictionary *responseData = [HHWebSocketMessageParser responseDataFromMessage:messageDict];
+//        HHWebSocketTask *task = self.dispatchTable[serNum];
+//        [task completeWithResponseData:responseData error:nil];
+//    }  else {/** 推送 */
+////        if ([self.observer respondsToSelector:@selector(didReceiveSocketNotification:)]) {
+////            [self.observer didReceiveSocketNotification:messageDict];
+////        }
+//        [self dispatchRemoteNotification:url message:messageDict];
+//    }
+//}
+
 - (void)handleMessage:(id)message {
-    if (message == nil) { return; }
-    if ([message isKindOfClass:[NSString class]]) {
-        message = [(NSString *)message dataUsingEncoding:NSUTF8StringEncoding];
-    }
-    NSDictionary *messageDict = [NSJSONSerialization JSONObjectWithData:message options:0 error:NULL];
-    if (messageDict == nil) { return; }
+    HHWebSocketResponse *response = [HHWebSocketResponse responseWithData:message];
+    if (response == nil) { return; }
     
-    HHWebSocketRequestURL url = [HHWebSocketMessageParser responseURLFromMessage:messageDict];
-    if (url > WEBSOCKET_max_notification) {/** 请求响应 */
-    
-        NSNumber *serNum = [HHWebSocketMessageParser responseSerialNumberFromMessage:messageDict];
-        NSDictionary *responseData = [HHWebSocketMessageParser responseDataFromMessage:messageDict];
-        HHWebSocketTask *task = self.dispatchTable[serNum];
-        [task completeWithResponseData:responseData error:nil];
+    if (response.url > WEBSOCKET_max_notification) {/** 请求响应 */
+        
+        HHWebSocketTask *task = self.dispatchTable[@(response.serNum)];
+        [task completeWithResponse:response error:nil];
     }  else {/** 推送 */
-//        if ([self.observer respondsToSelector:@selector(didReceiveSocketNotification:)]) {
-//            [self.observer didReceiveSocketNotification:messageDict];
-//        }
-        [self dispatchRemoteNotification:url message:messageDict];
+        //        if ([self.observer respondsToSelector:@selector(didReceiveSocketNotification:)]) {
+        //            [self.observer didReceiveSocketNotification:messageDict];
+        //        }
+        [self dispatchRemoteNotification:response];
     }
 }
 
-- (void)dispatchRemoteNotification:(HHWebSocketRequestURL)notification message:(NSDictionary *)message {
+- (void)dispatchRemoteNotification:(HHWebSocketResponse *)notification {
     
-    NSDictionary *userInfo = [HHWebSocketMessageParser responseDataFromMessage:message];
-    switch (notification) {
+    switch (notification.url) {
         case WEBSOCKET_notification_xxx: {
-            NSLog(@"received webSocket notification_xxx: %@", userInfo);
+            NSLog(@"received webSocket notification_xxx: %@", notification.content);
         }   break;
             
         case WEBSOCKET_notification_yyy: {
-            NSLog(@"received webSocket notification_yyy: %@", userInfo);
+            NSLog(@"received webSocket notification_yyy: %@", notification.content);
         }   break;
             
         case WEBSOCKET_notification_zzz: {
-            NSLog(@"received webSocket notification_zzz: %@", userInfo);
+            NSLog(@"received webSocket notification_zzz: %@", notification.content);
         }   break;
             
         default:break;

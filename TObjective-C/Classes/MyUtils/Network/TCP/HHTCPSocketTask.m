@@ -72,40 +72,21 @@
 
 #pragma mark - Interface(Friend)
 
-//- (void)completeWithResponseData:(NSData *)responseData error:(NSError *)error {
-//    if (![self canResponse]) { return; }
-//
-//    NSData *responseContent;
-//    if (responseData == nil) {
-//        error = [self taskErrorWithResponeCode:HHTCPSocketResponseCodeUnkonwn];
-//    } else {
-//
-//        uint32_t responseCode = [HHTCPSocketResponseParser responseCodeFromData:responseData];
-//        uint32_t responseContentLength = [HHTCPSocketResponseParser responseContentLengthFromData:responseData];
-//        NSData *responseAdler = [HHTCPSocketResponseParser responseAdlerFromData:responseData];
-//
-//        responseContent = [HHTCPSocketResponseParser responseContentFromData:responseData];
-//        NSData *adler = [HHDataFormatter adler32ToDataWithProtoBuffByte:(Byte *)responseContent.bytes length:responseContentLength];
-//
-//        error = [self taskErrorWithResponeCode:([responseAdler isEqual:adler] ? responseCode : HHTCPSocketResponseCodeNoMatchAdler)];
-//    }
-//    [self completeWithResult:responseContent error:error];
-//    error ? NSLog(@"socket请求失败: %ld %@",error.code, error.domain) : nil;
-//}
-
-- (void)completeWithResponseData:(NSData *)responseData error:(NSError *)error {
+- (void)completeWithResponse:(HHTCPSocketResponse *)response error:(NSError *)error {
     if (![self canResponse]) { return; }
     
     NSDictionary *result;
-    if (responseData == nil) {
-        error = [self taskErrorWithResponeCode:HHTCPSocketResponseCodeUnkonwn];
-    } else {
-        
-        uint32_t responseCode = [HHTCPSocketResponseParser responseCodeFromData:responseData];
-        NSData *responseContent = [HHTCPSocketResponseParser responseContentFromData:responseData];
-        error = [self taskErrorWithResponeCode:responseCode];
-        result = [NSJSONSerialization JSONObjectWithData:responseContent options:0 error:nil];
+    if (error == nil) {
+    
+        if (response == nil) {
+            error = [self taskErrorWithResponeCode:HHTCPSocketResponseCodeUnkonwn];
+        } else {
+            
+            error = [self taskErrorWithResponeCode:response.statusCode];
+            result = [NSJSONSerialization JSONObjectWithData:response.content options:0 error:nil];
+        }
     }
+    
     [self completeWithResult:result error:error];
 }
 

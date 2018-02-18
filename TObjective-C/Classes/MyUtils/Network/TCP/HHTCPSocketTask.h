@@ -11,22 +11,7 @@
 #import "HHNetworkConfig.h"
 #import "HHNetworkTaskError.h"
 
-#import "HHTCPSocketRequest.h"
-
-typedef enum : NSUInteger {
-    HHTCPSocketResponseCodeSuccess = 200,
-    HHTCPSocketResponseCodeLostConnection = 300,
-    HHTCPSocketResponseCodeInvalidMsgLength = 301,
-    HHTCPSocketResponseCodeLostPacket = 302,
-    HHTCPSocketResponseCodeInvalidMsgFormat = 303,
-    HHTCPSocketResponseCodeUndefinedMsgType = 401,
-    HHTCPSocketResponseCodeEncodeProtobuf = 402,
-    HHTCPSocketResponseCodeDatabaseException = 403,
-    HHTCPSocketResponseCodeUnkonwn = 404,
-    HHTCPSocketResponseCodeNoPermission = 405,
-    HHTCPSocketResponseCodeNoMatchAdler = 455,
-    HHTCPSocketResponseCodeNoProtobuf = 456
-} HHTCPSocketResponseCode;
+#import "HHTCPSocketResponse.h"
 
 typedef enum : NSUInteger {
     HHTCPSocketTaskStateSuspended = 0,
