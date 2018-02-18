@@ -64,10 +64,10 @@
 
 #pragma mark - Interface(Friend)
 
-- (void)completeWithResponseData:(NSDictionary *)responseData error:(NSError *)error {
+- (void)completeWithResponse:(HHWebSocketResponse *)response error:(NSError *)error {
     if (![self canResponse]) { return; }
     
-    [self completeWithResult:responseData error:error];
+    [self completeWithResult:response.content error:error];
 }
 
 #pragma mark - Action

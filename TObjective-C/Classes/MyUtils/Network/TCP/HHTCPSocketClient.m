@@ -22,7 +22,7 @@
 
 - (HHTCPSocketRequest *)request;
 - (void)setClient:(id)client;
-- (void)completeWithResponseData:(NSData *)responseData error:(NSError *)error;
+- (void)completeWithResponse:(HHTCPSocketResponse *)response error:(NSError *)error;
 
 @end
 
@@ -119,7 +119,7 @@ static dispatch_semaphore_t lock;
         } else {
             error = HHError(HHNetworkErrorNotice, HHNetworkTaskErrorCannotConnectedToInternet);
         }
-        [task completeWithResponseData:nil error:error];
+        [task completeWithResponse:nil error:error];
     }
 }
 
@@ -178,31 +178,24 @@ static dispatch_semaphore_t lock;
 }
 
 - (void)dispatchResponse:(NSData *)responseData {
-    if (responseData.length == 0) { return; }
+    HHTCPSocketResponse *response = [HHTCPSocketResponse responseWithData:responseData];
+    if (response == nil) { return; }
     
-    uint32_t url = [HHTCPSocketResponseParser responseURLFromData:responseData];
-    if (url > TCP_max_notification) {/** 请求响应 */
+    if (response.url > TCP_max_notification) {/** 请求响应 */
         
-        NSNumber *taskIdentifier = @([HHTCPSocketResponseParser responseSerialNumberFromData:responseData]);
-        HHTCPSocketTask *task = self.dispatchTable[taskIdentifier];
-        if (task) {
-            dispatch_async(dispatch_get_global_queue(2, 0), ^{
-                [task completeWithResponseData:responseData error:nil];
-            });
-        }
-    } else if (url == TCP_heatbeat) {/** 心跳 */
-        uint32_t ackNum = [HHTCPSocketResponseParser responseSerialNumberFromData:responseData];
-        [self.heatbeat handleServerAckNum:ackNum];
+        HHTCPSocketTask *task = self.dispatchTable[@(response.serNum)];
+        [task completeWithResponse:response error:nil];
+    } else if (response.url == TCP_heatbeat) {/** 心跳 */
+        [self.heatbeat handleServerAckNum:response.serNum];
     } else {/** 推送 */
-        [self dispatchRemoteNotification:url responseData:responseData];
+        [self dispatchRemoteNotification:response];
     }
 }
 
-- (void)dispatchRemoteNotification:(HHTCPSocketRequestURL)notification responseData:(NSData *)responseData {
+- (void)dispatchRemoteNotification:(HHTCPSocketResponse *)notification {
     
-    NSData *responseContent = [HHTCPSocketResponseParser responseContentFromData:responseData];
-    NSDictionary *userInfo = [NSJSONSerialization JSONObjectWithData:responseContent options:0 error:nil];
-    switch (notification) {
+    NSDictionary *userInfo = [NSJSONSerialization JSONObjectWithData:notification.content options:0 error:nil];
+    switch (notification.url) {
         case TCP_notification_xxx: {
             NSLog(@"received notification_xxx: %@", userInfo);
         }   break;
@@ -252,7 +245,7 @@ static dispatch_semaphore_t lock;
 - (void)reconnect {
     
     for (HHTCPSocketTask *task in self.dispatchTable.allValues) {
-        [task completeWithResponseData:nil error:HHError(@"长连接已断开", HHTCPSocketResponseCodeLostConnection)];
+        [task completeWithResponse:nil error:HHError(@"长连接已断开", HHTCPSocketResponseCodeLostConnection)];
     }
     dispatch_semaphore_wait(lock, DISPATCH_TIME_FOREVER);
     self.buffer = [NSMutableData data];

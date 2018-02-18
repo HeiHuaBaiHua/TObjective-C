@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "HHWebSocketRequest.h"
+#import "HHWebSocketResponse.h"
 #import "HHNetworkTaskError.h"
 
 typedef enum : NSUInteger {

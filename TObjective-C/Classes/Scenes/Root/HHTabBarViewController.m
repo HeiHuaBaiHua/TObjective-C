@@ -18,6 +18,8 @@
 #import "CTMediator+Compose.h"
 #import "CTMediator+Profile.h"
 
+#import "HHUserTCPAPIManager.h"
+#import "HHWeiboTCPAPIManager.h"
 #import "HHUserWebSocketAPIManager.h"
 #import "HHWeiboWebSocketAPIManager.h"
 @interface HHTabBarViewController ()
@@ -51,6 +53,29 @@
     
     UINavigationController *chatNavVC = [HHUIBuilder navigationControllerWithRootVC:[CTRouter tempViewControllerWithTitle:@"Chat" onClickHandler:^{
         [self showToastWithText:@"留个坑 明天写"];
+        
+        HHWeiboTCPAPIManager *apiManager = [HHWeiboWebSocketAPIManager new];
+        [[apiManager followedWeiboListSignalWithPage:0 pageSize:0] subscribeNext:^(id x) {
+            NSLog(@"1%@", x);
+        } error:^(NSError *error) {
+            NSLog(@"1%@", error);
+        }];
+        
+        [[apiManager switchLikeStatusSignalWithWeiboID:@"123" isLike:YES] subscribeNext:^(id x) {
+            NSLog(@"2%@", x);
+        } error:^(NSError *error) {
+            NSLog(@"2%@", error);
+        }];
+
+        [[apiManager publicWeiboListSignalWithPage:0 pageSize:0] subscribeNext:^(id x) {
+            NSLog(@"3%@", x);
+        }];
+
+//        [[[HHUserWebSocketAPIManager new] loginSignalWithAccount:@"acount" password:@"123456"] subscribeNext:^(id x) {
+//            NSLog(@"4%@", x);
+//        }];
+        
+        
     }]];
     
     UINavigationController *composeNavVC = [HHUIBuilder navigationControllerWithRootVC:[CTRouter tempViewControllerWithTitle:@"Compose" onClickHandler:^{
