@@ -25,11 +25,12 @@
         _refreshCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
             @strongify(self);
             
-            return [[self fetchDataSignalWithPage:0] doNext:^(id x) {
+            int startPage = self.startPage;
+            return [[self fetchDataSignalWithPage:startPage] doNext:^(id x) {
                 
-                self.page = 1;
+                self.page = startPage + 1;
                 [self.allData removeAllObjects];
-                [self.allData addObjectsFromArray:x];
+                [self handleResult:x];
             }];
         }];
     }
@@ -45,11 +46,19 @@
             return [[self fetchDataSignalWithPage:self.page] doNext:^(id x) {
                 
                 self.page += 1;
-                [self.allData addObjectsFromArray:x];
+                [self handleResult:x];
             }];
         }];
     }
     return _loadMoreCommand;
+}
+
+- (void)handleResult:(NSArray *)result {
+    [self.allData addObjectsFromArray:result];
+}
+
+- (int)startPage {
+    return 0;
 }
 
 #pragma mark - Network

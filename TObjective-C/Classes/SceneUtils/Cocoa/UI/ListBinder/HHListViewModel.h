@@ -12,6 +12,8 @@
 #import "HHListBinderProtocol.h"
 @interface HHListViewModel : NSObject<HHListViewModelProtocol>
 
+- (int)startPage;
+- (void)handleResult:(NSArray *)result;
 - (RACSignal *)fetchDataSignalWithPage:(int)page;
 
 @end
