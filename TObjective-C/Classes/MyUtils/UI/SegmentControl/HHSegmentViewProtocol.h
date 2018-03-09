@@ -12,14 +12,15 @@
 @protocol HHSegmentViewDataSource <NSObject>
 
 @optional
-- (CGFloat)heightOfHeaderInSegmentView:(HHSegmentView *)segmentView;
+- (CGSize)sizeOfHeaderInSegmentView:(HHSegmentView *)segmentView;
+- (CGSize)sizeOfIndicateViewInSegmentView:(HHSegmentView *)segmentView;
+
 @required
 - (NSUInteger)numberOfItemsInSegmentView:(HHSegmentView *)segmentView;
 
 - (UIView *)segmentView:(HHSegmentView *)segmentView itemViewAtIndex:(NSUInteger)index;
 - (NSString *)segmentView:(HHSegmentView *)segmentView titleForItemAtIndex:(NSUInteger)index;
 - (NSDictionary *)segmentView:(HHSegmentView *)segmentView attributesForTitleAtIndex:(NSUInteger)index selected:(BOOL)selected;
-
 @end
 
 @protocol HHSegmentViewDelegate <NSObject>
@@ -34,8 +35,10 @@
 @property (nonatomic, assign) NSUInteger selectedIndex;
 @property (nonatomic, strong, readonly) UIView *selectedItemView;
 
+- (void)realodData;
 - (void)setDelegate:(id<HHSegmentViewDelegate>)delegate;
 - (void)setDataSource:(id<HHSegmentViewDataSource>)dataSource;
 
 - (void)setHeaderBackgroundColor:(UIColor *)color;
+- (void)setHeaderIsMultiplePage:(BOOL)isMultiplePage;
 @end

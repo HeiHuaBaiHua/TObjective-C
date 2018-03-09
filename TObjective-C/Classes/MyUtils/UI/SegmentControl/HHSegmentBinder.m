@@ -9,6 +9,8 @@
 #import <Masonry/Masonry.h>
 #import <MJRefresh/MJRefresh.h>
 
+#import "HHFoundation.h"
+
 #import "HHSegmentBinder.h"
 
 @interface HHSegmentBinder ()<UIScrollViewDelegate>
@@ -19,7 +21,7 @@
 @property (nonatomic, assign) CGFloat titleWidth;
 @property (nonatomic, assign) CGFloat titleHeight;
 @property (nonatomic, strong) UIButton *selectedButton;
-
+@property (nonatomic, assign) BOOL headerIsMultiplePage;
 @end
 
 static const CGFloat screenItemCount = 5;
@@ -58,6 +60,22 @@ static const NSUInteger initialTag = 101;
     
     return [self itemViewAtIndex:self.selectedIndex];
 }
+- (void)realodData {
+    
+    NSArray *titles = self.titleView.subviews;
+    for (UIView *title in titles) {
+        if (title == self.indicatorView) { continue; }
+        [title removeFromSuperview];
+    }
+    
+    NSArray *contents = self.contentView.subviews;
+    for (UIView *content in contents) {
+        [content removeFromSuperview];
+    }
+    
+    self.selectedIndex = 0;
+    [self layoutContentView];
+}
 
 #pragma mark - UIScrollViewDelegate
 
@@ -78,18 +96,24 @@ static const NSUInteger initialTag = 101;
 - (void)layoutContentView {
     
     NSUInteger itemCount = [self itemCount];
-    CGFloat headerHeight = [self headerHeight];
-    CGFloat screenWidth = CGRectGetWidth([UIScreen mainScreen].bounds);
-    CGFloat itemWidth = screenWidth / screenItemCount;
+    CGSize headerSize = [self headerSize];
+    CGFloat itemWidth = headerSize.width / screenItemCount;
     self.titleView.contentSize = CGSizeMake(itemWidth * itemCount, 0);
-    self.titleWidth = screenWidth / MIN(itemCount, screenItemCount);
-    self.titleHeight = headerHeight > 0 ? headerHeight : titleHeight;
-    [self.titleView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.height.mas_equalTo(self.titleHeight);
-    }];
+    self.titleWidth = headerSize.width / MIN(itemCount, screenItemCount);
+    self.titleHeight = headerSize.height > 0 ? headerSize.height : titleHeight;
+    if (self.headerIsMultiplePage) {
+        self.titleWidth = CGRectGetWidth([UIScreen mainScreen].bounds) / 4.5;
+        self.titleView.contentSize = CGSizeMake(self.titleWidth * itemCount, 0);
+    } else {
+        [self.titleView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self);
+            make.centerX.equalTo(self);
+            make.size.mas_equalTo(CGSizeMake(headerSize.width, self.titleHeight));
+        }];
+    }
     
     self.contentView.delegate = self;
-    self.contentView.contentSize = CGSizeMake(screenWidth * itemCount, 0);
+    self.contentView.contentSize = CGSizeMake(CGRectGetWidth([UIScreen mainScreen].bounds) * itemCount, 0);
     
     for (int idx = 0; idx < itemCount; idx++) {
         
@@ -97,7 +121,21 @@ static const NSUInteger initialTag = 101;
         [self addItemAtIndex:idx];
     }
     
+    [self layoutIndicatorView];
+}
+
+- (void)layoutIndicatorView {
+    
     [self.titleView bringSubviewToFront:self.indicatorView];
+    if ([self.dataSource respondsToSelector:@selector(sizeOfIndicateViewInSegmentView:)]) {
+        
+        CGSize indicateSize = [self.dataSource sizeOfIndicateViewInSegmentView:self];
+        [self.colorView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.center.equalTo(self.indicatorView);
+            make.height.equalTo(self.indicatorView);
+            make.width.mas_equalTo(MAX(indicateSize.width, self.titleWidth * 0.25));
+        }];
+    }
     self.indicatorView.frame = CGRectMake(0, self.titleHeight - 3, self.titleWidth, 2);
 }
 
@@ -123,6 +161,7 @@ static const NSUInteger initialTag = 101;
     UIView *itemView = [self itemViewAtIndex:index];
     CGFloat screenWidth = CGRectGetWidth([UIScreen mainScreen].bounds);
     itemView.frame = CGRectMake(screenWidth * index, 0, screenWidth, CGRectGetHeight(self.bounds) - self.titleHeight);
+    self.contentView.backgroundColor = itemView.backgroundColor;
     [self.contentView addSubview:itemView];
 }
 
@@ -140,6 +179,22 @@ static const NSUInteger initialTag = 101;
         
         CGFloat offsetX = CGRectGetWidth([UIScreen mainScreen].bounds) * (titleButton.tag - initialTag);
         [self.contentView setContentOffset:CGPointMake(offsetX, 0) animated:YES];
+        [self checkTitleOffset];
+    }
+}
+
+- (void)checkTitleOffset {
+    if (!self.headerIsMultiplePage) { return; }
+    
+    CGFloat titleOffsetX = self.titleWidth * (self.selectedButton.tag - initialTag);
+    CGFloat contentOffsetX = self.titleView.contentOffset.x;
+    if (titleOffsetX < contentOffsetX) {
+        [self.titleView setContentOffset:CGPointMake(MAX(0, titleOffsetX - self.titleWidth), 0) animated:YES];
+    } else if (titleOffsetX + self.titleWidth > contentOffsetX + ScreenWidth) {
+        
+        CGFloat maxOffsetX = self.titleView.contentSize.width - ScreenWidth;
+        CGFloat baseOffsetX = titleOffsetX + self.titleWidth - ScreenWidth;
+        [self.titleView setContentOffset:CGPointMake(MIN(maxOffsetX, baseOffsetX + self.titleWidth * 0.5), 0) animated:YES];
     }
 }
 
@@ -152,11 +207,13 @@ static const NSUInteger initialTag = 101;
     return 0;
 }
 
-- (CGFloat)headerHeight {
-    if ([self.dataSource respondsToSelector:@selector(heightOfHeaderInSegmentView:)]) {
-        return [self.dataSource heightOfHeaderInSegmentView:self];
+- (CGSize)headerSize {
+    if ([self.dataSource respondsToSelector:@selector(sizeOfHeaderInSegmentView:)]) {
+        
+        CGSize headerSize = [self.dataSource sizeOfHeaderInSegmentView:self];
+        return CGSizeMake(MAX(headerSize.width, 100), MAX(headerSize.height, 35));
     }
-    return 0;
+    return CGSizeMake(CGRectGetWidth([UIScreen mainScreen].bounds), 35);
 }
 
 - (UIView *)itemViewAtIndex:(NSUInteger)index {
