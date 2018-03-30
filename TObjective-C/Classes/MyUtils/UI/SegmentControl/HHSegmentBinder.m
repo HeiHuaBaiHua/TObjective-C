@@ -73,8 +73,8 @@ static const NSUInteger initialTag = 101;
         [content removeFromSuperview];
     }
     
-    self.selectedIndex = 0;
     [self layoutContentView];
+    [self scrollViewDidScroll:self.contentView];
 }
 
 #pragma mark - UIScrollViewDelegate
