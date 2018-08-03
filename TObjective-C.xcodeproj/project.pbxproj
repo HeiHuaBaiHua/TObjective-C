@@ -130,6 +130,8 @@
 		73B9F0291FBD786400F460E0 /* HHWeiboDetailCommentsCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9F0281FBD786400F460E0 /* HHWeiboDetailCommentsCellViewModel.m */; };
 		73B9F02C1FBD787000F460E0 /* HHWeiboDetailLikesCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9F02B1FBD787000F460E0 /* HHWeiboDetailLikesCellViewModel.m */; };
 		73B9F02F1FBD787D00F460E0 /* HHWeiboDetailRepostsCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9F02E1FBD787D00F460E0 /* HHWeiboDetailRepostsCellViewModel.m */; };
+		73CB4B26211446FE0062098C /* UIImage+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 73CB4B25211446FE0062098C /* UIImage+Extension.m */; };
+		73CB4B292114471A0062098C /* UIScreen+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 73CB4B27211447190062098C /* UIScreen+Extension.m */; };
 		73F32FB01FBA88A400F55A0D /* HHWeiboCellInfoBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F32FAF1FBA88A400F55A0D /* HHWeiboCellInfoBinder.m */; };
 		73F32FB31FBA88B800F55A0D /* HHWeiboCellContentBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F32FB21FBA88B800F55A0D /* HHWeiboCellContentBinder.m */; };
 		73F32FBB1FBA96E900F55A0D /* HHWeiboTableBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F32FBA1FBA96E900F55A0D /* HHWeiboTableBinder.m */; };
@@ -412,6 +414,10 @@
 		73B9F0301FBD78C600F460E0 /* HHWeiboDetailCommentsCellViewModelProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHWeiboDetailCommentsCellViewModelProtocol.h; sourceTree = "<group>"; };
 		73B9F0311FBD791000F460E0 /* HHWeiboDetailLikesCellViewModelProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHWeiboDetailLikesCellViewModelProtocol.h; sourceTree = "<group>"; };
 		73B9F0321FBD793D00F460E0 /* HHWeiboDetailRepostsCellViewModelProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHWeiboDetailRepostsCellViewModelProtocol.h; sourceTree = "<group>"; };
+		73CB4B24211446FE0062098C /* UIImage+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Extension.h"; sourceTree = "<group>"; };
+		73CB4B25211446FE0062098C /* UIImage+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Extension.m"; sourceTree = "<group>"; };
+		73CB4B27211447190062098C /* UIScreen+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScreen+Extension.m"; sourceTree = "<group>"; };
+		73CB4B28211447190062098C /* UIScreen+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScreen+Extension.h"; sourceTree = "<group>"; };
 		73F32FA91FBA861A00F55A0D /* HHWeiboCellViewModelProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHWeiboCellViewModelProtocol.h; sourceTree = "<group>"; };
 		73F32FAA1FBA862B00F55A0D /* HHWeiboCellInfoViewModelProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHWeiboCellInfoViewModelProtocol.h; sourceTree = "<group>"; };
 		73F32FAB1FBA863E00F55A0D /* HHWeiboCellContentViewModelProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHWeiboCellContentViewModelProtocol.h; sourceTree = "<group>"; };
@@ -1083,6 +1089,10 @@
 				7362C2C11FB5492800C3CD3F /* UIView+Extension.m */,
 				7362C2731FB53A8300C3CD3F /* UIColor+Extension.h */,
 				7362C2741FB53A8300C3CD3F /* UIColor+Extension.m */,
+				73CB4B24211446FE0062098C /* UIImage+Extension.h */,
+				73CB4B25211446FE0062098C /* UIImage+Extension.m */,
+				73CB4B28211447190062098C /* UIScreen+Extension.h */,
+				73CB4B27211447190062098C /* UIScreen+Extension.m */,
 				7362C2C31FB54E8000C3CD3F /* UIButton+Extension.h */,
 				7362C2C41FB54E8000C3CD3F /* UIButton+Extension.m */,
 				7362C2971FB53B5200C3CD3F /* UIScrollView+Extension.h */,
@@ -1872,6 +1882,7 @@
 				7362C2A71FB5428100C3CD3F /* NSString+Extension.m in Sources */,
 				734BB1B62025C4500077D6F6 /* HHWeiboWebSocketAPIManager.m in Sources */,
 				7337EA50201C571500D08E2D /* HHWeiboTCPAPIManager.m in Sources */,
+				73CB4B26211446FE0062098C /* UIImage+Extension.m in Sources */,
 				7362C2781FB53A9300C3CD3F /* UIFont+Extension.m in Sources */,
 				9D0C520D20395EDF00B2DB6D /* HHTCPSocketResponse.m in Sources */,
 				7372635D1FBEC6EC007D02A9 /* HHRegisterViewModel.m in Sources */,
@@ -1928,6 +1939,7 @@
 				737EA1E31FB98A0100D32F64 /* HHUIBuilder.m in Sources */,
 				7362C3001FB583E100C3CD3F /* HHAPIManager+RAC.m in Sources */,
 				737EA1C11FB93B0D00D32F64 /* HHTableBinder.m in Sources */,
+				73CB4B292114471A0062098C /* UIScreen+Extension.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

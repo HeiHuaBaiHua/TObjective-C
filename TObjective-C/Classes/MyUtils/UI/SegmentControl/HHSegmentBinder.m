@@ -1,9 +1,9 @@
 //
 //  HHSegmentBinder.m
-//  TObjective-C
+//  HHvce
 //
-//  Created by HeiHuaBaiHua on 2017/9/19.
-//  Copyright © 2017年 HeiHuaBaiHua. All rights reserved.
+//  Created by leihaiyin on 2017/9/19.
+//  Copyright © 2017年 tiger. All rights reserved.
 //
 
 #import <Masonry/Masonry.h>
@@ -13,6 +13,8 @@
 
 #import "HHSegmentBinder.h"
 
+NSString const *HHSegmentAttributeTitleBackgroundColor = @"HHSegmentAttributeTitleBackgroundColor";
+
 @interface HHSegmentBinder ()<UIScrollViewDelegate>
 
 @property (nonatomic, weak) id<HHSegmentViewDelegate> delegate;
@@ -21,15 +23,21 @@
 @property (nonatomic, assign) CGFloat titleWidth;
 @property (nonatomic, assign) CGFloat titleHeight;
 @property (nonatomic, strong) UIButton *selectedButton;
+
 @property (nonatomic, assign) BOOL headerIsMultiplePage;
+@property (nonatomic, assign) BOOL didRotateToLandscape;
 @end
 
-static const CGFloat screenItemCount = 5;
+static const CGFloat screenItemCount = 6;
 static const CGFloat titleHeight = 35;
 static const NSUInteger initialTag = 101;
 
 @implementation HHSegmentBinder
+
 @synthesize selectedIndex = _selectedIndex;
+@synthesize allowScrollDelay;
+@synthesize duration;
+@synthesize selectedButton = _selectedButton;
 
 - (void)setDataSource:(id<HHSegmentViewDataSource>)dataSource {
     _dataSource = dataSource;
@@ -43,7 +51,7 @@ static const NSUInteger initialTag = 101;
 }
 
 - (NSUInteger)selectedIndex {
-    if (!self.selectedButton) { return 0; }
+    if (!self.selectedButton) { return _selectedIndex; }
     
     return self.selectedButton.tag - initialTag;
 }
@@ -55,12 +63,27 @@ static const NSUInteger initialTag = 101;
     [self didSelectedTitle:[self.titleView viewWithTag:index + initialTag]];
 }
 
-- (UIView *)selectedItemView {
-    if (!self.selectedButton) { return nil; }
+- (void)setSelectedButton:(UIButton *)selectedButton {
     
-    return [self itemViewAtIndex:self.selectedIndex];
+    self.selectedButton.selected = NO;
+    _selectedButton = selectedButton;
+    self.selectedButton.selected = YES;
+    
+    CGFloat offsetX = self.contentWidth * (selectedButton.tag - initialTag);
+    [self.contentView setContentOffset:CGPointMake(offsetX, 0) animated:YES];
+    [self checkTitleOffset];
+    
+    if (self.allowScrollDelay) {
+        if (self.duration <= 0)
+            self.duration = 0.2;
+        
+        [UIView animateWithDuration:self.duration animations:^{
+            self.indicatorView.mj_x = self.selectedButton.mj_x;
+        }];
+    }
 }
-- (void)realodData {
+
+- (void)reloadData {
     
     NSArray *titles = self.titleView.subviews;
     for (UIView *title in titles) {
@@ -74,22 +97,70 @@ static const NSUInteger initialTag = 101;
     }
     
     [self layoutContentView];
+    
+    /** 重新设置选中效果 */
     [self scrollViewDidScroll:self.contentView];
+    NSUInteger index = self.contentView.contentOffset.x / self.contentWidth + initialTag;
+    self.selectedButton = [self.titleView viewWithTag:index];
+    
+    if ([self.delegate respondsToSelector:@selector(segmentViewDidEndReload:)]) {
+        [self.delegate segmentViewDidEndReload:self];
+    }
+}
+
+- (UIButton *)titleViewAtIndex:(NSUInteger)index {
+    if (index >= self.contentView.subviews.count) { return nil; }
+    
+    return [self.titleView viewWithTag:index + initialTag];
 }
 
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (self.allowScrollDelay) { return; }
     
-    CGFloat offsetX = scrollView.contentOffset.x * (self.titleWidth / CGRectGetWidth([UIScreen mainScreen].bounds));
+    CGFloat offsetX = self.titleWidth * (scrollView.contentOffset.x / self.contentWidth);
     self.indicatorView.mj_x = offsetX;
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     
-    NSUInteger index = scrollView.contentOffset.x / CGRectGetWidth([UIScreen mainScreen].bounds) + initialTag;
+    CGFloat offset = scrollView.contentOffset.x / self.contentWidth;
+    NSString *decimal = [NSString stringWithFormat:@"%.2f", offset];
+    decimal = [decimal componentsSeparatedByString:@"."].lastObject;
+    if ([decimal isEqualToString:@"00"] || decimal.floatValue > 95) { offset = ceil(offset); }
+    
+    NSUInteger index = (NSUInteger)offset + initialTag;
     [self didSelectedTitle:[self.titleView viewWithTag:index]];
 }
+
+- (void)deviceOrientationDidChange:(NSNotification *)notif {
+    if (self.allowScrollDelay) { return; }
+    
+    UIInterfaceOrientation interfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+    switch (interfaceOrientation) {
+        case UIInterfaceOrientationPortrait: {
+            self.indicatorView.mj_x = self.selectedButton.mj_x;
+            
+            if (self.didRotateToLandscape && UIScreen.type == HHScreenTypeIPhoneX) {
+                
+                self.didRotateToLandscape = NO;
+                self.contentView.scrollEnabled = NO;
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    self.contentView.scrollEnabled = YES;
+                });
+            }
+        }   break;
+            
+        case UIInterfaceOrientationLandscapeLeft:
+        case UIInterfaceOrientationLandscapeRight: {
+            self.didRotateToLandscape = YES;
+        }   break;
+        default:break;
+    }
+}
+
+
 
 #pragma mark - Utils
 
@@ -102,8 +173,12 @@ static const NSUInteger initialTag = 101;
     self.titleWidth = headerSize.width / MIN(itemCount, screenItemCount);
     self.titleHeight = headerSize.height > 0 ? headerSize.height : titleHeight;
     if (self.headerIsMultiplePage) {
-        self.titleWidth = CGRectGetWidth([UIScreen mainScreen].bounds) / 4.5;
+        
+        self.titleWidth = self.contentWidth / 4.5;
         self.titleView.contentSize = CGSizeMake(self.titleWidth * itemCount, 0);
+        [self.titleView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(self.titleHeight);
+        }];
     } else {
         [self.titleView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self);
@@ -113,7 +188,7 @@ static const NSUInteger initialTag = 101;
     }
     
     self.contentView.delegate = self;
-    self.contentView.contentSize = CGSizeMake(CGRectGetWidth([UIScreen mainScreen].bounds) * itemCount, 0);
+    self.contentView.contentSize = CGSizeMake(self.contentWidth * itemCount, 0);
     
     for (int idx = 0; idx < itemCount; idx++) {
         
@@ -136,6 +211,11 @@ static const NSUInteger initialTag = 101;
             make.width.mas_equalTo(MAX(indicateSize.width, self.titleWidth * 0.25));
         }];
     }
+    UIColor *color = [UIColor colorWithHex:0xEFBB53];
+    if ([self.dataSource respondsToSelector:@selector(colorOfIndicateViewInSegmentView:)]) {
+        color = [self.dataSource colorOfIndicateViewInSegmentView:self];
+    }
+    self.colorView.backgroundColor = color;
     self.indicatorView.frame = CGRectMake(0, self.titleHeight - 3, self.titleWidth, 2);
 }
 
@@ -148,8 +228,21 @@ static const NSUInteger initialTag = 101;
     titleButton.frame = CGRectMake(self.titleWidth * index, 0, self.titleWidth, self.titleHeight);
     NSString *titleText = [self titleAtIndex:index];
     titleButton.backgroundColor = [UIColor clearColor];
-    NSAttributedString *normalTitle = [[NSAttributedString alloc] initWithString:titleText attributes:[self attributesForTitleAtIndex:index selected:NO]];
-    NSAttributedString *selectedTitle = [[NSAttributedString alloc] initWithString:titleText attributes:[self attributesForTitleAtIndex:index selected:YES]];
+    
+    NSMutableDictionary *normalAttributes = [self attributesForTitleAtIndex:index selected:NO].mutableCopy;
+    NSMutableDictionary *selectedAttributes = [self attributesForTitleAtIndex:index selected:YES].mutableCopy;
+    UIColor *normalBackgroundColor = normalAttributes[HHSegmentAttributeTitleBackgroundColor] ?: [UIColor clearColor];
+    UIColor *selectedBackgroundColor = selectedAttributes[HHSegmentAttributeTitleBackgroundColor];
+    if (selectedBackgroundColor) {
+        
+        [titleButton setBackgroundImage:[UIImage imageWithColor:normalBackgroundColor] forState:UIControlStateNormal];
+        [titleButton setBackgroundImage:[UIImage imageWithColor:selectedBackgroundColor] forState:UIControlStateSelected];
+    }
+    [normalAttributes removeObjectForKey:HHSegmentAttributeTitleBackgroundColor];
+    [selectedAttributes removeObjectForKey:HHSegmentAttributeTitleBackgroundColor];
+    
+    NSAttributedString *normalTitle = [[NSAttributedString alloc] initWithString:titleText attributes:normalAttributes];
+    NSAttributedString *selectedTitle = [[NSAttributedString alloc] initWithString:titleText attributes:selectedAttributes];
     [titleButton setAttributedTitle:normalTitle forState:UIControlStateNormal];
     [titleButton setAttributedTitle:selectedTitle forState:UIControlStateSelected];
     
@@ -159,7 +252,7 @@ static const NSUInteger initialTag = 101;
 - (void)addItemAtIndex:(NSUInteger)index {
     
     UIView *itemView = [self itemViewAtIndex:index];
-    CGFloat screenWidth = CGRectGetWidth([UIScreen mainScreen].bounds);
+    CGFloat screenWidth = self.contentWidth;
     itemView.frame = CGRectMake(screenWidth * index, 0, screenWidth, CGRectGetHeight(self.bounds) - self.titleHeight);
     self.contentView.backgroundColor = itemView.backgroundColor;
     [self.contentView addSubview:itemView];
@@ -173,13 +266,7 @@ static const NSUInteger initialTag = 101;
             [self.delegate segmentView:self didScrollToItemAtIndex:titleButton.tag - initialTag];
         }
         
-        self.selectedButton.selected = NO;
         self.selectedButton = titleButton;
-        self.selectedButton.selected = YES;
-        
-        CGFloat offsetX = CGRectGetWidth([UIScreen mainScreen].bounds) * (titleButton.tag - initialTag);
-        [self.contentView setContentOffset:CGPointMake(offsetX, 0) animated:YES];
-        [self checkTitleOffset];
     }
 }
 
@@ -190,10 +277,10 @@ static const NSUInteger initialTag = 101;
     CGFloat contentOffsetX = self.titleView.contentOffset.x;
     if (titleOffsetX < contentOffsetX) {
         [self.titleView setContentOffset:CGPointMake(MAX(0, titleOffsetX - self.titleWidth), 0) animated:YES];
-    } else if (titleOffsetX + self.titleWidth > contentOffsetX + ScreenWidth) {
+    } else if (titleOffsetX + self.titleWidth > contentOffsetX + self.contentWidth) {
         
-        CGFloat maxOffsetX = self.titleView.contentSize.width - ScreenWidth;
-        CGFloat baseOffsetX = titleOffsetX + self.titleWidth - ScreenWidth;
+        CGFloat maxOffsetX = self.titleView.contentSize.width - self.contentWidth;
+        CGFloat baseOffsetX = titleOffsetX + self.titleWidth - self.contentWidth;
         [self.titleView setContentOffset:CGPointMake(MIN(maxOffsetX, baseOffsetX + self.titleWidth * 0.5), 0) animated:YES];
     }
 }
@@ -213,7 +300,7 @@ static const NSUInteger initialTag = 101;
         CGSize headerSize = [self.dataSource sizeOfHeaderInSegmentView:self];
         return CGSizeMake(MAX(headerSize.width, 100), MAX(headerSize.height, 35));
     }
-    return CGSizeMake(CGRectGetWidth([UIScreen mainScreen].bounds), 35);
+    return CGSizeMake(self.contentWidth, 35);
 }
 
 - (UIView *)itemViewAtIndex:(NSUInteger)index {
@@ -235,6 +322,12 @@ static const NSUInteger initialTag = 101;
         return [self.dataSource segmentView:self attributesForTitleAtIndex:index selected:selected];
     }
     return nil;
+}
+
+- (CGFloat)contentWidth {
+    
+    CGFloat width = CGRectGetWidth(self.bounds);
+    return width > 100 ? width : UIScreen.width;
 }
 
 @end
